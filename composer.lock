@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "22ec8cf86a9f2f483deb674d5d4cec3c",
+    "content-hash": "ebb2fe758bf479db3a8d5504126ff976",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -5430,6 +5430,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2019-09-17T06:23:10+00:00"
         },
         {

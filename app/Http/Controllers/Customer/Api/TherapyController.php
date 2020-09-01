@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Customer\Api;
 
 use App\Models\Clinic;
 use App\Models\Therapist;
+use App\Models\TherapistLocations;
 use App\Models\Therapy;
 use App\Models\TimeSlot;
 use Illuminate\Http\Request;
@@ -134,9 +135,28 @@ class TherapyController extends Controller
             ];
         }
 
+        $distances=TherapistLocations::getTherapistDistancesandTimes($request->lat, $request->lang, $nearby);
+
+        $distances['grade_1']=[
+                'distance'=>$distances['grade_1']['distance']['text']??'',
+                'duration'=>$distances['grade_1']['duration']['text']??''
+            ];
+        $distances['grade_2']=[
+            'distance'=>$distances['grade_2']['distance']['text']??'',
+            'duration'=>$distances['grade_2']['duration']['text']??''
+        ];
+        $distances['grade_3']=[
+            'distance'=>$distances['grade_3']['distance']['text']??'',
+            'duration'=>$distances['grade_3']['duration']['text']??''
+        ];
+        $distances['grade_4']=[
+            'distance'=>$distances['grade_4']['distance']['text']??'',
+            'duration'=>$distances['grade_4']['duration']['text']??''
+        ];
+
         return [
             'status'=>'success',
-            'data'=>compact('nearby', 'activegrades'),
+            'data'=>compact('nearby', 'activegrades', 'distances'),
         ];
 
     }
