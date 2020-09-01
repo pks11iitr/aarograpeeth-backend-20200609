@@ -82,10 +82,11 @@ class TherapistLocations extends Model
 
 
         }catch(GuzzleHttp\Exception\TransferException $e){
-            $body=$e->getResponse()->getBody()->getContents();
+            //$body=$e->getResponse()->getBody()->getContents();
+            return [];
         }
 
-        return $body;
+
 
 
     }
