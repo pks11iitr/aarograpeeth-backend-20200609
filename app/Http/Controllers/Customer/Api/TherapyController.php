@@ -129,7 +129,8 @@ class TherapyController extends Controller
             $nearby[]=[
                 'lat'=>$t->last_lat,
                 'lang'=>$t->last_lang,
-                'grade'=>$t->therapies[0]->pivot->therapist_grade
+                'grade'=>$t->therapies[0]->pivot->therapist_grade,
+                'lat_lang'=>$t->last_lat.','.$t->last_lang,
             ];
         }
 
