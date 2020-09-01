@@ -155,15 +155,15 @@ $api->group(['prefix' => 'therapist'], function ($api) {
         $api->get('my-profile', 'Therapist\Api\ProfileController@myProfile');
         $api->post('update-availability', 'Therapist\Api\ProfileController@updateavalibility');
         $api->get('my-availability', 'Therapist\Api\ProfileController@myapdateavalibility');
-        $api->get('open-booking', 'Therapist\Api\TherapiestOrder@openbooking');
-        $api->get('open-booking-details/{id}', 'Therapist\Api\TherapiestOrder@openbookingdetails');
-        $api->get('journey-started/{id}', 'Therapist\Api\TherapiestOrder@journey_started');
-        $api->get('disease-point', 'Therapist\Api\TherapiestOrder@diseasepoint');
-        $api->get('treatment-list', 'Therapist\Api\TherapiestOrder@treatmentlist');
-        $api->post('send-disease-point/{id}', 'Therapist\Api\TherapiestOrder@send_diesase_point');
-        $api->post('treatment-suggestation/{id}', 'Therapist\Api\TherapiestOrder@treatmentsuggestation');
-        $api->get('painpoint-relif/{id}', 'Therapist\Api\TherapiestOrder@pain_point_relif');
-        $api->post('pain-relief-rating/{id}', 'Therapist\Api\TherapiestOrder@pain_relief_update_rating');
+        $api->get('open-booking', 'Therapist\Api\TherapiestOrderController@openbooking');
+        $api->get('open-booking-details/{id}', 'Therapist\Api\TherapiestOrderController@openbookingdetails');
+        $api->get('journey-started/{id}', 'Therapist\Api\TherapiestOrderController@journey_started');
+        $api->get('disease-point', 'Therapist\Api\TherapiestOrderController@diseasepoint');
+        $api->get('treatment-list', 'Therapist\Api\TherapiestOrderController@treatmentlist');
+        $api->post('send-disease-point/{id}', 'Therapist\Api\TherapiestOrderController@send_diesase_point');
+        $api->post('treatment-suggestation/{id}', 'Therapist\Api\TherapiestOrderController@treatmentsuggestation');
+        $api->get('painpoint-relif/{id}', 'Therapist\Api\TherapiestOrderController@pain_point_relif');
+        $api->post('pain-relief-rating/{id}', 'Therapist\Api\TherapiestOrderController@pain_relief_update_rating');
 
 
     });

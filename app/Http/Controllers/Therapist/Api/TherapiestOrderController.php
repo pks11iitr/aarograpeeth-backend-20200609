@@ -17,7 +17,7 @@ use App\Models\HomeBookingSlots;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class TherapiestOrder extends Controller
+class TherapiestOrderController extends Controller
 {
 
     public function openbooking(Request $request){
