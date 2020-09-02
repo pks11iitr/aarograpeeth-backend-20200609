@@ -801,7 +801,8 @@ $refid=env('MACHINE_ID').time();
                     'quantity'=>$detail->quantity,
                     'image'=>$detail->entity->image??'',
                     'booking_date'=>$order->booking_date,
-                    'booking_time'=>$order->booking_time
+                    'booking_time'=>$order->booking_time,
+                    'show_review'=>0
                 ];
 
 
