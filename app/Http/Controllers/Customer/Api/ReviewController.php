@@ -73,7 +73,9 @@ class ReviewController extends Controller
                'user_id'=>$user->id,
                'order_id'=>$order->id,
                'entity_type'=>$order->details[0]->entity_type,
-                'entity_id'=>$order->details[0]->entity_id
+                'entity_id'=>$order->details[0]->entity_id,
+                'rating'=>$request->rating,
+                'description'=>$request->review
             ]);
 
             return [
