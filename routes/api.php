@@ -45,6 +45,7 @@ $api->get('topdeals-products', ['as'=>'product.deals', 'uses'=>'Customer\Api\Pro
 $api->get('bestseller-products', ['as'=>'product.deals', 'uses'=>'Customer\Api\ProductController@bestseller']);
 
 $api->get('reviews/{type}/{id}', ['as'=>'reviews', 'uses'=>'Customer\Api\ReviewController@index']);
+$api->post('reviews/{order_id}/{item_id}', ['as'=>'reviews.post', 'uses'=>'Customer\Api\ReviewController@post']);
 
 $api->get('search', ['as'=>'search', 'uses'=>'Customer\Api\SearchController@index']);
 
