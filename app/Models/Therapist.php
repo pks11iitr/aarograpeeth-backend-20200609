@@ -14,7 +14,7 @@ class Therapist extends Authenticatable implements JWTSubject
 
 	protected $table='therapists';
 
-	protected $fillable=['name','email','mobile','password', 'image'];
+	protected $fillable=['name','email','mobile','password', 'image','address','city','state','isactive','clinic_id'];
 
     public function locations(){
         return $this->hasMany('App\Models\TherapistLocations', 'therapist_id')->orderBy('id', 'desc');
@@ -23,6 +23,10 @@ class Therapist extends Authenticatable implements JWTSubject
 
     public function therapies(){
         return $this->belongsToMany('App\Models\Therapy', 'therapist_therapies', 'therapist_id', 'therapy_id')->withPivot('therapy_id', 'therapist_id', 'therapist_grade', 'id', 'isactive');
+    }
+
+    public function clinic(){
+        return $this->belongsTo('App\Models\Clinic','clinic_id');
     }
 
     /**

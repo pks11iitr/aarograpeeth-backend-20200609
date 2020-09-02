@@ -15,11 +15,12 @@ class TherapistController extends Controller
 		 $therapist=Therapy::where(function($therapist) use($request){
                 $therapist->where('name','LIKE','%'.$request->search.'%');
             });
-            
+
             if($request->ordertype)
                 $therapist=$therapist->orderBy('name', $request->ordertype);
-                
-            $therapist=$therapist->paginate(10);		 
+
+            $therapist=$therapist->paginate(10);
+
             return view('admin.therapy.view',['therapist'=>$therapist]);
               }
 

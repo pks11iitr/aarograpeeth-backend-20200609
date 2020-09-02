@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.clinicadmin')
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -67,81 +67,32 @@
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th>@if(!empty($order->details[0]->entity) && $order->details[0]->entity instanceof \App\Models\Therapy) Therapy Details <th></th> @else Product Details @endif </th>
+                                        <th>Therapy Details</th>
+                                        <th></th>
                                         <th></th>
                                         <th></th>
                                         <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if(!empty($order->details[0]->entity) && $order->details[0]->entity instanceof \App\Models\Therapy)
-                                        @foreach($order->details as $detail)
-                                        <tr>
-                                            <td>{{$detail->entity->name??''}}</td>
-                                            <td>Grade {{$detail->grade??''}}</td>
-                                            <td>Sessions: {{$detail->quantity}}</td>
-
-                                            <td>Rs. {{$detail->cost}}/session</td>
-                                            <td>Rs. {{$detail->cost*$detail->quantity}} Total</td>
-                                        </tr>
-                                        @endforeach
-                                    @else
                                         @foreach($order->details as $detail)
                                             <tr>
                                                 <td>{{$detail->entity->name??''}}</td>
-                                                <td>Quantity: {{$detail->quantity}}</td>
-                                                <td>Rs. {{$detail->cost}}/Item</td>
-                                                <td>Rs. {{$detail->cost*$detail->quantity}} Total</td>
+                                                <td>Grade {{$detail->grade??''}}</td>
+                                                <td>Sessions: {{$detail->quantity}}</td>
 
+                                                <td>Rs. {{$detail->cost}}/session</td>
+                                                <td>Rs. {{$detail->cost*$detail->quantity}} Total</td>
                                             </tr>
                                         @endforeach
-                                    @endif
+
                                     </tbody>
                                     <tfoot>
                                     </tfoot>
                                 </table>
                             </div>
-                            <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>Customer Details</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>Name</td>
-                                        <td>{{$order->name}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Mobile</td>
-                                        <td>{{$order->mobile}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Email</td>
-                                        <td>{{$order->email}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Address</td>
-                                        <td>{{$order->adderss}}</td>
-                                    </tr>
-                                    @if(!empty($order->details[0]->entity) && $order->details[0]->entity instanceof \App\Models\Therapy)
-                                        <tr>
-                                            <td>Booking Date</td>
-                                            <td>{{$order->booking_date}}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Booking Time</td>
-                                            <td>{{$order->booking_time}}</td>
-                                        </tr>
-                                    @endif
-                                    </tbody>
-                                    <tfoot>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        <!-- /.card-body -->
+
+                            <!-- /.card-body -->
                             <div class="card-body">
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
@@ -149,27 +100,29 @@
                                         <th>Date Sessions</th>
                                         <th>Time Sessions</th>
                                         <th>Status Sessions</th>
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @if(!empty($order->details[0]->clinic_id) )
 
-                                    @foreach($order->bookingSlots as $bookingSlot)
-                                        <tr>
-                                            <td>{{$bookingSlot->timeslot->date}}</td>
-                                            <td>{{$bookingSlot->timeslot->start_time}}</td>
-                                            <td>{{$bookingSlot->status}}</td>
-                                        </tr>
-                                    @endforeach
+                                        @foreach($order->bookingSlots as $bookingSlot)
+                                            <tr>
+                                                <td>{{$bookingSlot->timeslot->date}}</td>
+                                                <td>{{$bookingSlot->timeslot->start_time}}</td>
+                                                <td>{{$bookingSlot->status}}</td>
+                                                <td><a href="{{route('order.edit',['id'=>$order->id])}}" class="btn btn-success">Edit</a></td>
+                                            </tr>
+                                        @endforeach
 
                                     @else
-                                    @foreach($order->homebookingslots as $homebookingslot)
-                                        <tr>
-                                            <td>{{$homebookingslot->timeslot->date}}</td>
-                                            <td>{{$homebookingslot->timeslot->start_time}}</td>
-                                            <td>{{$homebookingslot->status}}</td>
-                                        </tr>
-                                    @endforeach
+                                        @foreach($order->homebookingslots as $homebookingslot)
+                                            <tr>
+                                                <td>{{$homebookingslot->timeslot->date}}</td>
+                                                <td>{{$homebookingslot->timeslot->start_time}}</td>
+                                                <td>{{$homebookingslot->status}}</td>
+                                            </tr>
+                                        @endforeach
 
                                     @endif
                                     </tbody>
