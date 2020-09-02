@@ -57,7 +57,7 @@ class ReviewController extends Controller
             ->where('status', 'completed')
             ->find($order_id);
 
-        if(!$order || !empty($order->details->toArray()))
+        if(!$order || empty($order->details->toArray()))
             return [
                 'status'=>'failed',
                 'message'=>'No Such Record Found'
