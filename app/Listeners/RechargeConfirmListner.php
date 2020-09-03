@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\RechargeConfirmed;
 use App\Models\Notification;
+use App\Services\Notification\FCMNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -38,6 +39,8 @@ class RechargeConfirmListner
 
             $message='Congratulations! Your wallet recharge of Rs. '.$wallet->amount.' at Arogyapeeth.com is successfull. Order Reference ID: '.$wallet->refid;
 
+            $user=$wallet->customer;
+
         Notification::create([
             'user_id'=>$wallet->user_id,
             'title'=>'Order Confirmed',
@@ -45,5 +48,7 @@ class RechargeConfirmListner
             'data'=>null,
             'type'=>'individual'
         ]);
+
+        FCMNotification::sendNotification($user->notification_token, 'Recharge Confirmed', $message);
     }
 }
