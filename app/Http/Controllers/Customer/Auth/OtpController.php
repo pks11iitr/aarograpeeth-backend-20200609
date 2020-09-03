@@ -110,8 +110,8 @@ class OtpController extends Controller
 
                 return [
                     'status'=>'success',
-                    'message'=>'OTP has been verified successfully. Please reset you password.',
-                    'token'=>''
+                    'message'=>'OTP Has Been Verified',
+                    'token'=>Auth::guard('customerapi')->fromUser($user)
                 ];
             }
 
