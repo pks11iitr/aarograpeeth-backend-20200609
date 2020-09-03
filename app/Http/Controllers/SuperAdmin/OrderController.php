@@ -12,6 +12,9 @@ class OrderController extends Controller
 
 		$orders=Order::with(['details.entity', 'customer', 'details.clinic'])
             ->where('status','!=', 'pending')
+            ->whereHas('details', function($details){
+                $details->where('entity_type', 'App\Models\Therapy');
+            })
             ->where(function($orders) use($request){
                 $orders->where('name','LIKE','%'.$request->search.'%')
                     ->orWhere('mobile','LIKE','%'.$request->search.'%')
@@ -43,7 +46,12 @@ class OrderController extends Controller
     }
      public function product(Request $request){
 
-		$orders=Order::with(['details.entity', 'customer', 'details.clinic'])->where(function($orders) use($request){
+		$orders=Order::with(['details.entity', 'customer', 'details.clinic'])
+            ->where('status','!=', 'pending')
+            ->whereHas('details', function($details){
+                $details->where('entity_type', 'App\Models\Product');
+            })
+            ->where(function($orders) use($request){
                 $orders->where('name','LIKE','%'.$request->search.'%')
                     ->orWhere('mobile','LIKE','%'.$request->search.'%')
                     ->orWhere('email','LIKE','%'.$request->search.'%')
@@ -66,6 +74,7 @@ class OrderController extends Controller
                 $orders=$orders->orderBy('created_at', $request->ordertype);
 
                 $orders=$orders->paginate(10);
+         //var_dump($orders->toArray());die();
         return view('admin.order.product', compact('orders'));
 
     }
