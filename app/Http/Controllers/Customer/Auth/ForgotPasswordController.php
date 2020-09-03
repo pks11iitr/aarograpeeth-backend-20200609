@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class ForgotPasswordController extends Controller
 {
-    public function sendResetOTP(Request $request){
+    public function forgot(Request $request){
 
         $customer=$this->getCustomer($request);
         if(!$customer){
