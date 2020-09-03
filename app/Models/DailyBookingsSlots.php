@@ -8,6 +8,7 @@ class DailyBookingsSlots extends Model
 {
     protected $table='daily_time_slots';
 
+    protected $fillable=['start_time','date','duration','internal_start_time', 'isactive'];
 
     public static function getTimeSlots($therapy,$date){
 
@@ -133,6 +134,119 @@ class DailyBookingsSlots extends Model
 
         return compact('grade_1_slots', 'grade_2_slots', 'grade_3_slots', 'grade_4_slots');
 
+    }
+
+    public static function getRescheduleTimeSlots($therapy,$date,$booking){
+        $timeslots=DailyBookingsSlots::orderBy('internal_start_time', 'asc')
+            ->where('date',$date)
+            ->get();
+
+        $startdate=date('Y-m-d', strtotime($date));
+        for($i=1; $i<=7;$i++){
+            $dates[]=[
+                'text'=>($i==1)?'Today':($i==2?'Tomorrow':date('d F', strtotime($date))),
+                'text2'=>($i==1)?'':($i==2?'':date('D')),
+                'value'=>$date
+            ];
+            $startdate=date('Y-m-d', strtotime('+1 days', strtotime($date, strtotime($startdate))));
+        }
+
+        $grade_1_slots = [
+            'morning' => [],
+            'afternoon' => [],
+            'evening' => [],
+        ];
+        $grade_2_slots = [
+            'morning' => [],
+            'afternoon' => [],
+            'evening' => [],
+        ];
+        $grade_3_slots = [
+            'morning' => [],
+            'afternoon' => [],
+            'evening' => [],
+        ];
+        $grade_4_slots = [
+            'morning' => [],
+            'afternoon' => [],
+            'evening' => [],
+        ];
+
+        foreach($timeslots as $ts){
+            if ($ts->internal_start_time < '12:00:00') {
+                $grade_1_slots['morning'][] = [
+                    'id'=>$ts->id,
+                    'display'=>$ts->start_time,
+                    'is_active'=>1
+                ];
+                $grade_2_slots['morning'][] = [
+                    'id'=>$ts->id,
+                    'display'=>$ts->start_time,
+                    'is_active'=>1
+                ];
+                $grade_3_slots['morning'][] = [
+                    'id'=>$ts->id,
+                    'display'=>$ts->start_time,
+                    'is_active'=>1
+                ];
+                $grade_4_slots['morning'][] = [
+                    'id'=>$ts->id,
+                    'display'=>$ts->start_time,
+                    'is_active'=>1
+                ];
+
+            } else if ($ts->internal_start_time < '17:00:00') {
+                $grade_1_slots['afternoon'][] = [
+                    'id'=>$ts->id,
+                    'display'=>$ts->start_time,
+                    'is_active'=>1
+                ];
+                $grade_2_slots['afternoon'][] = [
+                    'id'=>$ts->id,
+                    'display'=>$ts->start_time,
+                    'is_active'=>1
+                ];
+                $grade_3_slots['afternoon'][] = [
+                    'id'=>$ts->id,
+                    'display'=>$ts->start_time,
+                    'is_active'=>1
+                ];
+                $grade_4_slots['afternoon'][] = [
+                    'id'=>$ts->id,
+                    'display'=>$ts->start_time,
+                    'is_active'=>1
+                ];
+
+            } else {
+                $grade_1_slots['evening'][] = [
+                    'id'=>$ts->id,
+                    'display'=>$ts->start_time,
+                    'is_active'=>1
+                ];
+                $grade_2_slots['evening'][] = [
+                    'id'=>$ts->id,
+                    'display'=>$ts->start_time,
+                    'is_active'=>1
+                ];
+                $grade_3_slots['evening'][] = [
+                    'id'=>$ts->id,
+                    'display'=>$ts->start_time,
+                    'is_active'=>1
+                ];
+                $grade_4_slots['evening'][] = [
+                    'id'=>$ts->id,
+                    'display'=>$ts->start_time,
+                    'is_active'=>1
+                ];
+            }
+        }
+
+        switch($booking->grade){
+            case '1':return $grade_1_slots;
+            case '2':return $grade_2_slots;
+            case '3':return $grade_3_slots;
+            case '4':return $grade_4_slots;
+        }
     }
 
 

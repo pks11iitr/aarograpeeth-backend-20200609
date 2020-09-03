@@ -45,6 +45,7 @@ $api->get('topdeals-products', ['as'=>'product.deals', 'uses'=>'Customer\Api\Pro
 $api->get('bestseller-products', ['as'=>'product.deals', 'uses'=>'Customer\Api\ProductController@bestseller']);
 
 $api->get('reviews/{type}/{id}', ['as'=>'reviews', 'uses'=>'Customer\Api\ReviewController@index']);
+$api->post('reviews/{order_id}/{item_id}', ['as'=>'reviews.post', 'uses'=>'Customer\Api\ReviewController@post']);
 
 $api->get('search', ['as'=>'search', 'uses'=>'Customer\Api\SearchController@index']);
 
@@ -116,6 +117,15 @@ $api->group(['middleware' => ['customer-auth']], function ($api) {
 
     $api->get('cancel-complete-order/{order_id}', ['as'=>'cancel.all.slots', 'uses'=>'Customer\Api\OrderController@cancelAll']);
 
+    $api->get('get-reschedule-slots/{order_id}/{booking_id}', ['as'=>'cancel.all.slots', 'uses'=>'Customer\Api\OrderController@getRescheduleSlots']);
+
+    $api->post('reschedule-booking/{order_id}/{booking_id}', ['as'=>'reschedule.booking', 'uses'=>'Customer\Api\OrderController@rescheduleBooking']);
+
+    $api->post('initiate-reschedule-payment/{order_id}/{booking_id}', ['as'=>'reschedule.payment.initiate', 'uses'=>'Customer\Api\PaymentController@initiateReschedulePayment']);
+
+    $api->post('verify-reschedule-payment', ['as'=>'reschedule.payment.verify', 'uses'=>'Customer\Api\PaymentController@verifyReschedulePayment']);
+
+
 });
 
 
@@ -146,14 +156,15 @@ $api->group(['prefix' => 'therapist'], function ($api) {
         $api->get('my-profile', 'Therapist\Api\ProfileController@myProfile');
         $api->post('update-availability', 'Therapist\Api\ProfileController@updateavalibility');
         $api->get('my-availability', 'Therapist\Api\ProfileController@myapdateavalibility');
-        $api->get('open-booking', 'Therapist\Api\ProfileController@openbooking');
-        $api->get('open-booking-details/{id}', 'Therapist\Api\ProfileController@openbookingdetails');
-        $api->get('journey-started/{id}', 'Therapist\Api\ProfileController@journey_started');
-        $api->get('disease-point', 'Therapist\Api\ProfileController@diseasepoint');
-        $api->get('treatment-list', 'Therapist\Api\ProfileController@treatmentlist');
-        $api->post('send-disease-point/{id}', 'Therapist\Api\ProfileController@send_diesase_point');
-        $api->post('treatment-suggestation/{id}', 'Therapist\Api\ProfileController@treatmentsuggestation');
-        $api->get('painpoint-relif/{id}', 'Therapist\Api\ProfileController@pain_point_relif');
+        $api->get('open-booking', 'Therapist\Api\TherapiestOrderController@openbooking');
+        $api->get('open-booking-details/{id}', 'Therapist\Api\TherapiestOrderController@openbookingdetails');
+        $api->get('journey-started/{id}', 'Therapist\Api\TherapiestOrderController@journey_started');
+        $api->get('disease-point', 'Therapist\Api\TherapiestOrderController@diseasepoint');
+        $api->get('treatment-list', 'Therapist\Api\TherapiestOrderController@treatmentlist');
+        $api->post('send-disease-point/{id}', 'Therapist\Api\TherapiestOrderController@send_diesase_point');
+        $api->post('treatment-suggestation/{id}', 'Therapist\Api\TherapiestOrderController@treatmentsuggestation');
+        $api->get('painpoint-relif/{id}', 'Therapist\Api\TherapiestOrderController@pain_point_relif');
+        $api->post('pain-relief-rating/{id}', 'Therapist\Api\TherapiestOrderController@pain_relief_update_rating');
 
 
     });

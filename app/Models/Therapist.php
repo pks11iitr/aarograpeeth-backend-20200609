@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\BaseModel as Model;
+use App\Models\Traits\Active;
 use App\Models\Traits\DocumentUploadTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Storage;
@@ -10,7 +11,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class Therapist extends Authenticatable implements JWTSubject
 {
-    use DocumentUploadTrait;
+    use DocumentUploadTrait, Active;
 
 	protected $table='therapists';
 

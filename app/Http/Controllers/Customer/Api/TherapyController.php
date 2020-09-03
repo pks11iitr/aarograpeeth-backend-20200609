@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Customer\Api;
 
 use App\Models\Clinic;
 use App\Models\Therapist;
+use App\Models\TherapistLocations;
 use App\Models\Therapy;
 use App\Models\TimeSlot;
 use Illuminate\Http\Request;
@@ -72,6 +73,13 @@ class TherapyController extends Controller
 
         ];
 
+        $prices=[
+            ['grade1_price'=>$therapy->grade1_price],
+            ['grade2_price'=>$therapy->grade2_price],
+            ['grade3_price'=>$therapy->grade3_price],
+            ['grade4_price'=>$therapy->grade4_price]
+        ];
+
         return [
             'status'=>'success',
             'data'=>[
@@ -79,7 +87,8 @@ class TherapyController extends Controller
                 'dates'=>$dates,
                 'timings'=>$timings,
                 'therapist_locations'=>$therapistlocations,
-                'display_text'=>$display_text
+                'display_text'=>$display_text,
+                'prices'=>$prices
             ]
         ];
 
@@ -121,13 +130,33 @@ class TherapyController extends Controller
             $nearby[]=[
                 'lat'=>$t->last_lat,
                 'lang'=>$t->last_lang,
-                'grade'=>$t->therapies[0]->pivot->therapist_grade
+                'grade'=>$t->therapies[0]->pivot->therapist_grade,
+                'lat_lang'=>$t->last_lat.','.$t->last_lang,
             ];
         }
 
+        $distances=TherapistLocations::getTherapistDistancesandTimes($request->lat, $request->lang, $nearby);
+
+        $distances['grade_1']=[
+                'distance'=>$distances['grade_1']['distance']['text']??'',
+                'duration'=>$distances['grade_1']['duration']['text']??''
+            ];
+        $distances['grade_2']=[
+            'distance'=>$distances['grade_2']['distance']['text']??'',
+            'duration'=>$distances['grade_2']['duration']['text']??''
+        ];
+        $distances['grade_3']=[
+            'distance'=>$distances['grade_3']['distance']['text']??'',
+            'duration'=>$distances['grade_3']['duration']['text']??''
+        ];
+        $distances['grade_4']=[
+            'distance'=>$distances['grade_4']['distance']['text']??'',
+            'duration'=>$distances['grade_4']['duration']['text']??''
+        ];
+
         return [
             'status'=>'success',
-            'data'=>compact('nearby', 'activegrades'),
+            'data'=>compact('nearby', 'activegrades', 'distances'),
         ];
 
     }

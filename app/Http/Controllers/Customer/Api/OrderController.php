@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\OrderStatus;
 use App\Models\Product;
+use App\Models\RescheduleRequest;
 use App\Models\Therapy;
 use App\Models\TimeSlot;
 use App\Models\Wallet;
@@ -100,7 +101,7 @@ class OrderController extends Controller
         foreach($cartitems as $item) {
             $total_cost=$total_cost+($item->product->price??0)*$item->quantity;
         }
-
+$refid=env('MACHINE_ID').time();
         $order=Order::create([
             'user_id'=>auth()->guard('customerapi')->user()->id,
             'refid'=>$refid,
@@ -384,8 +385,8 @@ class OrderController extends Controller
                     break;
             }
 
-            $cost=$cost*$request->num_sessions;
-            $order->total_cost=$cost;
+            //$cost=$cost*$request->num_sessions;
+            //$order->total_cost=$cost;
             $order->order_place_state='stage_2';
             $order->save();
 
@@ -435,9 +436,11 @@ class OrderController extends Controller
                     case 4:$cost=$cost+($clinic->therapies[0]->pivot->grade4_price??0);
                         break;
                 }
+
+                //$order->total_cost=$order->total_cost+$cost;
+
             }
 
-            $order->total_cost=$order->total_cost+$cost;
             $order->order_place_state='stage_2';
             $order->save();
 
@@ -482,19 +485,19 @@ class OrderController extends Controller
                 ];
             }
             //var_dump($clinic->toArray());die;
-            switch($request->grade){
-                case 1:$cost=($therapy->grade1_price??0);
-                    break;
-                case 2:$cost=($therapy->grade2_price??0);
-                    break;
-                case 3:$cost=($therapy->grade3_price??0);
-                    break;
-                case 4:$cost=($therapy->grade4_price??0);
-                    break;
-            }
+//            switch($request->grade){
+//                case 1:$cost=($therapy->grade1_price??0);
+//                    break;
+//                case 2:$cost=($therapy->grade2_price??0);
+//                    break;
+//                case 3:$cost=($therapy->grade3_price??0);
+//                    break;
+//                case 4:$cost=($therapy->grade4_price??0);
+//                    break;
+//            }
 
-            $cost=$cost*$request->num_sessions;
-            $order->total_cost=$cost;
+            //$cost=$cost*$request->num_sessions;
+            //$order->total_cost=$cost;
             $order->order_place_state='stage_2';
             $order->save();
 
@@ -532,19 +535,19 @@ class OrderController extends Controller
                     'status'=>'pending',
                 ]);
 
-                switch($request->grade){
-                    case 1:$cost=$cost+($clinic->therapies[0]->pivot->grade1_price??0);
-                        break;
-                    case 2:$cost=$cost+($clinic->therapies[0]->pivot->grade2_price??0);
-                        break;
-                    case 3:$cost=$cost+($clinic->therapies[0]->pivot->grade3_price??0);
-                        break;
-                    case 4:$cost=$cost+($clinic->therapies[0]->pivot->grade4_price??0);
-                        break;
-                }
+//                switch($request->grade){
+//                    case 1:$cost=$cost+($clinic->therapies[0]->pivot->grade1_price??0);
+//                        break;
+//                    case 2:$cost=$cost+($clinic->therapies[0]->pivot->grade2_price??0);
+//                        break;
+//                    case 3:$cost=$cost+($clinic->therapies[0]->pivot->grade3_price??0);
+//                        break;
+//                    case 4:$cost=$cost+($clinic->therapies[0]->pivot->grade4_price??0);
+//                        break;
+//                }
             }
 
-            $order->total_cost=$order->total_cost+$cost;
+            //$order->total_cost=$order->total_cost+$cost;
             $order->order_place_state='stage_2';
             $order->save();
 
@@ -584,7 +587,7 @@ class OrderController extends Controller
                 'message'=>'Invalid Operation'
             ];
 
-        if($order->details[0]->entity_type!='App\Models\Therapy' || $order->is_instant==1)
+        if($order->details[0]->entity_type!='App\Models\Therapy')
             return [
                 'status'=>'failed',
                 'message'=>'Invalid Operation'
@@ -624,12 +627,12 @@ class OrderController extends Controller
             //die('dd');
             $schedules[]=[
                 'show_delete'=>1,
-                'date'=>$schedule->timeslot->date,
-                'time'=>'1 Session at '.$schedule->timeslot->start_time,
+                'date'=>$schedule->timeslot->date??$schedule->date,
+                'time'=>'1 Session at '.($schedule->timeslot->start_time??'Instant Booking'),
                 'grade'=>$grade,
                 'id'=>$schedule->id,
-                'show_cancel'=>1,
-                'show_reschedule'=>1
+                'show_cancel'=>in_array($order->status,['confirmed'])?1:0,
+                'show_reschedule'=>in_array($order->status,['confirmed'])?1:0
             ];
         }
 
@@ -772,12 +775,17 @@ class OrderController extends Controller
             ];
         $order=Order::with(['details.entity', 'details.clinic'])->where('user_id', $user->id)->find($id);
 
+
         if(!$order)
             return [
                 'status'=>'failed',
                 'message'=>'Invalid Operation Performed'
             ];
 
+        if($order->status=='pending') {
+            $order->total_cost = Order::getTotal($order);
+            $order->save();
+        }
 
         $itemdetails=[];
         foreach($order->details as $detail){
@@ -793,7 +801,8 @@ class OrderController extends Controller
                     'quantity'=>$detail->quantity,
                     'image'=>$detail->entity->image??'',
                     'booking_date'=>$order->booking_date,
-                    'booking_time'=>$order->booking_time
+                    'booking_time'=>$order->booking_time,
+                    'show_review'=>0
                 ];
 
 
@@ -807,7 +816,8 @@ class OrderController extends Controller
                     'quantity'=>$detail->quantity,
                     'image'=>$detail->entity->image??'',
                     'booking_date'=>$order->booking_date,
-                    'booking_time'=>$order->booking_time
+                    'booking_time'=>$order->booking_time,
+                    'show_review'=>$order->status=='completed'?1:0
                 ];
             }
         }
@@ -1126,6 +1136,281 @@ class OrderController extends Controller
             'status'=>'success',
             'data'=>compact('timeslots','dates', 'selected_date', 'order_id')
         ];
+
+    }
+
+
+    /*
+     * Reschedule Functionality
+     */
+    public function getRescheduleSlots(Request $request, $order_id, $booking_id){
+
+        $date=$request->date??date('Y-m-d');
+        $selected_date=$date;
+        $today=date('Y-m-d');
+
+        $user=$request->user;
+
+        $order=Order::with('details.clinic', 'details.entity')
+            ->where('status', 'confirmed')
+            ->where('user_id', $user->id)
+            ->find($order_id);
+        if(!$order)
+            return [
+                'status'=>'failed',
+                'message'=>'No Such Record Found'
+            ];
+
+        if($order->details[0]->entity_type!='App\Models\Therapy')
+            return [
+                'status'=>'failed',
+                'message'=>'Unrecognized Request'
+            ];
+
+        if($order->details[0]->clinic_id){
+            $booking=BookingSlot::find($booking_id);
+        }else{
+            $booking=HomeBookingSlots::find($booking_id);
+        }
+        if(!$booking)
+            return [
+                'status'=>'failed',
+                'message'=>'No Such Record Found'
+            ];
+
+        if($order->details[0]->clinic_id){
+            $availableslots=TimeSlot::getRescheduleTimeSlots($order->details[0]->clinic, $date, $booking);
+        }else{
+            $availableslots=DailyBookingsSlots::getRescheduleTimeSlots($order->details[0]->entity, $date,$booking);
+        }
+
+        $timeslots=[
+            $availableslots
+        ];
+
+        for($i=1; $i<=7;$i++){
+            $dates[]=[
+                'text'=>($i==1)?'Today':($i==2?'Tomorrow':date('d F', strtotime($today))),
+                'text2'=>($i==1)?'':($i==2?'':date('D', strtotime($today))),
+                'value'=>$today,
+            ];
+            $today=date('Y-m-d', strtotime('+1 days', strtotime($today)));
+        }
+
+        $order_id=$order->id;
+        return [
+            'status'=>'success',
+            'data'=>compact('timeslots','dates', 'selected_date', 'order_id', 'booking_id')
+        ];
+
+    }
+
+
+    public function rescheduleBooking(Request $request, $order_id, $booking_id){
+
+        $request->validate([
+            'slot_id'=>'required|integer'
+        ]);
+
+        $user=$request->user;
+
+        $order=Order::with('details')
+            ->where('status', 'confirmed')
+            ->where('user_id', $user->id)
+            ->find($order_id);
+        if(!$order)
+            return [
+                'status'=>'failed',
+                'message'=>'No Such Record Found'
+            ];
+
+        if($order->details[0]->entity_type!='App\Models\Therapy')
+            return [
+                'status'=>'failed',
+                'message'=>'Unrecognized Request'
+            ];
+
+        if($order->is_instant){
+            return $this->rescheduleHomeTherapyBooking($request, $order,$booking_id,$user);
+        }else{
+            if($order->details[0]->clinic_id){
+                return $this->rescheduleClinicTherapyBooking($request, $order,$booking_id,$user);
+            }else{
+                return $this->rescheduleHomeTherapyBooking($request, $order,$booking_id,$user);
+            }
+        }
+    }
+
+
+    private function rescheduleHomeTherapyBooking(Request $request,$order, $booking_id, $user){
+        $slot=DailyBookingsSlots::find($request->slot_id);
+        if(!$slot)
+            return [
+                'status'=>'failed',
+                'message'=>'Invalid Request'
+            ];
+
+        $booking=HomeBookingSlots::with('timeslot')->where('status', 'confirmed')
+               ->where('order_id', $order->id)
+               ->find($booking_id);
+           if(!$booking)
+               return [
+                   'status'=>'failed',
+                   'message'=>'Booking Cannot Be Rescheduled'
+               ];
+
+           if($booking->is_instant){
+               if($booking->date > date('Y-m-d')){
+
+                   RescheduleRequest::where('order_id', $order->id)
+                       ->where('is_paid', 0)->delete();
+
+                   RescheduleRequest::create([
+                       'refid'=>env('MACHINE_ID').time(),
+                       'order_id'=>$order->id,
+                       'booking_id'=>$booking_id,
+                       'new_slot_id'=>$request->slot_id,
+                       'total_cost'=>200
+                   ]);
+
+                   return [
+                       'status'=>'success',
+                       'data'=>[
+                           'payment_status'=>'no',
+                           'header'=>'Payment For Booking Reschedule',
+                           'old_time'=>$booking->date.' Instant Booking',
+                           'new_time'=>$slot->date.' '.$slot->start_time,
+                           'amount'=>'20% deduction',
+                           'wallet_balance'=>Wallet::balance($user->id)
+                       ]
+                   ];
+               }else{
+
+                   $booking->slot_id=$slot->id;
+                   $booking->is_instant=0;
+                   $booking->save();
+
+                   $order->is_instant=0;
+                   $order->save();
+
+                   return [
+                       'status'=>'success',
+                       'date'=>[
+                           'payment_status'=>'yes',
+                           'header'=>'Booking Reschedule Successfull',
+                           'old_time'=>'',
+                           'new_time'=>'',
+                           'amount'=>''
+                       ]
+                   ];
+               }
+           }else{
+               if(date('Y-m-d H:i:s', strtotime('+2 hours')) > $booking->timeslot->date.' '.$booking->internal_start_time){
+
+                   RescheduleRequest::where('order_id', $order->id)
+                       ->where('is_paid', 0)->delete();
+
+                   RescheduleRequest::create([
+                       'refid'=>env('MACHINE_ID').time(),
+                       'order_id'=>$order->id,
+                       'booking_id'=>$booking_id,
+                       'old_slot_id'=>$booking->slot_id,
+                       'new_slot_id'=>$request->slot_id,
+                       'total_cost'=>200
+                   ]);
+
+                   return [
+                       'status'=>'success',
+                       'data'=>[
+                           'payment_status'=>'no',
+                           'header'=>'Payment For Booking Reschedule',
+                           'old_time'=>$booking->timeslot->date.' '.$booking->timeslot->start_time,
+                           'new_time'=>$slot->date.' '.$slot->start_time,
+                           'amount'=>'20% deduction',
+                           'wallet_balance'=>Wallet::balance($user->id)
+                       ]
+                   ];
+               }else{
+
+                   $booking->slot_id=$slot->id;
+                   $booking->save();
+
+                   return [
+                       'status'=>'success',
+                       'date'=>[
+                           'payment_status'=>'yes',
+                           'header'=>'Booking Reschedule Successfull',
+                           'old_time'=>'',
+                           'new_time'=>'',
+                           'amount'=>''
+                       ]
+                   ];
+               }
+           }
+
+    }
+
+    private function rescheduleClinicTherapyBooking(Request $request,$order, $booking_id, $user){
+        $slot=TimeSlot::find($request->slot_id);
+        if(!$slot)
+            return [
+                'status'=>'failed',
+                'message'=>'Invalid Request'
+            ];
+
+        $booking=BookingSlot::with('timeslot')->where('status', 'confirmed')
+            ->where('order_id', $order->id)
+            ->find($booking_id);
+
+        if(!$booking)
+            return [
+                'status'=>'failed',
+                'message'=>'Booking Cannot Be Rescheduled'
+            ];
+
+        if(date('Y-m-d H:i:s', strtotime('+2 hours')) > $booking->timeslot->date.' '.$booking->internal_start_time){
+
+            RescheduleRequest::where('order_id', $order->id)
+                ->where('is_paid', 0)->delete();
+
+            RescheduleRequest::create([
+                'refid'=>env('MACHINE_ID').time(),
+                'order_id'=>$order->id,
+                'booking_id'=>$booking_id,
+                'old_slot_id'=>$booking->slot_id,
+                'new_slot_id'=>$request->slot_id,
+                'total_cost'=>200
+            ]);
+
+            return [
+                'status'=>'success',
+                'data'=>[
+                    'payment_status'=>'no',
+                    'header'=>'Payment For Booking Reschedule',
+                    'old_time'=>$booking->timeslot->date.' '.$booking->timeslot->start_time,
+                    'new_time'=>$slot->date.' '.$slot->start_time,
+                    'amount'=>'20% deduction',
+                    'wallet_balance'=>Wallet::balance($user->id)
+                ]
+            ];
+        }else{
+
+            $booking->slot_id=$slot->id;
+            $booking->save();
+
+            return [
+                'status'=>'success',
+                'date'=>[
+                    'date'=>[
+                        'payment_status'=>'yes',
+                        'header'=>'Booking Reschedule Successfull',
+                        'old_time'=>'',
+                        'new_time'=>'',
+                        'amount'=>''
+                    ]
+                ]
+            ];
+        }
 
     }
 

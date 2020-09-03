@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\SuperAdmin;
 
-use App\Models\BookingSlot;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,7 +10,9 @@ class OrderController extends Controller
 {
     public function index(Request $request){
 
-		$orders=Order::with(['details.entity', 'customer', 'details.clinic'])->where(function($orders) use($request){
+		$orders=Order::with(['details.entity', 'customer', 'details.clinic'])
+            ->where('status','!=', 'pending')
+            ->where(function($orders) use($request){
                 $orders->where('name','LIKE','%'.$request->search.'%')
                     ->orWhere('mobile','LIKE','%'.$request->search.'%')
                     ->orWhere('email','LIKE','%'.$request->search.'%')
@@ -70,12 +71,7 @@ class OrderController extends Controller
     }
 
     public function details(Request $request, $id){
-        $order=Order::with(['details.entity', 'customer','bookingSlots','homebookingslots'])
-            ->where('status', '!=', 'pending')
-            ->find($id);
-        //var_dump($id);
-        //var_dump($order->toArray());die();
-
+        $order=Order::with(['details.entity', 'customer'])->where('status', '!=', 'pending')->find($id);
         return view('admin.order.details', compact('order'));
     }
 
