@@ -43,7 +43,7 @@ class RechargeConfirmListner
 
         Notification::create([
             'user_id'=>$wallet->user_id,
-            'title'=>'Order Confirmed',
+            'title'=>'Recharge Confirmed',
             'description'=>$message,
             'data'=>null,
             'type'=>'individual'
