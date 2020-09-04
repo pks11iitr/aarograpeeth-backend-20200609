@@ -28,48 +28,48 @@
                             <div class="card-header">
                       <div class="row">
                           <div class="col-12">
-							   
+
         <form class="form-validate form-horizontal"  method="get" action="" enctype="multipart/form-data">
-                    
+
                      <div class="row">
-					      <div class="col-4"> 
+					      <div class="col-4">
                            <input  id="fullname"  class="form-control" name="search" placeholder=" search name" value="{{request('search')}}"  type="text" />
                            </div>
 					  <div class="col-4">
-						  
+
 						  <select id="status" name="status" class="form-control" >
-							  
+
                               <option value="" {{ request('status')==''?'selected':''}}>Please select</option>
                              <option value="pending" {{ request('status')=='pending'?'selected':''}}>pending</option>
                              <option value="confirmed" {{ request('status')==='confirmed'?'selected':''}}>confirmed</option>
                              <option value="cancelled" {{ request('status')=='cancelled'?'selected':''}}>cancelled</option>
                           </select>
-						  
+
                       </div>
                       <div class="col-4">
                           <select id="payment_status" name="payment_status" class="form-control" >
-                          
+
 							 <option value="" {{ request('payment_status')==''?'selected':''}}>Please Select</option>
 							 <option value="paid" {{ request('payment_status')=='paid'?'selected':''}}>paid</option>
                              <option value="payment-wait" {{ request('payment_status')==='payment-wait'?'selected':''}}>payment-wait</option>
-          
-                          </select>  
-							 
+
+                          </select>
+
                       </div><br><br>
-                      <div class="col-4"> 
+                      <div class="col-4">
                            <input  id="fullname"  class="form-control" name="fromdate" placeholder=" search name" value="{{request('fromdate')}}"  type="date" />
                            </div>
-                           <div class="col-4"> 
+                           <div class="col-4">
                            <input  id="fullname"  class="form-control" name="todate" placeholder=" search name" value="{{request('todate')}}"  type="date" />
                            </div>
-                    <div class="col-4"> 
+                    <div class="col-4">
                        <button type="submit" name="save" class="btn btn-primary">Submit</button>
-                     </div>                            
-                  </div>                            
+                     </div>
+                  </div>
               </form>
-         </div> 
+         </div>
 
-     </div>              
+     </div>
               </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -89,7 +89,6 @@
                                     </thead>
                                     <tbody>
                                     @foreach($orders as $order)
-                                     @if(!empty($order->details[0]->entity) && $order->details[0]->entity instanceof \App\Models\Therapy)
                                         <tr>
                                             <td>{{$order->refid}}</td>
                                             <td>{{$order->customer->name??''}} <br>Mob: {{$order->customer->mobile??''}}</td>
@@ -108,7 +107,6 @@
                                             <td><a href="{{route('order.view',['id'=>$order->id])}}" class="btn btn-success">View</a>
                                             </td>
                                         </tr>
-                                        @endif
                                     @endforeach
                                     </tbody>
                                     <tfoot>
