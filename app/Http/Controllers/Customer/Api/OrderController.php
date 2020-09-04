@@ -787,6 +787,17 @@ $refid=env('MACHINE_ID').time();
             $order->save();
         }
 
+
+        //get reviews information
+        $reviews=[];
+        if($order->status=='completed'){
+            $reviews=$order->reviews;
+            foreach($reviews as $review){
+                $reviews[$review->entity_id]=$review;
+            }
+        }
+
+
         $itemdetails=[];
         foreach($order->details as $detail){
             if($detail->entity instanceof Therapy){
@@ -802,11 +813,9 @@ $refid=env('MACHINE_ID').time();
                     'image'=>$detail->entity->image??'',
                     'booking_date'=>$order->booking_date,
                     'booking_time'=>$order->booking_time,
+                    'item_id'=>$detail->entity_id,
                     'show_review'=>0
                 ];
-
-
-
             }
             else{
                 $itemdetails[]=[
@@ -817,7 +826,8 @@ $refid=env('MACHINE_ID').time();
                     'image'=>$detail->entity->image??'',
                     'booking_date'=>$order->booking_date,
                     'booking_time'=>$order->booking_time,
-                    'show_review'=>$order->status=='completed'?1:0
+                    'item_id'=>$detail->entity_id,
+                    'show_review'=>isset($reviews[$detail->entity_id])?0:1
                 ];
             }
         }

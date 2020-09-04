@@ -100,5 +100,9 @@ class Order extends Model
 
     }
 
+    public function reviews(){
+        return $this->hasMany('App\Models\Review', 'order_id');
+    }
+
 
 }
