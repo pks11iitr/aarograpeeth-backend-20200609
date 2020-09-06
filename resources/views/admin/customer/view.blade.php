@@ -74,7 +74,7 @@
                     <th>Name</th>
                     <th>Mobile</th>
                     <th>Email</th>
-                    <th>DOB</th>
+{{--                    <th>DOB</th>--}}
                   <!--  <th>Address</th>
                     <th>City</th>
                     <th>State</th>-->
@@ -89,7 +89,7 @@
 					  <td>{{$customer->name}}</td>
 					  <td>{{$customer->mobile}}</td>
 					  <td>{{$customer->email}}</td>
-					  <td>{{$customer->dob}}</td>
+{{--					  <td>{{$customer->dob}}</td>--}}
 					 <!-- <td>{{$customer->address}}</td>
 					  <td>{{$customer->city}}</td>
 					  <td>{{$customer->state}}</td>-->
@@ -99,7 +99,7 @@
                              @elseif($customer->status==2){{'Blocked'}}@else{{'Inactive'}}
                              @endif
                         </td>
-                      <td><a href="{{route('customer.edit',['id'=>$customer->id])}}" class="btn btn-success">Edit</a></br></br>
+                      <td><a href="{{route('customer.edit',['id'=>$customer->id])}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;
                       <a href="{{route('customer.edit',['id'=>$customer->id])}}" class="open-AddBookDialog btn btn-success" data-toggle="modal" data-target="#exampleModal" data-id="{{$customer->id}}">Notification</a></td>
                  </tr>
                  @endforeach
@@ -109,7 +109,7 @@
                     <th>Name</th>
                     <th>Mobile</th>
                     <th>Email</th>
-                    <th>DOB</th>
+{{--                    <th>DOB</th>--}}
                    <!-- <th>Address</th>
                     <th>City</th>
                     <th>State</th>-->
