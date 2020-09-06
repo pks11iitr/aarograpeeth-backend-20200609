@@ -89,7 +89,6 @@
                                     </thead>
                                     <tbody>
                                     @foreach($orders as $order)
-                                     @if(!empty($order->details[0]->entity) && $order->details[0]->entity instanceof \App\Models\Therapy)
                                         <tr>
                                             <td>{{$order->refid}}</td>
                                             <td>{{$order->customer->name??''}} <br>Mob: {{$order->customer->mobile??''}}</td>
@@ -108,7 +107,6 @@
                                             <td><a href="{{route('order.view',['id'=>$order->id])}}" class="btn btn-success">View</a>
                                             </td>
                                         </tr>
-                                        @endif
                                     @endforeach
                                     </tbody>
                                     <tfoot>

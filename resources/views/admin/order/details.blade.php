@@ -141,6 +141,7 @@
                                     </tfoot>
                                 </table>
                             </div>
+                            @if($order->details[0]->entity_type=='App\Models\Therapy')
                         <!-- /.card-body -->
                             <div class="card-body">
                                 <table id="example2" class="table table-bordered table-hover">
@@ -156,8 +157,8 @@
 
                                     @foreach($order->bookingSlots as $bookingSlot)
                                         <tr>
-                                            <td>{{$bookingSlot->timeslot->date}}</td>
-                                            <td>{{$bookingSlot->timeslot->start_time}}</td>
+                                            <td>{{$bookingSlot->timeslot->date??''}}</td>
+                                            <td>{{$bookingSlot->timeslot->start_time??''}}</td>
                                             <td>{{$bookingSlot->status}}</td>
                                         </tr>
                                     @endforeach
@@ -165,8 +166,8 @@
                                     @else
                                     @foreach($order->homebookingslots as $homebookingslot)
                                         <tr>
-                                            <td>{{$homebookingslot->timeslot->date}}</td>
-                                            <td>{{$homebookingslot->timeslot->start_time}}</td>
+                                            <td>{{$homebookingslot->timeslot->date??''}}</td>
+                                            <td>{{$homebookingslot->timeslot->start_time??''}}</td>
                                             <td>{{$homebookingslot->status}}</td>
                                         </tr>
                                     @endforeach
@@ -177,7 +178,7 @@
                                     </tfoot>
                                 </table>
                             </div>
-
+                            @endif
                             <!-- /.card -->
                         </div>
                         <!-- /.card -->
