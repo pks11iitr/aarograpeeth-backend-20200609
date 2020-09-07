@@ -633,7 +633,7 @@ $refid=env('MACHINE_ID').time();
                 'id'=>$schedule->id,
                 'show_cancel'=>in_array($order->status,['confirmed'])?1:0,
                 'show_reschedule'=>in_array($order->status,['confirmed'])?1:0,
-                'show_review'=>count($schedule->review)?1:0
+                'show_review'=>count($schedule->review)?0:1
             ];
         }
 
