@@ -103,7 +103,7 @@ class BookingSlot extends Model
     }
 
     public function review(){
-        return $this->hasOne('App\Models\Review', 'session_id')->where('reviews.order_id', $this->order_id);
+        return $this->hasOne('App\Models\Review', 'session_id')->where('reviews.entity_type', 'App\Models\User');
     }
 
 }
