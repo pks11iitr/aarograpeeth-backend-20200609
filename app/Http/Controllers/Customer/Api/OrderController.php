@@ -596,12 +596,12 @@ $refid=env('MACHINE_ID').time();
         $therapy_id=$order->details[0]->entity_id;
 
         if($order->details[0]->clinic_id){
-            $bookings=BookingSlot::with('timeslot')
+            $bookings=BookingSlot::with(['timeslot', 'review'])
                 ->where('order_id', $order->id)
                 ->orderBy('slot_id', 'asc')
                 ->get();
         }else{
-            $bookings=HomeBookingSlots::with('timeslot')
+            $bookings=HomeBookingSlots::with(['timeslot', 'review'])
                 ->where('order_id',$order->id)
                 ->orderBy('slot_id', 'asc')
                 ->get();
@@ -632,7 +632,8 @@ $refid=env('MACHINE_ID').time();
                 'grade'=>$grade,
                 'id'=>$schedule->id,
                 'show_cancel'=>in_array($order->status,['confirmed'])?1:0,
-                'show_reschedule'=>in_array($order->status,['confirmed'])?1:0
+                'show_reschedule'=>in_array($order->status,['confirmed'])?1:0,
+                'show_review'=>count($schedule->review)?1:0
             ];
         }
 
