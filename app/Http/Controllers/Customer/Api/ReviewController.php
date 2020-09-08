@@ -78,6 +78,18 @@ class ReviewController extends Controller
                 'description'=>$request->review
             ]);
 
+            if($order->details[0]->clinic){
+                Review::create([
+                    'user_id'=>$user->id,
+                    'order_id'=>$order->id,
+                    'entity_type'=>'App\Models\Clinic',
+                    'entity_id'=>$order->details[0]->clinic_id,
+                    'rating'=>$request->clinic_rating,
+                    'description'=>$request->clinic_review
+                ]);
+            }
+
+
             return [
                 'status'=>'success',
                 'message'=>'Your Review Has Been Submitted'

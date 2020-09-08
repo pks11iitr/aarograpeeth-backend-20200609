@@ -792,7 +792,7 @@ $refid=env('MACHINE_ID').time();
         //get reviews information
         $reviews=[];
         if($order->status=='completed'){
-            $reviews=$order->reviews;
+            $reviews=$order->reviews->where('session_id', null)->get();
             foreach($reviews as $review){
                 $reviews[$review->entity_id]=$review;
             }
@@ -815,7 +815,8 @@ $refid=env('MACHINE_ID').time();
                     'booking_date'=>$order->booking_date,
                     'booking_time'=>$order->booking_time,
                     'item_id'=>$detail->entity_id,
-                    'show_review'=>0
+                    'show_review'=>empty($order->details[0]->clinic_id)?(isset($reviews[$detail->entity_id])?0:1):0,
+                    'show_clinic_review'=>!empty($order->details[0]->clinic_id)?(isset($reviews[$detail->entity_id])?0:1):0
                 ];
             }
             else{
@@ -828,7 +829,8 @@ $refid=env('MACHINE_ID').time();
                     'booking_date'=>$order->booking_date,
                     'booking_time'=>$order->booking_time,
                     'item_id'=>$detail->entity_id,
-                    'show_review'=>isset($reviews[$detail->entity_id])?0:1
+                    'show_review'=>isset($reviews[$detail->entity_id])?0:1,
+                    'show_clinic_review'=>0
                 ];
             }
         }
