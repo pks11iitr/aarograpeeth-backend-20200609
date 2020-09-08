@@ -792,7 +792,7 @@ $refid=env('MACHINE_ID').time();
         //get reviews information
         $reviews=[];
         if($order->status=='completed'){
-            $reviews=$order->reviews->where('session_id', null)->get();
+            $reviews=$order->reviews()->where('session_id', null)->get();
             foreach($reviews as $review){
                 $reviews[$review->entity_id]=$review;
             }
