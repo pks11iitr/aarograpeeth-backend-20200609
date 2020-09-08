@@ -20,6 +20,7 @@ $api->post('register', 'Customer\Auth\RegisterController@register');
 $api->post('forgot', 'Customer\Auth\ForgotPasswordController@forgot');
 $api->post('verify-otp', 'Customer\Auth\OtpController@verify');
 $api->post('resend-otp', 'Customer\Auth\OtpController@resend');
+$api->post('update-password', 'Customer\Auth\ForgotPasswordController@updatePassword');
 
 //home page api
 $api->get('home', 'Customer\Api\HomeController@home');

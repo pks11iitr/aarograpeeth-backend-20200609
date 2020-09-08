@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\RescheduleConfirmed;
 use App\Models\Notification;
+use App\Services\Notification\FCMNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -30,12 +31,16 @@ class RescheduleConfirmListner
         $order=$event->order;
         $user=$event->user;
 
+        $message='Your Booking Reschedule Request Has Been Approved';
+
         Notification::create([
             'user_id'=>$user->id,
             'title'=>'Reschedule Confirmed',
-            'description'=>'Your Booking Reschedule Request Has Been Approved',
+            'description'=>$message,
             'data'=>null,
             'type'=>'individual'
         ]);
+
+        FCMNotification::sendNotification($user->notification_token, 'Reschedule Confirmed', $message);
     }
 }

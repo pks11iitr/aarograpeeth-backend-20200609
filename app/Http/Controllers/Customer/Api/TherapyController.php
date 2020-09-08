@@ -126,13 +126,15 @@ class TherapyController extends Controller
         ];
 
         foreach($therapist as $t){
-            $activegrades['grade'.$t->therapies[0]->pivot->therapist_grade]='yes';
-            $nearby[]=[
-                'lat'=>$t->last_lat,
-                'lang'=>$t->last_lang,
-                'grade'=>$t->therapies[0]->pivot->therapist_grade,
-                'lat_lang'=>$t->last_lat.','.$t->last_lang,
-            ];
+            if(rand(0,1)){
+                $activegrades['grade'.$t->therapies[0]->pivot->therapist_grade]='yes';
+                $nearby[]=[
+                    'lat'=>$t->last_lat,
+                    'lang'=>$t->last_lang,
+                    'grade'=>$t->therapies[0]->pivot->therapist_grade,
+                    'lat_lang'=>$t->last_lat.','.$t->last_lang,
+                ];
+            }
         }
 
         $distances=TherapistLocations::getTherapistDistancesandTimes($request->lat, $request->lang, $nearby);
