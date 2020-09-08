@@ -97,6 +97,123 @@
                 <!-- /.row -->
             </div><!-- /.container-fluid -->
         </section>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- left column -->
+                    <div class="col-md-12">
+                        <!-- general form elements -->
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Add Therapy</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form role="form" method="post" enctype="multipart/form-data" action="{{route('therapists.therapystore',['id'=>$therapist->id])}}">
+                                @csrf
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Therapy Name</label>
+                                                <select name="therapy_id" class="form-control" id="exampleInputistop" placeholder="">
+                                                    <option value="">Please Select Therapy</option>
+                                                    @foreach($therapys as $therapy)
+                                                        <option value="{{$therapy->id}}">{{$therapy->name}} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Therapist Grade</label>
+                                                <select name="therapist_grade" class="form-control" id="exampleInputistop" placeholder="">
+                                                    <option value="">Please Select Grade</option>
+                                                    <option value="1">Grade 1</option>
+                                                    <option value="2">Grade 2</option>
+                                                    <option value="3">Grade 3</option>
+                                                    <option value="4">Grade 4</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Is Active</label>
+                                                <select name="isactive" class="form-control" id="exampleInputistop" placeholder="">
+                                                    <option value="">Please Select</option>
+                                                    <option value="Applied">Applied</option>
+                                                    <option value="Approved">Approved</option>
+                                                    <option value="Rejected">Rejected</option>
+                                                    <option value="Revoked">Revoked</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!--/.col (right) -->
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!--**********************************************************************************************************************-->
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Therapies</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Threapy Name</th>
+                                        <th>Grade </th>
+                                        <th>Isactive</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($therapistherapys as $therapistherapy)
+                                        <tr>
+                                            <td>{{$therapistherapy->therapy->name??''}}</td>
+                                            <td>{{$therapistherapy->therapist_grade??''}}</td>
+                                            <td>{{$therapistherapy->isactive??''}}</td>
+                                            <td><a href="{{route('therapists.therapyedit',['id'=>$therapistherapy->id??''])}}" class="btn btn-success">Edit</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        {{$therapistherapys->links()}}
+                        <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!--****************************************************************************************************************-->
         <!-- /.content -->
     </div>
     <!-- ./wrapper -->

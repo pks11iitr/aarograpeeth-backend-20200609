@@ -111,34 +111,48 @@
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
                     <li class="nav-item has-treeview menu-open">
-                        <a href="{{route('clinic.home')}}" class="nav-link active">
+                        <a href="{{--{{route('clinic.home')}}--}}" class="nav-link active">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
                                 Dashboard
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
-                    <!--**************************************************************************************************-->
+                        <!--**************************************************************************************************-->
 
                     <li class="nav-item">
-                        <a href="{{route('order.list')}}" class="nav-link">
+                        <a href="{{--{{route('order.list')}}--}}" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
-                                Orders
+                                Therapist
                             </p>
                         </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{route('therapistwork.list')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Therapist Work</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('therapistwork.past')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>PastTherapist Work</p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
 
-                    <li class="nav-item">
+                    {{--<li class="nav-item">
                         <a href="{{route('therapistadmin.list')}}" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
                                 Therapist
                             </p>
                         </a>
-                    </li>
+                    </li>--}}
 
- <!--********************************************************************************************************-->
+                    <!--********************************************************************************************************-->
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->

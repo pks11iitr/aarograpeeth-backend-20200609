@@ -32,18 +32,9 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form role="form" method="post" enctype="multipart/form-data" action="{{route('therapist.store')}}">
+                            <form role="form" method="post" enctype="multipart/form-data" action="{{route('therapistadmin.store')}}">
                                 @csrf
                                 <div class="card-body">
-                                    <div class="form-group">
-                                        <label for="exampleInputtitle">Clinic Name</label>
-                                        <select name="clinic_id" class="form-control" id="exampleInputistop" placeholder="">
-                                            <option value="">Select Clinic Name</option>
-                                            @foreach($clinic as $c)
-                                                <option value="{{$c->id}}">{{$c->name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Name</label>
                                         <input type="text" name="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name">
@@ -61,36 +52,13 @@
                                         <input type="text" name="password" class="form-control" id="exampleInputEmail1" placeholder="Enter password">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Address</label>
-                                        <input type="text" name="address" class="form-control" id="exampleInputEmail1" placeholder="Enter address">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">City</label>
-                                        <input type="text"name="city" class="form-control" id="exampleInputEmail1" placeholder="Enter city">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">State</label>
-                                        <input type="text"name="state" class="form-control" id="exampleInputEmail1" placeholder="Enter state">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Is Active</label>
-                                        <select class="form-control" name="isactive" required>
+                                        <label>Status</label>
+                                        <select class="form-control" name="status" required>
                                             <option value="1">Yes</option>
                                             <option value="0">No</option>
                                         </select>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputFile">File input</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" name="image" class="custom-file-input" id="exampleInputFile" accept="image/*" required>
-                                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                            </div>
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="">Upload</span>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">

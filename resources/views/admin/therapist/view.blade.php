@@ -39,6 +39,7 @@
                                                 </div>
                                                 <div class="col-4">
                                                     <select id="ordertype" name="ordertype" class="form-control" >
+                                                        <option value="" {{ request('ordertype')==''?'selected':''}}>Please Select</option>
                                                         <option value="DESC" {{ request('ordertype')=='DESC'?'selected':''}}>DESC</option>
                                                         <option value="ASC" {{ request('ordertype')=='ASC'?'selected':''}}>ASC</option>
                                                     </select>
@@ -90,7 +91,7 @@
 
                                 </table>
                             </div>
-                       {{-- {{$therapist->links()}}--}}
+                       {{-- {{$therapistadmin->links()}}--}}
                         <!-- /.card-body -->
                         </div>
                         <!-- /.card -->

@@ -29,26 +29,27 @@
 			 <div class="row">
 			  <div class="col-3">
                 <a href="{{route('product.create')}}" class="btn btn-primary">Add Product</a></div>
-                
+
             <div class="col-9">
 		 <form class="form-validate form-horizontal"  method="get" action="" enctype="multipart/form-data">
-                
+
                      <div class="row">
-					      <div class="col-4"> 
+					      <div class="col-4">
                            <input  id="fullname" onfocus="this.value=''" class="form-control" name="search" placeholder=" search name" value="{{request('search')}}"  type="text" />
                            </div>
 					  <div class="col-4">
                           <select id="ordertype" name="ordertype" class="form-control" >
+                              <option value="" {{ request('ordertype')==''?'selected':''}}>Please Select</option>
                              <option value="DESC" {{ request('ordertype')=='DESC'?'selected':''}}>DESC</option>
                               <option value="ASC" {{ request('ordertype')=='ASC'?'selected':''}}>ASC</option>
                           </select>
                       </div>
-                    <div class="col-4"> 
+                    <div class="col-4">
                        <button type="submit" name="save" class="btn btn-primary">Submit</button>
-                     </div>                            
-                  </div>                            
+                     </div>
+                  </div>
               </form>
-         </div> 
+         </div>
 
      </div>
   </div>

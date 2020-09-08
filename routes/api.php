@@ -36,7 +36,7 @@ $api->get('clinic-therapy/{clinicid}/{therapyid}', ['as'=>'clinics.therapy.detai
 
 //therapy screen api
 $api->get('therapy/{id}', ['as'=>'therapy.details', 'uses'=>'Customer\Api\TherapyController@details']);
-$api->post('nearby-therapists', ['as'=>'therapy.nearby.therapist', 'uses'=>'Customer\Api\TherapyController@nearbyTherapists']);
+$api->post('nearby-therapists', ['as'=>'therapy.nearby.therapistadmin', 'uses'=>'Customer\Api\TherapyController@nearbyTherapists']);
 
 
 $api->get('products-home', ['as'=>'products.home', 'uses'=>'Customer\Api\ProductController@home']);
@@ -135,7 +135,7 @@ $api->group(['middleware' => ['customer-auth']], function ($api) {
  * Therapist Apis Starts Here
  */
 
-$api->group(['prefix' => 'therapist'], function ($api) {
+$api->group(['prefix' => 'therapistadmin'], function ($api) {
     $api->post('login', 'Therapist\Auth\LoginController@login');
     $api->post('login-with-otp', 'Therapist\Auth\LoginController@loginWithOtp');
     $api->post('register', 'Therapist\Auth\RegisterController@register');
@@ -143,7 +143,7 @@ $api->group(['prefix' => 'therapist'], function ($api) {
     $api->post('verify-otp', 'Therapist\Auth\OtpController@verify');
     $api->post('resend-otp', 'Therapist\Auth\OtpController@resend');
 
-    $api->group(['middleware' => ['therapist-auth']], function ($api) {
+    $api->group(['middleware' => ['therapistadmin-auth']], function ($api) {
         $api->post('update-location', 'Therapist\Api\LocationController@updateLocation');
         $api->post('upload-image', 'Therapist\Api\ProfileController@updateImage');
 

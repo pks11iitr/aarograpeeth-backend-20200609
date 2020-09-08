@@ -104,7 +104,7 @@
                                             <td>{{$order->status}}</td>
                                             <td>{{$order->payment_status}}</td>
                                             <td>{{$order->payment_mode}}</td>
-                                            <td><a href="{{route('order.view',['id'=>$order->id])}}" class="btn btn-success">View</a>
+                                            <td><a href="{{route('order.productdetails',['id'=>$order->id])}}" class="btn btn-success">View</a>
                                             </td>
                                         </tr>
                                     @endforeach
