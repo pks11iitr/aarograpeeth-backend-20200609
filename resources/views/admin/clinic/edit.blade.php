@@ -166,7 +166,7 @@
           <div class="container-fluid">
               <div class="row">
                   <div class="col-12">
-                      <div class="card">
+                      <div class="card card-primary">
                           <div class="card-header">
                               Therapies Provided By {{$clinic->name}}
 

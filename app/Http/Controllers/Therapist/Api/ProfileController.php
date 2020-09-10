@@ -30,7 +30,7 @@ class ProfileController extends Controller
         ]);
 
 
-        $user->saveImage($request->image, 'therapist-images');
+        $user->saveImage($request->image, 'therapistadmin-images');
 
         return [
                 'status'=>'success',
@@ -112,7 +112,7 @@ class ProfileController extends Controller
         $user=$request->user;
 
 
-        //$therapist=Therapist::with('therapies')->find($user->id);
+        //$therapistadmin=Therapist::with('therapies')->find($user->id);
 
         $therapiesobj=$user->therapies;
 

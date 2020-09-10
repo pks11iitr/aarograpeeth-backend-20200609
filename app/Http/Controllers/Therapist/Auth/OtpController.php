@@ -43,7 +43,7 @@ class OtpController extends Controller
     protected function verifyRegister(Request $request){
         $user=Therapist::where('mobile', $request->mobile)->first();
         if($user->status==0){
-            if(OTPModel::verifyOTP('therapist',$user->id,$request->type,$request->otp)){
+            if(OTPModel::verifyOTP('therapistadmin',$user->id,$request->type,$request->otp)){
 
                 $user->status=1;
                 $user->save();
@@ -73,7 +73,7 @@ class OtpController extends Controller
     protected function verifyLogin(Request $request){
         $user=Therapist::where('mobile', $request->mobile)->first();
         if(in_array($user->status, [0,1])){
-            if(OTPModel::verifyOTP('therapist',$user->id,$request->type,$request->otp)){
+            if(OTPModel::verifyOTP('therapistadmin',$user->id,$request->type,$request->otp)){
 
                 $user->status=1;
                 $user->save();

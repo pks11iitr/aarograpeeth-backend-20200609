@@ -91,4 +91,20 @@ class OrderController extends Controller
         return view('admin.order.details', compact('order'));
     }
 
+    public function productdetails(Request $request, $id){
+        $order=Order::with(['details.entity', 'customer'])->where('status', '!=', 'pending')->find($id);
+        return view('admin.order.productdetails', compact('order'));
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+
+        $status = $request->status;
+        $order = Order::find($id);
+
+        $order->status = $status;
+        $order->save();
+
+        return redirect()->back()->with('success', 'Order has been updated');
+    }
 }

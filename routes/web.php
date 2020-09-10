@@ -80,6 +80,8 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::get('/','SuperAdmin\OrderController@index')->name('orders.list');
         Route::get('view/{id}','SuperAdmin\OrderController@details')->name('order.view');
         Route::get('product','SuperAdmin\OrderController@product')->name('orders.product');
+        Route::get('productdetails/{id}','SuperAdmin\OrderController@productdetails')->name('order.productdetails');
+        Route::get('change-status/{id}','SuperAdmin\OrderController@changeStatus')->name('orders.status.change');
     });
 
     Route::group(['prefix'=>'complain'], function(){
@@ -120,6 +122,9 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::post('store','SuperAdmin\NewTherapistController@store')->name('therapists.store');
         Route::get('edit/{id}','SuperAdmin\NewTherapistController@edit')->name('therapists.edit');
         Route::post('update/{id}','SuperAdmin\NewTherapistController@update')->name('therapists.update');
+        Route::post('therapystore/{id}','SuperAdmin\NewTherapistController@therapystore')->name('therapists.therapystore');
+        Route::get('therapyedit/{id}','SuperAdmin\NewTherapistController@therapyedit')->name('therapists.therapyedit');
+        Route::post('therapyupdate/{id}','SuperAdmin\NewTherapistController@therapyupdate')->name('therapists.therapyupdate');
 
     });
 
@@ -137,19 +142,28 @@ Route::group(['prefix'=>'partners', 'middleware'=>['auth', 'acl'], 'is'=>'clinic
 
     });
 
-    Route::group(['prefix'=>'therapist'], function(){
-        Route::get('/','ClinicAdmin\TherapistController@index')->name('therapist.list');
-        Route::get('create','ClinicAdmin\TherapistController@create')->name('therapist.create');
-        Route::post('store','ClinicAdmin\TherapistController@store')->name('therapist.store');
-        Route::get('edit/{id}','ClinicAdmin\TherapistController@edit')->name('therapist.edit');
-        Route::post('update/{id}','ClinicAdmin\TherapistController@update')->name('therapist.update');
+    Route::group(['prefix'=>'therapistadmin'], function(){
+        Route::get('/','ClinicAdmin\TherapistController@index')->name('therapistadmin.list');
+        Route::get('create','ClinicAdmin\TherapistController@create')->name('therapistadmin.create');
+        Route::post('store','ClinicAdmin\TherapistController@store')->name('therapistadmin.store');
+        Route::get('edit/{id}','ClinicAdmin\TherapistController@edit')->name('therapistadmin.edit');
+        Route::post('update/{id}','ClinicAdmin\TherapistController@update')->name('therapistadmin.update');
 
     });
 
 });
 
-/*
-Route::group(['prefix'=>'partners', 'middleware'=>['auth', 'acl'], 'is'=>'clinic-admin'], function() {
-    Route::get('/dashboard', 'ClinicAdmin\DashboardController@index')->name('clinic.therapist.home');
 
-});*/
+Route::group(['prefix'=>'therapistadmin', 'middleware'=>['auth', 'acl'], 'is'=>'clinic-therapist'], function() {
+
+    Route::get('/dashboard', 'TherapistAdmin\DashboardController@index')->name('clinic.therapist.home');
+
+    Route::group(['prefix'=>'therapistwork'], function(){
+        Route::get('/','TherapistAdmin\TherapistWorkController@index')->name('therapistwork.list');
+        Route::get('past','TherapistAdmin\TherapistWorkController@past')->name('therapistwork.past');
+        Route::get('details/{id}','TherapistAdmin\TherapistWorkController@details')->name('therapistwork.details');
+        Route::post('detailstore/{id}','TherapistAdmin\TherapistWorkController@detailstore')->name('therapistwork.detailstore');
+
+    });
+
+});

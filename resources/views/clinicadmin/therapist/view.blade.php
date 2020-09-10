@@ -28,7 +28,7 @@
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-3">
-                                        <a href="{{route('therapist.create')}}" class="btn btn-primary">Add Therapists</a> </div>
+                                        <a href="{{route('therapistadmin.create')}}" class="btn btn-primary">Add Therapists</a> </div>
                                     <div class="col-9">
 
                                         <form class="form-validate form-horizontal"  method="get" action="" enctype="multipart/form-data">
@@ -57,42 +57,32 @@
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th>ClinicName</th>
                                         <th>Name</th>
                                         <th>email</th>
                                         <th>mobile</th>
-                                        <th>address</th>
-                                        <th>city</th>
-                                        <th>state</th>
-                                        <th>Image</th>
-                                        <th>Isactive</th>
+                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($therapists as $therapist)
+                                    @foreach($users as $user)
                                         <tr>
-                                            <td>{{$therapist->clinic->name??''}}</td>
-                                            <td>{{$therapist->name}}</td>
-                                            <td>{{$therapist->email}}</td>
-                                            <td>{{$therapist->mobile}}</td>
-                                            <td>{{$therapist->address}}</td>
-                                            <td>{{$therapist->city}}</td>
-                                            <td>{{$therapist->state}}</td>
-                                            <td><img src="{{$therapist->image}}" height="80px" width="80px"/></td>
+                                            <td>{{$user->name}}</td>
+                                            <td>{{$user->email}}</td>
+                                            <td>{{$user->mobile}}</td>
                                             <td>
-                                                @if($therapist->isactive==1){{'Yes'}}
+                                                @if($user->status==1){{'Yes'}}
                                                 @else{{'No'}}
                                                 @endif
                                             </td>
-                                            <td><a href="{{route('therapist.edit',['id'=>$therapist->id])}}" class="btn btn-primary">Edit</a></td>
+                                            <td><a href="{{route('therapistadmin.edit',['id'=>$user->id])}}" class="btn btn-primary">Edit</a></td>
                                         </tr>
                                     @endforeach
                                     </tbody>
 
                                 </table>
                             </div>
-                         {{$therapists->links()}}
+                         {{$users->links()}}
                         <!-- /.card-body -->
                         </div>
                         <!-- /.card -->

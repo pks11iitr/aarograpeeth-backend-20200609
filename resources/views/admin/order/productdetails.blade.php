@@ -56,7 +56,29 @@
                                     </tr>
                                     <tr>
                                         <td>Status</td>
-                                        <td>{{$order->status}}</td>
+                                        <td>{{$order->status}}<br><br>
+                                            @if(in_array($order->status, ['confirmed']))
+                                                <a href="{{route('orders.status.change', ['id'=>$order->id,'status'=>'processing'])}}" name='status' class="btn btn-primary">Processing</a>
+                                            @endif
+                                            @if(in_array($order->status, ['processing']))
+                                                <a href="{{route('orders.status.change', ['id'=>$order->id,'status'=>'dispatched'])}}" name='status' class="btn btn-primary">Dispatched</a>
+                                            @endif
+                                            @if(in_array($order->status, ['dispatched']))
+                                                <a href="{{route('orders.status.change', ['id'=>$order->id,'status'=>'delivered'])}}" name='status' class="btn btn-primary">Delivered</a><br><br>
+                                            @endif
+                                            @if(in_array($order->status, ['confirmed', 'pending']))
+                                                <a href="{{route('orders.status.change', ['id'=>$order->id,'status'=>'cancelled'])}}" name='status' class="btn btn-primary">Cancelled</a>
+                                            @endif
+                                            @if(in_array($order->status, ['return-request']))
+                                                <a href="{{route('orders.status.change', ['id'=>$order->id,'status'=>'return-accepted'])}}" name='status' class="btn btn-primary">Return-accepted</a>
+                                            @endif
+                                            @if(in_array($order->status, ['return-accepted', 'cancelled']))
+                                                <a href="{{route('orders.status.change', ['id'=>$order->id, 'status'=>'refunded'])}}" name='status' class="btn btn-primary">Refunded</a>
+                                            @endif
+                                            @if(in_array($order->status, ['delivered']))
+                                                <a href="{{route('orders.status.change', ['id'=>$order->id,'status'=>'completed'])}}" name='status' class="btn btn-primary">Completed</a>
+                                            @endif
+                                        </td>
                                     </tr>
                                     </tbody>
                                     <tfoot>
@@ -76,14 +98,14 @@
                                     <tbody>
                                     @if(!empty($order->details[0]->entity) && $order->details[0]->entity instanceof \App\Models\Therapy)
                                         @foreach($order->details as $detail)
-                                        <tr>
-                                            <td>{{$detail->entity->name??''}}</td>
-                                            <td>Grade {{$detail->grade??''}}</td>
-                                            <td>Sessions: {{$detail->quantity}}</td>
+                                            <tr>
+                                                <td>{{$detail->entity->name??''}}</td>
+                                                <td>Grade {{$detail->grade??''}}</td>
+                                                <td>Sessions: {{$detail->quantity}}</td>
 
-                                            <td>Rs. {{$detail->cost}}/session</td>
-                                            <td>Rs. {{$detail->cost*$detail->quantity}} Total</td>
-                                        </tr>
+                                                <td>Rs. {{$detail->cost}}/session</td>
+                                                <td>Rs. {{$detail->cost*$detail->quantity}} Total</td>
+                                            </tr>
                                         @endforeach
                                     @else
                                         @foreach($order->details as $detail)
@@ -141,50 +163,45 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            @if($order->details[0]->entity_type=='App\Models\Therapy')
-                        <!-- /.card-body -->
-                            <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>Grade</th>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>Therapist</th>
-                                        <th>Status</th>
-                                        <th>Edit</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @if(!empty($order->details[0]->clinic_id) )
+                        @if($order->details[0]->entity_type=='App\Models\Therapy')
+                            <!-- /.card-body -->
+                                <div class="card-body">
+                                    <table id="example2" class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Date Sessions</th>
+                                            <th>Time Sessions</th>
+                                            <th>Status Sessions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @if(!empty($order->details[0]->clinic_id) )
 
-                                        @foreach($order->bookingSlots()->with(['timeslot', 'assignedTo'])->get() as $bookingSlot)
-                                            <tr>
-                                                <td>{{$bookingSlot->grade??''}}</td>                                               <td>{{$bookingSlot->timeslot->date??''}}</td>
-                                                <td>{{$bookingSlot->timeslot->start_time??''}}</td>
-                                                <td>{{$bookingSlot->assignedTo->name??''}}</td>
-                                                <td>{{$bookingSlot->status}}</td>
-                                                <td><a href="">Edit</a></td>
-                                            </tr>
-                                        @endforeach
+                                            @foreach($order->bookingSlots as $bookingSlot)
+                                                <tr>
+                                                    <td>{{$bookingSlot->timeslot->date??''}}</td>
+                                                    <td>{{$bookingSlot->timeslot->start_time??''}}</td>
+                                                    <td>{{$bookingSlot->status}}</td>
+                                                </tr>
+                                            @endforeach
 
-                                    @else
-                                        @foreach($order->homebookingslots as $homebookingslot)
-                                            <tr>
-                                                <td>{{$homebookingslot->timeslot->date??''}}</td>
-                                                <td>{{$homebookingslot->timeslot->start_time??''}}</td>
-                                                <td>{{$homebookingslot->status}}</td>
-                                            </tr>
-                                        @endforeach
+                                        @else
+                                            @foreach($order->homebookingslots as $homebookingslot)
+                                                <tr>
+                                                    <td>{{$homebookingslot->timeslot->date??''}}</td>
+                                                    <td>{{$homebookingslot->timeslot->start_time??''}}</td>
+                                                    <td>{{$homebookingslot->status}}</td>
+                                                </tr>
+                                            @endforeach
 
-                                    @endif
-                                    </tbody>
-                                    <tfoot>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            @endif
-                            <!-- /.card -->
+                                        @endif
+                                        </tbody>
+                                        <tfoot>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                        @endif
+                        <!-- /.card -->
                         </div>
                         <!-- /.card -->
 

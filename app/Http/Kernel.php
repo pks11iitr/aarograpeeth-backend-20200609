@@ -62,7 +62,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'acl' => 'Kodeine\Acl\Middleware\HasPermission',
 
-        'therapist-auth'=>\App\Http\Middleware\TherapistApiAuth::class,
+        'therapistadmin-auth'=>\App\Http\Middleware\TherapistApiAuth::class,
         'customer-auth'=>\App\Http\Middleware\CustomerApiAuth::class,
     ];
 

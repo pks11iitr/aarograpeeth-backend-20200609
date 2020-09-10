@@ -10,5 +10,8 @@ class TherapistTherapy extends Model
 
     protected $fillable=['therapist_id', 'therapy_id', 'therapist_grade', 'isactive'];
 
+    public function therapy(){
+        return $this->belongsTo('App\Models\Therapy', 'therapy_id');
+    }
 
 }
