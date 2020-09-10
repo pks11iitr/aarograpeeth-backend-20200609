@@ -128,10 +128,16 @@ class TherapistController extends Controller
 
 
     public function getAvailableHomeTherapist(Request $request){
-//        $therapist=Therapist::active()->whereHas('therapies', function($therapies){
-//
-//        })->findOrFail($request->clinic_id);//die;
-//        return $clinic->getAvailableTherapist($request->slot_id);
+        $therapist=Therapist::active()->whereHas('therapies', function($therapies) use($request){
+            $therapies->where('therapies.id', $request->therapy_id);
+        })
+            ->whereDoesntHave('bookings', function($bookings) use($request){
+                $bookings->where('slot_id', $request->slot_id);
+            })
+            ->select('id', 'name')
+            ->get();//die;
+
+        return $therapist;
     }
 
 

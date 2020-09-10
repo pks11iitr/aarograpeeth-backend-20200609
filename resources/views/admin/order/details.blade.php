@@ -325,7 +325,7 @@
                 html='<option value="">Select Time</option>'
                 for(var i = 0; i < data.length; i++) {
                     if(data[i].is_active==1){
-                        html=html+'<option value="'+data[i].id+'">'+data[i].date+' '+data[i].start_time+'</option>'
+                        html=html+'<option value="'+data[i].id+'">'+data[i].date+' '+data[i].display+'</option>'
                     }else{
                         html=html+'<option value="'+data[i].id+'" disabled>'+data[i].date+' '+data[i].display+'</option>'
                     }
@@ -346,7 +346,7 @@
             url: '{{route('therapy.available.therapist')}}',
             method: 'get',
             datatype:'json',
-            data:{clinic_id:$("#slot-therapy-id").val(), slot_id:$("#time-slots").val(), },
+            data:{therapy_id:$("#slot-therapy-id").val(), slot_id:$("#time-slots").val(), },
             success: function(data){
                 html='<option value="">Select Therapist</option>'
                 for(var i = 0; i < data.length; i++) {
