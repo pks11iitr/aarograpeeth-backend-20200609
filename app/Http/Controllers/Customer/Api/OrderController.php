@@ -367,12 +367,6 @@ $refid=env('MACHINE_ID').time();
             BookingSlot::where('order_id', $order->id)
                 ->delete();
 
-            if(!BookingSlot::createAutomaticSchedule($order, $request->grade, $slot, $request->num_sessions, 'pending')){
-                return [
-                    'status'=>'failed',
-                    'message'=>'Enough Slots Are Not Available'
-                ];
-            }
             //var_dump($clinic->toArray());die;
             switch($request->grade){
                 case 1:$cost=($clinic->therapies[0]->pivot->grade1_price??0);
@@ -383,6 +377,13 @@ $refid=env('MACHINE_ID').time();
                     break;
                 case 4:$cost=($clinic->therapies[0]->pivot->grade4_price??0);
                     break;
+            }
+
+            if(!BookingSlot::createAutomaticSchedule($order, $request->grade, $slot, $request->num_sessions, 'pending', $cost)){
+                return [
+                    'status'=>'failed',
+                    'message'=>'Enough Slots Are Not Available'
+                ];
             }
 
             //$cost=$cost*$request->num_sessions;
@@ -415,6 +416,17 @@ $refid=env('MACHINE_ID').time();
 
             $cost=0;
 
+            switch($request->grade){
+                case 1:$cost=$cost+($clinic->therapies[0]->pivot->grade1_price??0);
+                    break;
+                case 2:$cost=$cost+($clinic->therapies[0]->pivot->grade2_price??0);
+                    break;
+                case 3:$cost=$cost+($clinic->therapies[0]->pivot->grade3_price??0);
+                    break;
+                case 4:$cost=$cost+($clinic->therapies[0]->pivot->grade4_price??0);
+                    break;
+            }
+
             foreach($slots as $slot){
 
                 BookingSlot::create([
@@ -424,18 +436,8 @@ $refid=env('MACHINE_ID').time();
                     'slot_id'=>$slot->id,
                     'grade'=>$request->grade,
                     'status'=>'pending',
+                    'price'=>$cost
                 ]);
-
-                switch($request->grade){
-                    case 1:$cost=$cost+($clinic->therapies[0]->pivot->grade1_price??0);
-                        break;
-                    case 2:$cost=$cost+($clinic->therapies[0]->pivot->grade2_price??0);
-                        break;
-                    case 3:$cost=$cost+($clinic->therapies[0]->pivot->grade3_price??0);
-                        break;
-                    case 4:$cost=$cost+($clinic->therapies[0]->pivot->grade4_price??0);
-                        break;
-                }
 
                 //$order->total_cost=$order->total_cost+$cost;
 

@@ -21,7 +21,7 @@
             </div>
             <div class="form-group">
                 <label for="exampleInputEmail1">Status</label>
-                <select class="form-control" name="isactive" required>
+                <select class="form-control" name="status" required>
                     <option value="pending">Pending</option>
                     <option value="confirmed">Confirmed</option>
                     <option value="completed">Pending</option>
