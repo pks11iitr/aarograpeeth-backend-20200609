@@ -9,6 +9,7 @@ return [
         'confirmed'=>'Confirmed',
         'cancelled'=>'Cancelled',
         'processing'=>'Processing',
+        'dispatched'=>'Dispatched',
         'return-requested'=>'Return Request',
         'return-accepted'=>'Return Accepted',
         'refunded'=>'Refunded',
