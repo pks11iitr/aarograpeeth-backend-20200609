@@ -128,20 +128,31 @@ class OrderController extends Controller
 
     public function updateTherapySession(Request $request){
 
-        $request->validate([
-            'id'=>'required|integer',
-            'slot_id'=>'required_if:type,clinic|integer',
-            'therapist_id'=>'required|integer',
-            'status'=>'required|in:pending,confirmed,cancelled,completed',
-            'type'=>'required|in:clinic,home'
-        ]);
+
 
         if($request->type=='clinic'){
+
+            $request->validate([
+                'id'=>'required|integer',
+                'slot_id'=>'required|integer',
+                'therapist_id'=>'required|integer',
+                'status'=>'required|in:pending,confirmed,cancelled,completed',
+                'type'=>'required|in:clinic,home'
+            ]);
+
             $booking=BookingSlot::with('clinic', 'therapy', 'timeslot')->findOrFail($request->id);
 
             $booking->update(array_merge($request->only( 'status', 'slot_id'),['assigned_therapist'=>$request->therapist_id]));
 
         }else if($request->type=='home'){
+
+            $request->validate([
+                'id'=>'required|integer',
+                'therapist_id'=>'required|integer',
+                'status'=>'required|in:pending,confirmed,cancelled,completed',
+                'type'=>'required|in:clinic,home'
+            ]);
+
             $booking=HomeBookingSlots::findOrFail($request->id);
             if(empty($request->slot_id)){
                 $booking->update(array_merge($request->only( 'status'),['assigned_therapist'=>$request->therapist_id]));
