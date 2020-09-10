@@ -10,7 +10,8 @@ return [
         'cancelled'=>'Cancelled',
         'processing'=>'Processing',
         'return-requested'=>'Return Request',
-        'returned'=>'Returned',
+        'return-accepted'=>'Return Accepted',
+        'refunded'=>'Refunded',
         'completed'=>'Completed'
     ],
 
