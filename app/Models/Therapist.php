@@ -56,4 +56,9 @@ class Therapist extends Authenticatable implements JWTSubject
         return null;
     }
 
+
+    public function bookings(){
+        return $this->hasMany('App\Models\HomeBookingSlots', 'assigned_therapist');
+    }
+
 }

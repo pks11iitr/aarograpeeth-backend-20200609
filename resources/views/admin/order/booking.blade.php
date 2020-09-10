@@ -61,7 +61,7 @@
 @elseif($type=='home')
 <form role="form" method="post" enctype="multipart/form-data" action="{{route('order.booking.edit', ['type'=>$type, 'id'=>$booking->id])}}">
         @csrf
-{{--        <input type="hidden" name="clinic_id" id="slot-clinic-id" value="{{$booking->clinic_id}}">--}}
+        <input type="hidden" name="clinic_id" id="slot-therapy-id" value="{{$booking->therapy_id}}">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
@@ -70,11 +70,10 @@
                         <input type="text" name="city" class="form-control" id="exampleInputEmail3" placeholder="Therapy Name" value="{{$booking->therapy->name??''}}" disabled>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Time Slot @if(!isset($booking->slot_id))( Instant Booking/{{$booking->date}} )@endif</label>
-                        <select class="form-control" name="slot_id" required id="time-slots" onchange="getAvailableTherapist()" required>
-                            <option value="{{$booking->timeslot->id??''}}">{{isset($booking->timeslot)?($booking->timeslot->date.' '.$booking->timeslot->start_time):'Select Time Slot'}}</option>
-                        </select>
+                        <label for="exampleInputEmail1">Date</label>
+                        <input type="date" name="date" class="form-control" id="slot-date" placeholder="select Date" value="{{$booking->timeslot->date??''}}" onchange="getTimeSlotList1()" required>
                     </div>
+
                     <div class="form-group">
                         <label for="exampleInputEmail1">Status</label>
                         <select class="form-control" name="status" required>
@@ -95,8 +94,10 @@
                         <input type="text" name="grade" class="form-control" placeholder="Grade" disabled value="{{$booking->grade??''}}" id="booking-grade">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Date</label>
-                        <input type="date" name="date" class="form-control" id="slot-date" placeholder="select Date" value="{{$booking->timeslot->date??''}}" onchange="getTimeSlotList()" required>
+                        <label for="exampleInputEmail1">Time Slot @if(!isset($booking->slot_id))( Instant Booking/{{$booking->date}} )@endif</label>
+                        <select class="form-control" name="slot_id" required id="time-slots" onchange="getAvailableTherapist1()" required>
+                            <option value="{{$booking->timeslot->id??''}}">{{isset($booking->timeslot)?($booking->timeslot->date.' '.$booking->timeslot->start_time):'Select Time Slot'}}</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Therapist Name</label>

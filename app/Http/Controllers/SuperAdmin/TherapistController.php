@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Clinic;
+use App\Models\DailyBookingsSlots;
+use App\Models\Therapist;
 use App\Models\Therapy;
 use App\Models\Document;
+use App\Models\TimeSlot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Storage;
@@ -121,4 +125,20 @@ class TherapistController extends Controller
            Document::where('id', $id)->delete();
            return redirect()->back()->with('success', 'Document has been deleted');
         }
+
+
+    public function getAvailableHomeTherapist(Request $request){
+//        $therapist=Therapist::active()->whereHas('therapies', function($therapies){
+//
+//        })->findOrFail($request->clinic_id);//die;
+//        return $clinic->getAvailableTherapist($request->slot_id);
+    }
+
+
+    public function getAvailableTimeSlots(Request $request){
+        $therapy=Therapy::findOrFail($request->therapy_id);
+        $slots=DailyBookingsSlots::getTimeSlotsForAdmin($therapy, $request->date, $request->grade);
+        return $slots;
+
+    }
   }

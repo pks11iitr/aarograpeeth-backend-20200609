@@ -47,6 +47,9 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::post('document/{id}','SuperAdmin\TherapistController@document')->name('therapy.document');
         Route::get('delete/{id}','SuperAdmin\TherapistController@delete')->name('therapy.delete');
 
+       Route::get('available-therapists','SuperAdmin\TherapistController@getAvailableHomeTherapist')->name('therapy.available.therapist');
+       Route::get('available-slots','SuperAdmin\TherapistController@getAvailableTimeSlots')->name('therapy.available.slots');
+
     });
   Route::group(['prefix'=>'clinic'], function(){
         Route::get('/','SuperAdmin\ClinicController@index')->name('clinic.list');
@@ -135,6 +138,8 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::post('therapystore/{id}','SuperAdmin\NewTherapistController@therapystore')->name('therapists.therapystore');
         Route::get('therapyedit/{id}','SuperAdmin\NewTherapistController@therapyedit')->name('therapists.therapyedit');
         Route::post('therapyupdate/{id}','SuperAdmin\NewTherapistController@therapyupdate')->name('therapists.therapyupdate');
+        Route::get('available-therapists','SuperAdmin\TherapistController@getAvailableHomeTherapist')->name('therapy.available.therapist');
+        Route::get('available-slots','SuperAdmin\TherapistController@getAvailableTimeSlots')->name('therapy.available.slots');
 
     });
 

@@ -250,4 +250,26 @@ class DailyBookingsSlots extends Model
     }
 
 
+    public static function getTimeSlotsForAdmin($therapy, $date, $grade){
+
+        $timeslots=DailyBookingsSlots::orderBy('internal_start_time', 'asc')
+            ->where('date',$date)
+            ->get();
+
+        $slots=[];
+
+        foreach($timeslots as $ts){
+                $slots[] = [
+                    'id'=>$ts->id,
+                    'display'=>$ts->start_time,
+                    'is_active'=>1,
+                    'date'=>$ts->date
+                ];
+        }
+
+        return $slots;
+
+    }
+
+
 }
