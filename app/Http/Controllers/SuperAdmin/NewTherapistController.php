@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Hash;
 class NewTherapistController extends Controller
 {
     public function index(Request $request){
-        $therapists=Therapist::where(function($therapists) use($request){
+        $therapists=Therapist::with(['reviews','bookings'])
+        ->where(function($therapists) use($request){
             $therapists->where('name','LIKE','%'.$request->search.'%');
         });
 

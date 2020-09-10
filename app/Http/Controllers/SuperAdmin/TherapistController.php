@@ -16,7 +16,7 @@ use Storage;
 class TherapistController extends Controller
 {
      public function index(Request $request){
-		 $therapist=Therapy::with(['reviews', 'bookings'])
+		 $therapist=Therapy::with(['reviews'])
          ->where(function($therapist) use($request){
                 $therapist->where('name','LIKE','%'.$request->search.'%');
             });
