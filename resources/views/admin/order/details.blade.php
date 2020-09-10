@@ -152,7 +152,7 @@
                                                 <td>{{$homebookingslot->timeslot->start_time??''}}</td>
                                                 <td></td>
                                                 <td>{{$homebookingslot->status}}</td>
-                                                <td><a href="javascript:void(0)" onclick="getBooking({{$bookingSlot->id}}, 'home')">Edit</a></td>
+                                                <td><a href="javascript:void(0)" onclick="getBooking({{$homebookingslot->id}}, 'home')">Edit</a></td>
                                             </tr>
                                         @endforeach
 
