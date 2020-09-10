@@ -10,6 +10,9 @@ class HomeBookingSlots extends Model
 
     protected $fillable=['order_id', 'grade', 'date', 'time', 'display_time', 'status', 'slot_id', 'is_instant', 'assigned_therapist'];
 
+    public function assignedTo(){
+        return $this->belongsTo('App\Models\Therapist', 'assigned_therapist');
+    }
 
     public function timeslot(){
         return $this->belongsTo('App\Models\DailyBookingsSlots', 'slot_id');
