@@ -74,7 +74,10 @@
 				@foreach($clinics as $clinic)
                   <tr>
 					  <td>{{$clinic->id}}</td>
-					  <td>{{$clinic->name}}</td>
+{{--					  <td>{{$clinic->name}}</td>--}}
+                      <td>{{$clinic->name}}<br><span style="color:darkblue">Reviews:{{$clinic->reviews()->count()}}</span><br><span style="color:green">Reviews:{{number_format($clinic->reviews()->avg('rating'),1)}}</span></td>
+{{--					  <td>{{$clinic->reviews()->count()}}</td>--}}
+
 					 <!-- <td>{{$clinic->description}}</td>-->
 					  <td>{{$clinic->address}}</td>
 					  <td>{{$clinic->city}}</td>

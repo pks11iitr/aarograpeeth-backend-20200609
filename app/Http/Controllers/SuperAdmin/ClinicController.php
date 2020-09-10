@@ -16,7 +16,9 @@ class ClinicController extends Controller
 {
      public function index(Request $request){
 
-		 $clinics=Clinic::where(function($clinics) use($request){
+		 $clinics=Clinic::with('reviews')
+
+            ->where(function($clinics) use($request){
                 $clinics->where('name','LIKE','%'.$request->search.'%');
             });
 
