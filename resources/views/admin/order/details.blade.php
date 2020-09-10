@@ -47,6 +47,14 @@
                                         <td>{{$order->created_at}}</td>
                                     </tr>
                                     <tr>
+                                        <td>Therapy Name</td>
+                                        <td>{{$order->details[0]->entity->name??'-'}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Clinic Name</td>
+                                        <td>{{$order->details[0]->clinic->name??'-'}}</td>
+                                    </tr>
+                                    <tr>
                                         <td>Total</td>
                                         <td>{{$order->total_cost}}</td>
                                     </tr>
@@ -63,44 +71,95 @@
                                     </tfoot>
                                 </table>
                             </div>
+{{--                            <div class="card-body">--}}
+{{--                                <table id="example2" class="table table-bordered table-hover">--}}
+{{--                                    <thead>--}}
+{{--                                    <tr>--}}
+{{--                                        @if(!empty($order->details[0]->entity) && $order->details[0]->entity instanceof \App\Models\Therapy)--}}
+{{--                                            <th>Therapy Details</th>--}}
+{{--                                            @else--}}
+{{--                                            <th>Product Details</th>--}}
+{{--                                            @endif--}}
+{{--                                        <th></th>--}}
+{{--                                        <th></th>--}}
+{{--                                        <th></th>--}}
+{{--                                    </tr>--}}
+{{--                                    </thead>--}}
+{{--                                    <tbody>--}}
+{{--                                    @if(!empty($order->details[0]->entity) && $order->details[0]->entity instanceof \App\Models\Therapy)--}}
+{{--                                        @foreach($order->details as $detail)--}}
+{{--                                        <tr>--}}
+{{--                                            <td>{{$detail->entity->name??''}}</td>--}}
+{{--                                            <td>{{$detail->clinic->name??''}}</td>--}}
+{{--                                            <td>Grade {{$detail->grade??''}}</td>--}}
+{{--                                            <td>Sessions: {{$detail->quantity}}</td>--}}
+
+{{--                                            <td>Rs. {{$detail->cost}}/session</td>--}}
+{{--                                        </tr>--}}
+{{--                                        @endforeach--}}
+{{--                                    @else--}}
+{{--                                        @foreach($order->details as $detail)--}}
+{{--                                            <tr>--}}
+{{--                                                <td>{{$detail->entity->name??''}}</td>--}}
+{{--                                                <td>Quantity: {{$detail->quantity}}</td>--}}
+{{--                                                <td>Rs. {{$detail->cost}}/Item</td>--}}
+{{--                                                <td>Rs. {{$detail->cost*$detail->quantity}} Total</td>--}}
+
+{{--                                            </tr>--}}
+{{--                                        @endforeach--}}
+{{--                                    @endif--}}
+{{--                                    </tbody>--}}
+{{--                                    <tfoot>--}}
+{{--                                    </tfoot>--}}
+{{--                                </table>--}}
+{{--                            </div>--}}
+                            @if($order->details[0]->entity_type=='App\Models\Therapy')
+                        <!-- /.card-body -->
                             <div class="card-body">
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th>@if(!empty($order->details[0]->entity) && $order->details[0]->entity instanceof \App\Models\Therapy) Therapy Details <th></th> @else Product Details @endif </th>
-                                        <th></th>
-                                        <th></th>
-                                        <th></th>
+                                        <th>Grade</th>
+                                        <th>Price</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Therapist</th>
+                                        <th>Status</th>
+                                        <th>Edit</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if(!empty($order->details[0]->entity) && $order->details[0]->entity instanceof \App\Models\Therapy)
-                                        @foreach($order->details as $detail)
-                                        <tr>
-                                            <td>{{$detail->entity->name??''}}</td>
-                                            <td>Grade {{$detail->grade??''}}</td>
-                                            <td>Sessions: {{$detail->quantity}}</td>
+                                    @if(!empty($order->details[0]->clinic_id) )
 
-                                            <td>Rs. {{$detail->cost}}/session</td>
-                                            <td>Rs. {{$detail->cost*$detail->quantity}} Total</td>
-                                        </tr>
-                                        @endforeach
-                                    @else
-                                        @foreach($order->details as $detail)
+                                        @foreach($order->bookingSlots()->with(['timeslot', 'assignedTo'])->get() as $bookingSlot)
                                             <tr>
-                                                <td>{{$detail->entity->name??''}}</td>
-                                                <td>Quantity: {{$detail->quantity}}</td>
-                                                <td>Rs. {{$detail->cost}}/Item</td>
-                                                <td>Rs. {{$detail->cost*$detail->quantity}} Total</td>
+                                                <td>{{$bookingSlot->grade??''}}</td>
 
+                                                <td>Rs. {{$bookingSlot->price??''}}</td>                                               <td>{{$bookingSlot->timeslot->date??''}}</td>
+                                                <td>{{$bookingSlot->timeslot->start_time??''}}</td>
+                                                <td>{{$bookingSlot->assignedTo->name??''}}</td>
+                                                <td>{{$bookingSlot->status}}</td>
+                                                <td><a href="javascript:void(0)" onclick="getBooking({{$bookingSlot->id}}, 'clinic')">Edit</a></td>
                                             </tr>
                                         @endforeach
+
+                                    @else
+                                        @foreach($order->homebookingslots as $homebookingslot)
+                                            <tr>
+                                                <td>{{$homebookingslot->timeslot->date??''}}</td>
+                                                <td>{{$homebookingslot->timeslot->start_time??''}}</td>
+                                                <td>{{$homebookingslot->status}}</td>
+                                            </tr>
+                                        @endforeach
+
                                     @endif
                                     </tbody>
                                     <tfoot>
                                     </tfoot>
                                 </table>
                             </div>
+                            @endif
+                            <!-- /.card -->
                             <div class="card-body">
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
@@ -141,50 +200,6 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            @if($order->details[0]->entity_type=='App\Models\Therapy')
-                        <!-- /.card-body -->
-                            <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>Grade</th>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>Therapist</th>
-                                        <th>Status</th>
-                                        <th>Edit</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @if(!empty($order->details[0]->clinic_id) )
-
-                                        @foreach($order->bookingSlots()->with(['timeslot', 'assignedTo'])->get() as $bookingSlot)
-                                            <tr>
-                                                <td>{{$bookingSlot->grade??''}}</td>                                               <td>{{$bookingSlot->timeslot->date??''}}</td>
-                                                <td>{{$bookingSlot->timeslot->start_time??''}}</td>
-                                                <td>{{$bookingSlot->assignedTo->name??''}}</td>
-                                                <td>{{$bookingSlot->status}}</td>
-                                                <td><a href="javascript:void(0)" onclick="getBooking({{$bookingSlot->id}}, 'clinic')">Edit</a></td>
-                                            </tr>
-                                        @endforeach
-
-                                    @else
-                                        @foreach($order->homebookingslots as $homebookingslot)
-                                            <tr>
-                                                <td>{{$homebookingslot->timeslot->date??''}}</td>
-                                                <td>{{$homebookingslot->timeslot->start_time??''}}</td>
-                                                <td>{{$homebookingslot->status}}</td>
-                                            </tr>
-                                        @endforeach
-
-                                    @endif
-                                    </tbody>
-                                    <tfoot>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            @endif
-                            <!-- /.card -->
                         </div>
                         <!-- /.card -->
 

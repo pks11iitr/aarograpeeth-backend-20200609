@@ -122,7 +122,7 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Invalid Request');
         }
 
-        return view('admin.clinic.booking', compact('booking', 'type'));
+        return view('admin.order.booking', compact('booking', 'type'));
     }
 
 
