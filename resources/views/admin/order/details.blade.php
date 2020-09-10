@@ -150,7 +150,7 @@
                                                 <td>{{$homebookingslot->price??''}}</td>
                                                 <td>{{$homebookingslot->timeslot->date??''}}</td>
                                                 <td>{{$homebookingslot->timeslot->start_time??''}}</td>
-                                                <td></td>
+                                                <td>{{$bookingSlot->assignedTo->name??''}}</td>
                                                 <td>{{$homebookingslot->status}}</td>
                                                 <td><a href="javascript:void(0)" onclick="getBooking({{$homebookingslot->id}}, 'home')">Edit</a></td>
                                             </tr>

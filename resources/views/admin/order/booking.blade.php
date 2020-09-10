@@ -46,7 +46,7 @@
             <div class="form-group">
                 <label for="exampleInputEmail1">Therapist Name</label>
                 <select class="form-control" name="therapist_id" required id="therapist-list">
-                    <option value="">Select Therapist</option>
+                    <option value="{{$booking->assignedTo->id??''}}">{{$booking->assignedTo->name??'Select Therapist'}}</option>
                 </select>
             </div>
 
@@ -102,7 +102,7 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Therapist Name</label>
                         <select class="form-control" name="therapist_id" required id="therapist-list">
-                            <option value="">Select Therapist</option>
+                            <option value="{{$booking->assignedTo->id??''}}">{{$booking->assignedTo->name??'Select Therapist'}}</option>
                         </select>
                     </div>
 
