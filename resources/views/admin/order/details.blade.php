@@ -147,30 +147,35 @@
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th>Date Sessions</th>
-                                        <th>Time Sessions</th>
-                                        <th>Status Sessions</th>
+                                        <th>Grade</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Therapist</th>
+                                        <th>Status</th>
+                                        <th>Edit</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @if(!empty($order->details[0]->clinic_id) )
 
-                                    @foreach($order->bookingSlots as $bookingSlot)
-                                        <tr>
-                                            <td>{{$bookingSlot->timeslot->date??''}}</td>
-                                            <td>{{$bookingSlot->timeslot->start_time??''}}</td>
-                                            <td>{{$bookingSlot->status}}</td>
-                                        </tr>
-                                    @endforeach
+                                        @foreach($order->bookingSlots()->with(['timeslot', 'assignedTo'])->get() as $bookingSlot)
+                                            <tr>
+                                                <td>{{$bookingSlot->grade??''}}</td>                                               <td>{{$bookingSlot->timeslot->date??''}}</td>
+                                                <td>{{$bookingSlot->timeslot->start_time??''}}</td>
+                                                <td>{{$bookingSlot->assignedTo->name??''}}</td>
+                                                <td>{{$bookingSlot->status}}</td>
+                                                <td><a href="">Edit</a></td>
+                                            </tr>
+                                        @endforeach
 
                                     @else
-                                    @foreach($order->homebookingslots as $homebookingslot)
-                                        <tr>
-                                            <td>{{$homebookingslot->timeslot->date??''}}</td>
-                                            <td>{{$homebookingslot->timeslot->start_time??''}}</td>
-                                            <td>{{$homebookingslot->status}}</td>
-                                        </tr>
-                                    @endforeach
+                                        @foreach($order->homebookingslots as $homebookingslot)
+                                            <tr>
+                                                <td>{{$homebookingslot->timeslot->date??''}}</td>
+                                                <td>{{$homebookingslot->timeslot->start_time??''}}</td>
+                                                <td>{{$homebookingslot->status}}</td>
+                                            </tr>
+                                        @endforeach
 
                                     @endif
                                     </tbody>

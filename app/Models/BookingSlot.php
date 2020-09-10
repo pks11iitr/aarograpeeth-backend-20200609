@@ -106,4 +106,8 @@ class BookingSlot extends Model
         return $this->hasOne('App\Models\Review', 'session_id')->where('reviews.entity_type', 'App\Models\User');
     }
 
+    public function assignedTo(){
+        return $this->belongsTo('App\Models\User', 'assigned_therapist');
+    }
+
 }
