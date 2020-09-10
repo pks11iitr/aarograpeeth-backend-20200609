@@ -12,7 +12,7 @@ class Clinic extends Model
     protected $fillable=['name','description','address','city','state','contact','lat','lang','image','isactive'];
 
     protected $hidden = ['created_at','deleted_at','updated_at'];
-    
+
     public function getImageAttribute($value){
         if($value)
             return Storage::url($value);
@@ -42,5 +42,17 @@ class Clinic extends Model
         if($value==null)
             return '';
         return $value;
+    }
+
+    public function therapist(){
+        return $this->hasMany('App\Models\User', 'clinic_id');
+    }
+
+
+    public function getAvailableTherapist($time_slot){
+        return $this->therapist()->whereDoesntHave('bookings', function($bookings) use ($time_slot){
+            $bookings->where('slot_id', $time_slot)
+                ->where('bookings_slots.status', 'pending');
+        })->select('users.name', 'users.id')->get();
     }
 }

@@ -8,7 +8,7 @@ class BookingSlot extends Model
 {
     protected $table='bookings_slots';
 
-    protected $fillable=['order_id', 'clinic_id', 'therapy_id', 'slot_id', 'status', 'grade'];
+    protected $fillable=['order_id', 'clinic_id', 'therapy_id', 'slot_id', 'status', 'grade', 'price', 'assigned_therapist'];
 
 
     public static function createAutomaticSchedule($order, $grade, $slot, $num_sessions, $status){
@@ -108,6 +108,14 @@ class BookingSlot extends Model
 
     public function assignedTo(){
         return $this->belongsTo('App\Models\User', 'assigned_therapist');
+    }
+
+    public function clinic(){
+        return $this->belongsTo('App\Models\Clinic', 'clinic_id');
+    }
+
+    public function therapy(){
+        return $this->belongsTo('App\Models\Therapy', 'therapy_id');
     }
 
 }

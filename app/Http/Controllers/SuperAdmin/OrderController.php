@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\SuperAdmin;
 
+use App\Models\BookingSlot;
+use App\Models\HomeBookingSlots;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -107,4 +109,42 @@ class OrderController extends Controller
 
         return redirect()->back()->with('success', 'Order has been updated');
     }
+
+
+    public function editTherapySession(Request $request){
+
+        $type=$request->type;
+        if($request->type=='clinic'){
+            $booking=BookingSlot::with('clinic', 'therapy', 'timeslot')->findOrFail($request->id);
+        }else if($request->type=='home'){
+            $booking=HomeBookingSlots::findOrFail($request->id);
+        }else{
+            return redirect()->back()->with('error', 'Invalid Request');
+        }
+
+        return view('admin.clinic.booking', compact('booking', 'type'));
+    }
+
+
+    public function updateTherapySession(Request $request){
+
+        $request->validate([
+            'id'=>'required|integer',
+            'slot_id'=>'required|integer',
+            'therapist_id'=>'required|integer',
+            'status'=>'required|in:pending,confirmed,cancelled,completed',
+            'type'=>'required|in:clinic,home'
+        ]);
+
+        if($request->type=='clinic'){
+            $booking=BookingSlot::with('clinic', 'therapy', 'timeslot')->findOrFail($request->id);
+        }else if($request->type=='home'){
+            $booking=HomeBookingSlots::findOrFail($request->id);
+        }
+
+        $booking->update($request->only('therapist_id', 'status', 'slot_id'));
+
+        return redirect()->back()->with('success', 'Booking Has Been Updated');
+    }
+
 }

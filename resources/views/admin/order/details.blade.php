@@ -164,7 +164,7 @@
                                                 <td>{{$bookingSlot->timeslot->start_time??''}}</td>
                                                 <td>{{$bookingSlot->assignedTo->name??''}}</td>
                                                 <td>{{$bookingSlot->status}}</td>
-                                                <td><a href="">Edit</a></td>
+                                                <td><a href="javascript:void(0)" onclick="getBooking({{$bookingSlot->id}}, 'clinic')">Edit</a></td>
                                             </tr>
                                         @endforeach
 
@@ -200,4 +200,100 @@
         <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
+
+    <div class="modal fade show" id="modal-lg" style="display: none; padding-right: 15px;" aria-modal="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Booking Details</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="booking-form-section">
+
+                </div>
+{{--                <div class="modal-footer justify-content-between">--}}
+{{--                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--}}
+{{--                    <button type="button" class="btn btn-primary">Save changes</button>--}}
+{{--                </div>--}}
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+@endsection
+@section('scripts')
+
+    <script>
+    function getBooking(id, type)
+    {
+        $("#booking-form-section").html('')
+        $.ajax({
+
+            url: '{{route('order.booking.edit')}}',
+            method: 'get',
+            data:{type:type, id:id},
+            success: function(data){
+                $("#booking-form-section").html(data)
+                $("#modal-lg").modal('show')
+            },
+
+        });
+    }
+
+    function getTimeSlotList(){
+        $("#therapist-list").html('')
+        $("#time-slots").html('')
+        $.ajax({
+
+            url: '{{route('clinic.available.slots')}}',
+            method: 'get',
+            datatype:'json',
+            data:{clinic_id:$("#slot-clinic-id").val(), date:$("#slot-date").val(), grade:$("#booking-grade").val()},
+            success: function(data){
+                html='<option value="">Select Time</option>'
+                for(var i = 0; i < data.length; i++) {
+                    if(data[i].is_active==1){
+                        html=html+'<option value="'+data[i].id+'">'+data[i].date+' '+data[i].start_time+'</option>'
+                    }else{
+                        html=html+'<option value="'+data[i].id+'" disabled>'+data[i].date+' '+data[i].start_time+'</option>'
+                    }
+
+                }
+
+                $("#time-slots").html(html)
+            },
+
+        });
+
+    }
+
+    function getAvailableTherapist(){
+        $("#therapist-list").html('')
+        $.ajax({
+
+            url: '{{route('clinic.available.therapist')}}',
+            method: 'get',
+            datatype:'json',
+            data:{clinic_id:$("#slot-clinic-id").val(), slot_id:$("#time-slots").val(), },
+            success: function(data){
+                html='<option value="">Select Therapist</option>'
+                for(var i = 0; i < data.length; i++) {
+
+                        html=html+'<option value="'+data[i].id+'">'+data[i].name+'</option>'
+
+                }
+
+                $("#therapist-list").html(html)
+            },
+
+        });
+    }
+
+
+    </script>
+
+
 @endsection
