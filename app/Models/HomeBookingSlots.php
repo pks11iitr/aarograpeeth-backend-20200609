@@ -15,6 +15,10 @@ class HomeBookingSlots extends Model
         return $this->belongsTo('App\Models\DailyBookingsSlots', 'slot_id');
     }
 
+    public function therapy(){
+        return $this->belongsTo('App\Models\Therapy', 'therapy_id');
+    }
+
 
     public static function createAutomaticSchedule($order, $grade, $slot, $num_sessions, $status='pending'){
 
