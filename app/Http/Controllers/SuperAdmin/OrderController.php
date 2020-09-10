@@ -130,7 +130,7 @@ class OrderController extends Controller
 
         $request->validate([
             'id'=>'required|integer',
-            'slot_id'=>'required|integer',
+            'slot_id'=>'required_if:type,clinic|integer',
             'therapist_id'=>'required|integer',
             'status'=>'required|in:pending,confirmed,cancelled,completed',
             'type'=>'required|in:clinic,home'
@@ -138,11 +138,20 @@ class OrderController extends Controller
 
         if($request->type=='clinic'){
             $booking=BookingSlot::with('clinic', 'therapy', 'timeslot')->findOrFail($request->id);
+
+            $booking->update(array_merge($request->only( 'status', 'slot_id'),['assigned_therapist'=>$request->therapist_id]));
+
         }else if($request->type=='home'){
             $booking=HomeBookingSlots::findOrFail($request->id);
+            if(empty($request->slot_id)){
+                $booking->update(array_merge($request->only( 'status'),['assigned_therapist'=>$request->therapist_id]));
+            }else{
+                $booking->update(array_merge($request->only( 'status', 'slot_id'),['assigned_therapist'=>$request->therapist_id]));
+            }
+
         }
 
-        $booking->update($request->only('therapist_id', 'status', 'slot_id'));
+
 
         return redirect()->back()->with('success', 'Booking Has Been Updated');
     }
