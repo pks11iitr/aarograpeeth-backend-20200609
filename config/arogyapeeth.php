@@ -10,6 +10,7 @@ return [
         'cancelled'=>'Cancelled',
         'processing'=>'Processing',
         'dispatched'=>'Dispatched',
+        'delivered'=>'Delivered',
         'return-requested'=>'Return Request',
         'return-accepted'=>'Return Accepted',
         'refunded'=>'Refunded',
