@@ -95,7 +95,7 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Time Slot @if(!isset($booking->slot_id))( Instant Booking/{{$booking->date}} )@endif</label>
-                        <select class="form-control" name="slot_id" required id="time-slots" onchange="getAvailableTherapist1()" required>
+                        <select class="form-control" name="slot_id" required id="time-slots" onchange="getAvailableTherapist1()">
                             <option value="{{$booking->timeslot->id??''}}">{{isset($booking->timeslot)?($booking->timeslot->date.' '.$booking->timeslot->start_time):'Select Time Slot'}}</option>
                         </select>
                     </div>
