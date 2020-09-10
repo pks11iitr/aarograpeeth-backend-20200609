@@ -70,7 +70,7 @@
                         <input type="text" name="city" class="form-control" id="exampleInputEmail3" placeholder="Therapy Name" value="{{$booking->therapy->name??''}}" disabled>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Time Slot( Instant Booking/{{$booking->date}} )</label>
+                        <label for="exampleInputEmail1">Time Slot @if(!isset($booking->slot_id))( Instant Booking/{{$booking->date}} )@endif</label>
                         <select class="form-control" name="slot_id" required id="time-slots" onchange="getAvailableTherapist()" required>
                             <option value="{{$booking->timeslot->id??''}}">{{isset($booking->timeslot)?($booking->timeslot->date.' '.$booking->timeslot->start_time):'Select Time Slot'}}</option>
                         </select>
