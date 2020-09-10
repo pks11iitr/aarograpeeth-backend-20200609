@@ -8,7 +8,7 @@ class HomeBookingSlots extends Model
 {
     protected $table='home_booking_slots';
 
-    protected $fillable=['order_id', 'grade', 'date', 'time', 'display_time', 'status', 'slot_id', 'is_instant'];
+    protected $fillable=['order_id', 'grade', 'date', 'time', 'display_time', 'status', 'slot_id', 'is_instant', 'assigned_therapist'];
 
 
     public function timeslot(){
