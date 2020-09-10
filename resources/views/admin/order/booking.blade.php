@@ -67,7 +67,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Therapy Name</label>
-                        <input type="text" name="city" class="form-control" id="exampleInputEmail3" placeholder="Enter City" value="{{$booking->therapy->name??''}}" disabled>
+                        <input type="text" name="city" class="form-control" id="exampleInputEmail3" placeholder="Therapy Name" value="{{$booking->therapy->name??''}}" disabled>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Time Slot</label>

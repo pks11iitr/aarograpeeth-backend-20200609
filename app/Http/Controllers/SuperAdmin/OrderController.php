@@ -117,7 +117,7 @@ class OrderController extends Controller
         if($request->type=='clinic'){
             $booking=BookingSlot::with('clinic', 'therapy', 'timeslot')->findOrFail($request->id);
         }else if($request->type=='home'){
-            $booking=HomeBookingSlots::findOrFail($request->id);
+            $booking=HomeBookingSlots::with( 'therapy', 'timeslot')->findOrFail($request->id);
         }else{
             return redirect()->back()->with('error', 'Invalid Request');
         }
