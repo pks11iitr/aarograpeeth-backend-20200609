@@ -146,9 +146,13 @@
                                     @else
                                         @foreach($order->homebookingslots as $homebookingslot)
                                             <tr>
+                                                <td>{{$homebookingslot->grade??''}}</td>
+                                                <td>{{$homebookingslot->price??''}}</td>
                                                 <td>{{$homebookingslot->timeslot->date??''}}</td>
                                                 <td>{{$homebookingslot->timeslot->start_time??''}}</td>
+                                                <td></td>
                                                 <td>{{$homebookingslot->status}}</td>
+                                                <td><a href="javascript:void(0)" onclick="getBooking({{$bookingSlot->id}}, 'home')">Edit</a></td>
                                             </tr>
                                         @endforeach
 
