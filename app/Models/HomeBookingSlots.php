@@ -45,6 +45,8 @@ class HomeBookingSlots extends Model
                 'slot_id'=>$slots[$i]->id,
                 'grade'=>$grade,
                 'status'=>$status,
+                'date'=>$slots[$i]->date,
+                'time'=>$slots[$i]->internal_start_time
             ]);
             $alloted++;
             $i++;

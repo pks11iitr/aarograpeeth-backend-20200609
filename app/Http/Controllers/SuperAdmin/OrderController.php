@@ -5,6 +5,7 @@ namespace App\Http\Controllers\SuperAdmin;
 use App\Models\BookingSlot;
 use App\Models\HomeBookingSlots;
 use App\Models\Order;
+use App\Models\TimeSlot;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -140,9 +141,11 @@ class OrderController extends Controller
                 'type'=>'required|in:clinic,home'
             ]);
 
+            $slot=TimeSlot::find($$request->slot_id);
+
             $booking=BookingSlot::with('clinic', 'therapy', 'timeslot')->findOrFail($request->id);
 
-            $booking->update(array_merge($request->only( 'status', 'slot_id'),['assigned_therapist'=>$request->therapist_id]));
+            $booking->update(array_merge($request->only( 'status', 'slot_id'),['assigned_therapist'=>$request->therapist_id, 'date'=>$slot->date, 'time'=>$slot->internal_start_time]));
 
         }else if($request->type=='home'){
 
@@ -153,15 +156,16 @@ class OrderController extends Controller
                 'type'=>'required|in:clinic,home'
             ]);
 
+            $slot=HomeBookingSlots::find($$request->slot_id);
+
             $booking=HomeBookingSlots::findOrFail($request->id);
             if(empty($request->slot_id)){
                 $booking->update(array_merge($request->only( 'status'),['assigned_therapist'=>$request->therapist_id]));
             }else{
-                $booking->update(array_merge($request->only( 'status', 'slot_id'),['assigned_therapist'=>$request->therapist_id]));
+                $booking->update(array_merge($request->only( 'status', 'slot_id'),['assigned_therapist'=>$request->therapist_id, 'date'=>$slot->date, 'time'=>$slot->internal_start_time]));
             }
 
         }
-
 
 
         return redirect()->back()->with('success', 'Booking Has Been Updated');

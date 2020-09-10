@@ -436,7 +436,9 @@ $refid=env('MACHINE_ID').time();
                     'slot_id'=>$slot->id,
                     'grade'=>$request->grade,
                     'status'=>'pending',
-                    'price'=>$cost
+                    'price'=>$cost,
+                    'date'=>$slot->date,
+                    'time'=>$slot->internal_start_time
                 ]);
 
                 //$order->total_cost=$order->total_cost+$cost;
@@ -535,6 +537,9 @@ $refid=env('MACHINE_ID').time();
                     'slot_id'=>$slot->id,
                     'grade'=>$request->grade,
                     'status'=>'pending',
+                    'date'=>$slot->date,
+                    'time'=>$slot->internal_start_time
+
                 ]);
 
 //                switch($request->grade){
