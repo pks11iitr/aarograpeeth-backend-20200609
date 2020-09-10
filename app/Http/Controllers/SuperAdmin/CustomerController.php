@@ -44,10 +44,10 @@ class CustomerController extends Controller
              $request->validate([
                              'status'=>'required',
                   			'name'=>'required',
-                  			'dob'=>'required',
-                  			'address'=>'required',
-                  			'city'=>'required',
-                  			'state'=>'required',
+//                  			'dob'=>'required',
+//                  			'address'=>'required',
+//                  			'city'=>'required',
+//                  			'state'=>'required',
                   			'image'=>'image'
                   			]);
 

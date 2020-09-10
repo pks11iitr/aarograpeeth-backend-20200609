@@ -83,7 +83,7 @@
                                         <th>Cost</th>
                                         <th>Status</th>
                                         <th>Payment Status</th>
-                                        <th>Payment Mode</th>
+{{--                                        <th>Payment Mode</th>--}}
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -101,9 +101,9 @@
                                                 @endif
                                             </td>
                                             <td>{{$order->total_cost}}</td>
-                                            <td>{{$order->status}}</td>
-                                            <td>{{$order->payment_status}}</td>
-                                            <td>{{$order->payment_mode}}</td>
+                                            <td>{{config('arogyapeeth.therapy_status')[$order->status]}}</td>
+                                            <td>{{$order->payment_status=='paid'?'Paid':'Pending'}}</td>
+{{--                                            <td>{{$order->payment_mode}}</td>--}}
                                             <td><a href="{{route('order.view',['id'=>$order->id])}}" class="btn btn-success">View</a>
                                             </td>
                                         </tr>
@@ -118,7 +118,7 @@
                                         <th>Cost</th>
                                         <th>Status</th>
                                         <th>Payment Status</th>
-                                        <th>Payment Mode</th>
+{{--                                        <th>Payment Mode</th>--}}
                                         <th>Action</th>
                                     </tr>
                                     </tfoot>

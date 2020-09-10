@@ -101,9 +101,9 @@
                                                 @endif
                                             </td>
                                             <td>{{$order->total_cost}}</td>
-                                            <td>{{$order->status}}</td>
-                                            <td>{{$order->payment_status}}</td>
-                                            <td>{{$order->payment_mode}}</td>
+                                            <td>{{config('arogyapeeth.product_status')[$order->status]}}</td>
+                                            <td>{{$order->payment_status=='paid'?'Paid':'Pending'}}</td>
+{{--                                            <td>{{$order->payment_mode}}</td>--}}
                                             <td><a href="{{route('order.productdetails',['id'=>$order->id])}}" class="btn btn-success">View</a>
                                             </td>
                                         </tr>

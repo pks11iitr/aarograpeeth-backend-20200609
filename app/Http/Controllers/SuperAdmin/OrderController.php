@@ -34,8 +34,12 @@ class OrderController extends Controller
              if($request->payment_status)
                 $orders=$orders->where('payment_status', $request->payment_status);
 
-            if($request->ordertype)
+            if($request->ordertype){
                 $orders=$orders->orderBy('created_at', $request->ordertype);
+            }else{
+                $orders=$orders->orderBy('created_at', 'DESC');
+            }
+
 
                 $orders=$orders->paginate(10);
 
@@ -70,8 +74,11 @@ class OrderController extends Controller
              if($request->payment_status)
                 $orders=$orders->where('payment_status', $request->payment_status);
 
-            if($request->ordertype)
-                $orders=$orders->orderBy('created_at', $request->ordertype);
+         if($request->ordertype){
+             $orders=$orders->orderBy('created_at', $request->ordertype);
+         }else{
+             $orders=$orders->orderBy('created_at', 'DESC');
+         }
 
                 $orders=$orders->paginate(10);
          //var_dump($orders->toArray());die();

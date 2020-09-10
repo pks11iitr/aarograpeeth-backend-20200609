@@ -596,12 +596,12 @@ $refid=env('MACHINE_ID').time();
         $therapy_id=$order->details[0]->entity_id;
 
         if($order->details[0]->clinic_id){
-            $bookings=BookingSlot::with('timeslot')
+            $bookings=BookingSlot::with(['timeslot', 'review'])
                 ->where('order_id', $order->id)
                 ->orderBy('slot_id', 'asc')
                 ->get();
         }else{
-            $bookings=HomeBookingSlots::with('timeslot')
+            $bookings=HomeBookingSlots::with(['timeslot', 'review'])
                 ->where('order_id',$order->id)
                 ->orderBy('slot_id', 'asc')
                 ->get();
@@ -632,7 +632,8 @@ $refid=env('MACHINE_ID').time();
                 'grade'=>$grade,
                 'id'=>$schedule->id,
                 'show_cancel'=>in_array($order->status,['confirmed'])?1:0,
-                'show_reschedule'=>in_array($order->status,['confirmed'])?1:0
+                'show_reschedule'=>in_array($order->status,['confirmed'])?1:0,
+                'show_review'=>($schedule->status=='completed')?(!empty($schedule->review)?0:1):0
             ];
         }
 
@@ -791,7 +792,7 @@ $refid=env('MACHINE_ID').time();
         //get reviews information
         $reviews=[];
         if($order->status=='completed'){
-            $reviews=$order->reviews;
+            $reviews=$order->reviews()->where('session_id', null)->get();
             foreach($reviews as $review){
                 $reviews[$review->entity_id]=$review;
             }
@@ -814,7 +815,8 @@ $refid=env('MACHINE_ID').time();
                     'booking_date'=>$order->booking_date,
                     'booking_time'=>$order->booking_time,
                     'item_id'=>$detail->entity_id,
-                    'show_review'=>0
+                    'show_review'=>in_array($order->status,['completed'])?(empty($order->details[0]->clinic_id)?(isset($reviews[$detail->entity_id])?0:1):0):0,
+                    'show_clinic_review'=>in_array($order->status,['completed'])?(!empty($order->details[0]->clinic_id)?(isset($reviews[$detail->entity_id])?0:1):0):0
                 ];
             }
             else{
@@ -827,7 +829,8 @@ $refid=env('MACHINE_ID').time();
                     'booking_date'=>$order->booking_date,
                     'booking_time'=>$order->booking_time,
                     'item_id'=>$detail->entity_id,
-                    'show_review'=>isset($reviews[$detail->entity_id])?0:1
+                    'show_review'=>in_array($order->status,['completed'])?(isset($reviews[$detail->entity_id])?0:1):0,
+                    'show_clinic_review'=>0
                 ];
             }
         }
