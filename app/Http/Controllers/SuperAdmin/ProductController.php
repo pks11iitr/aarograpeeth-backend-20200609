@@ -120,6 +120,7 @@ class ProductController extends Controller
                                'file_path.*'=>'image'
                                ]);
                 $product=Product::find($id);
+
               foreach($request->file_path as $file){
                 $product->saveDocument($file, 'products');
                   }

@@ -44,8 +44,10 @@ class TherapistWorkController extends Controller
                 'therapiest_work_id'=>$id,
                 'disease_id'=>$request->disease_id,
             ]))
+
+            //var_dump($disease);die();
         {
-            return redirect()->back()->with('success', 'detailstore has been added');
+            return redirect()->with('success', 'detailstore has been added');
         }
         return redirect()->back()->with('error', 'detailstore create failed');
 

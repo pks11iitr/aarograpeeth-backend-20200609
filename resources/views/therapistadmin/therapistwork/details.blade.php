@@ -3,7 +3,7 @@
 
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    {{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--}}
     <style>
         /** {
             box-sizing: border-box;
@@ -176,20 +176,19 @@
                                     <!-- One "tab" for each step in the form: -->
                                     <div class="tab" class="form-group">
                                         <h3>Pain Point:</h3>
-
                                         @foreach($painpoints as $painpoint)
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="exampleCheck1" value="{{$painpoint->name}}">
+                                                <input type="checkbox" class="form-check-input" id="exampleCheck1" name="pain_point_id" value="{{$painpoint->id}}">
                                                 <label class="form-check-label" for="exampleCheck1">{{$painpoint->name}}</label>
                                             </div>
                                         @endforeach
                                         <br>
 
+                                        <!-- One "tab" for each step in the form: -->
                                     <h3>Disease it Any:</h3>
-                                    <!-- One "tab" for each step in the form: -->
                                         @foreach($diseases as $disease)
                                             <div class="form-check">
-                                                <input type="checkbox" class="form-check-input" id="exampleCheck2" value="{{$disease->name}}">
+                                                <input type="checkbox" class="form-check-input" id="exampleCheck2" name="disease_id" value="{{$disease->id}}">
                                                 <label class="form-check-label" for="exampleCheck2">{{$disease->name}}</label>
                                             </div>
                                         @endforeach
@@ -216,10 +215,10 @@
                                     </div>
                                     <!-- Circles which indicates the steps of the form: -->
                                     <div style="text-align:center;margin-top:40px;">
-                                        <span class="step"></span>
-                                        <span class="step"></span>
-                                        <span class="step"></span>
-                                        <span class="step"></span>
+                                        <span class="step1"></span>
+                                        <span class="step2"></span>
+                                        <span class="step3"></span>
+                                        <span class="step4"></span>
                                     </div>
                                     {{-----------------------------------------------------------------------------------}}
                                     <!-- /.card-body -->
@@ -315,7 +314,7 @@
                 x[n].className += " active";
             }
         </script>
-
+        <!-- ./wrapper -->
         <script>
             $(document).ready(function(){
                 $('input:checkbox').click(function() {
@@ -323,10 +322,7 @@
                 });
             });
         </script>
-
-
-
-
+        <!-- ./wrapper -->
     </div>
     <!-- ./wrapper -->
 
