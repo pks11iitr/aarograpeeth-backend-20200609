@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ClinicAdmin;
 
+use App\Models\Clinic;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -10,7 +11,13 @@ use Illuminate\Support\Facades\Hash;
 class TherapistController extends Controller
 {
     public function index(Request $request){
-        $users=User::where(function($users) use($request){
+
+        $user=auth()->user();
+        $clinic =Clinic::where('user_id',$user->id)->first();
+
+        $users=User::with(['reviews'])
+        ->where('clinic_id', $clinic->id)
+        ->where(function($users) use($request){
             $users->where('name','LIKE','%'.$request->search.'%');
         });
 
@@ -19,11 +26,11 @@ class TherapistController extends Controller
 
         $users=$users->paginate(10);
 
-        return view('clinicadmin.therapistadmin.view',['users'=>$users]);
+        return view('clinicadmin.therapist.view',['therapists'=>$users]);
     }
 
     public function create(Request $request){
-        return view('clinicadmin.therapistadmin.add');
+        return view('clinicadmin.therapist.add');
     }
 
     public function store(Request $request){
@@ -50,7 +57,7 @@ class TherapistController extends Controller
 
     public function edit(Request $request,$id){
         $user =User::findOrFail($id);
-        return view('clinicadmin.therapistadmin.edit',['user'=>$user]);
+        return view('clinicadmin.therapist.edit',['user'=>$user]);
     }
 
     public function update(Request $request,$id){

@@ -32,7 +32,7 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form role="form" method="post" enctype="multipart/form-data" action="{{route('therapistadmin.store')}}">
+                            <form role="form" method="post" enctype="multipart/form-data" action="{{route('clinicadmin.therapist.store')}}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">

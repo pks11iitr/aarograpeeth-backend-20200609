@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\ReviewTrait;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Kodeine\Acl\Traits\HasRole;
 class User extends Authenticatable
 {
-    use Notifiable,HasRole;
+    use Notifiable,HasRole,ReviewTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -39,4 +40,5 @@ class User extends Authenticatable
     public function bookings(){
         return $this->hasMany('App\Models\BookingSlot', 'assigned_therapist');
     }
+
 }

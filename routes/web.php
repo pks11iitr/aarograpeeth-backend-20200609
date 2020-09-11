@@ -147,22 +147,20 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
 
 
 Route::group(['prefix'=>'partners', 'middleware'=>['auth', 'acl'], 'is'=>'clinic-admin'], function() {
-    Route::get('/dashboard', 'ClinicAdmin\DashboardController@index')->name('clinic.home');
+    Route::get('/dashboard', 'ClinicAdmin\DashboardController@index')->name('clinicadmin.home');
 
     Route::group(['prefix'=>'order'], function(){
-        Route::get('/','ClinicAdmin\OrderController@index')->name('order.list');
+        Route::get('/','ClinicAdmin\OrderController@index')->name('clinicadmin.order.list');
         Route::get('details/{id}','ClinicAdmin\OrderController@details')->name('clinicadmin.order.details');
-        Route::get('edit/{id}','ClinicAdmin\OrderController@edit')->name('order.edit');
-        Route::post('store','ClinicAdmin\OrderController@store')->name('order.store');
-
+        Route::get('edit/{id}','ClinicAdmin\OrderController@edit')->name('clinicadmin.order.edit');
     });
 
-    Route::group(['prefix'=>'therapistadmin'], function(){
-        Route::get('/','ClinicAdmin\TherapistController@index')->name('therapistadmin.list');
-        Route::get('create','ClinicAdmin\TherapistController@create')->name('therapistadmin.create');
-        Route::post('store','ClinicAdmin\TherapistController@store')->name('therapistadmin.store');
-        Route::get('edit/{id}','ClinicAdmin\TherapistController@edit')->name('therapistadmin.edit');
-        Route::post('update/{id}','ClinicAdmin\TherapistController@update')->name('therapistadmin.update');
+    Route::group(['prefix'=>'therapist'], function(){
+        Route::get('/','ClinicAdmin\TherapistController@index')->name('clinicadmin.therapist.list');
+        Route::get('create','ClinicAdmin\TherapistController@create')->name('clinicadmin.therapist.create');
+        Route::post('store','ClinicAdmin\TherapistController@store')->name('clinicadmin.therapist.store');
+        Route::get('edit/{id}','ClinicAdmin\TherapistController@edit')->name('clinicadmin.therapist.edit');
+        Route::post('update/{id}','ClinicAdmin\TherapistController@update')->name('clinicadmin.therapist.update');
 
     });
 
