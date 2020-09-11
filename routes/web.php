@@ -151,7 +151,7 @@ Route::group(['prefix'=>'partners', 'middleware'=>['auth', 'acl'], 'is'=>'clinic
 
     Route::group(['prefix'=>'order'], function(){
         Route::get('/','ClinicAdmin\OrderController@index')->name('order.list');
-        Route::get('details/{id}','ClinicAdmin\OrderController@details')->name('order.details');
+        Route::get('details/{id}','ClinicAdmin\OrderController@details')->name('clinicadmin.order.details');
         Route::get('edit/{id}','ClinicAdmin\OrderController@edit')->name('order.edit');
         Route::post('store','ClinicAdmin\OrderController@store')->name('order.store');
 
