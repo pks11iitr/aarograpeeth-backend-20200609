@@ -18,8 +18,8 @@
         </div>
       </div><!-- /.container-fluid -->
     </section>
-    
-    
+
+
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -40,23 +40,23 @@
                     <label for="exampleInputEmail1">Name</label>
                     <input type="text" name="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name" value="{{$customers->name}}">
                   </div>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">DOB</label>
-                    <input type="text" name="dob" class="form-control" id="exampleInputEmail1" placeholder="Enter Description" value="{{$customers->dob}}">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Address</label>
-                    <input type="text" name="address" class="form-control" id="exampleInputEmail1" placeholder="Enter Address" value="{{$customers->address}}">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">City</label>
-                    <input type="text" name="city" class="form-control" id="exampleInputEmail1" placeholder="Enter City" value="{{$customers->city}}">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">State</label>
-                    <input type="text" name="state" class="form-control" id="exampleInputEmail1" placeholder="Enter State" value="{{$customers->state}}">
-                  </div>
-              
+{{--                  <div class="form-group">--}}
+{{--                    <label for="exampleInputEmail1">DOB</label>--}}
+{{--                    <input type="text" name="dob" class="form-control" id="exampleInputEmail1" placeholder="Enter Description" value="{{$customers->dob}}">--}}
+{{--                  </div>--}}
+{{--                  <div class="form-group">--}}
+{{--                    <label for="exampleInputEmail1">Address</label>--}}
+{{--                    <input type="text" name="address" class="form-control" id="exampleInputEmail1" placeholder="Enter Address" value="{{$customers->address}}">--}}
+{{--                  </div>--}}
+{{--                  <div class="form-group">--}}
+{{--                    <label for="exampleInputEmail1">City</label>--}}
+{{--                    <input type="text" name="city" class="form-control" id="exampleInputEmail1" placeholder="Enter City" value="{{$customers->city}}">--}}
+{{--                  </div>--}}
+{{--                  <div class="form-group">--}}
+{{--                    <label for="exampleInputEmail1">State</label>--}}
+{{--                    <input type="text" name="state" class="form-control" id="exampleInputEmail1" placeholder="Enter State" value="{{$customers->state}}">--}}
+{{--                  </div>--}}
+
                     <div class="form-group">
                         <label>Is Active</label>
                         <select class="form-control" name="status" required>
@@ -71,13 +71,13 @@
                       <div class="custom-file">
                         <input type="file" name="image" class="custom-file-input" id="exampleInputFile" accept="image/*">
                         <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                         
+
                       </div>
                       <div class="input-group-append">
                         <span class="input-group-text" id="">Upload</span>
-                        
+
                       </div>
-                      
+
                     </div>
                   </div>
                   <image src="{{$customers->image}}" height="100" width="200">
@@ -96,7 +96,7 @@
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-  
+
 </div>
 <!-- ./wrapper -->
 @endsection

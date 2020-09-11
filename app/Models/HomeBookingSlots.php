@@ -56,4 +56,8 @@ class HomeBookingSlots extends Model
         return $this->belongsTo('App\Models\Order', 'order_id');
     }
 
+    public function review(){
+        return $this->hasOne('App\Models\Review', 'session_id')->where('reviews.entity_type', 'App\Models\Therapist');
+    }
+
 }

@@ -46,7 +46,6 @@ $api->get('topdeals-products', ['as'=>'product.deals', 'uses'=>'Customer\Api\Pro
 $api->get('bestseller-products', ['as'=>'product.deals', 'uses'=>'Customer\Api\ProductController@bestseller']);
 
 $api->get('reviews/{type}/{id}', ['as'=>'reviews', 'uses'=>'Customer\Api\ReviewController@index']);
-$api->post('reviews/{order_id}/{item_id}', ['as'=>'reviews.post', 'uses'=>'Customer\Api\ReviewController@post']);
 
 $api->get('search', ['as'=>'search', 'uses'=>'Customer\Api\SearchController@index']);
 
@@ -125,6 +124,10 @@ $api->group(['middleware' => ['customer-auth']], function ($api) {
     $api->post('initiate-reschedule-payment/{order_id}/{booking_id}', ['as'=>'reschedule.payment.initiate', 'uses'=>'Customer\Api\PaymentController@initiateReschedulePayment']);
 
     $api->post('verify-reschedule-payment', ['as'=>'reschedule.payment.verify', 'uses'=>'Customer\Api\PaymentController@verifyReschedulePayment']);
+
+    $api->post('reviews/{order_id}/{item_id}', ['as'=>'reviews.post.item', 'uses'=>'Customer\Api\ReviewController@post']);
+
+    $api->post('review-session/{order_id}/{session_id}', ['as'=>'reviews.post.session', 'uses'=>'Customer\Api\ReviewController@postSessionReview']);
 
 
 });
