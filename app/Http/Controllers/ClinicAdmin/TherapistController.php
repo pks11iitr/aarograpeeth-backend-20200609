@@ -14,7 +14,8 @@ class TherapistController extends Controller
     public function index(Request $request){
 
         $user=auth()->user();
-        $clinic =Clinic::where('user_id',$user->id)->first();
+        $clinic =Clinic::where('user_id',$user->id)
+            ->firstOrFail();
 
         $users=User::with(['reviews'])
         ->where('clinic_id', $clinic->id)
@@ -47,11 +48,12 @@ class TherapistController extends Controller
         ]);
 
         $user=auth()->user();
-        $clinic =Clinic::where('user_id',$user->id)->first();
+        $clinic =Clinic::where('user_id',$user->id)->firstOrFail();
 
         $therapist=User::where('email', $request->email)
             ->orWhere('mobile', $request->mobile)
             ->first();
+
         if($therapist)
             return redirect()->back()->with('error', 'Email or Mobile already registered with us');
 
@@ -76,7 +78,7 @@ class TherapistController extends Controller
 
     public function edit(Request $request,$id){
         $user=auth()->user();
-        $clinic =Clinic::where('user_id',$user->id)->first();
+        $clinic =Clinic::where('user_id',$user->id)->firstOrFail();
         $user =User::where('clinic_id', $clinic->id)->findOrFail($id);
         return view('clinicadmin.therapist.edit',['user'=>$user]);
     }

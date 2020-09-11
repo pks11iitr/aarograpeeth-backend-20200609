@@ -67,7 +67,7 @@ class ClinicController extends Controller
              $clinic = Clinic::findOrFail($id);
              $documents = $clinic->gallery;
              $therapys=Therapy::where('isactive',1)->get();
-             $clinictherapys=ClinicTherapy::where('clinic_id',$id)->paginate(5);
+             $clinictherapys=ClinicTherapy::where('clinic_id',$id)->get();
              return view('admin.clinic.edit',['clinic'=>$clinic,'documents'=>$documents,'therapys'=>$therapys,'clinictherapys'=>$clinictherapys]);
              }
 

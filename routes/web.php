@@ -149,6 +149,10 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
 Route::group(['prefix'=>'partners', 'middleware'=>['auth', 'acl'], 'is'=>'clinic-admin'], function() {
     Route::get('/dashboard', 'ClinicAdmin\DashboardController@index')->name('clinicadmin.home');
 
+    Route::get('/profile', 'ClinicAdmin\ProfileController@view')->name('clinicadmin.profile');
+    Route::post('/profile', 'ClinicAdmin\ProfileController@update');
+
+
     Route::group(['prefix'=>'order'], function(){
         Route::get('/','ClinicAdmin\OrderController@index')->name('clinicadmin.order.list');
         Route::get('details/{id}','ClinicAdmin\OrderController@details')->name('clinicadmin.order.details');
