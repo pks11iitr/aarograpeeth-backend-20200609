@@ -35,29 +35,36 @@
                             <form role="form" method="post" enctype="multipart/form-data" action="{{route('clinicadmin.therapist.update',['id'=>$user->id])}}">
                                 @csrf
                                 <div class="card-body">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Name</label>
-                                        <input type="text" name="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name" value="{{$user->name}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Email</label>
-                                        <input type="text" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Email" value="{{$user->email}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Mobile</label>
-                                        <input type="text" name="mobile" class="form-control" id="exampleInputEmail1" placeholder="Enter mobile" value="{{$user->mobile}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Password</label>
-                                        <input type="text" name="password" class="form-control" id="exampleInputEmail1" placeholder="Enter password" value="{{$user->password}}">
-                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Name</label>
+                                            <input type="text" name="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name" value="{{$user->name}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Mobile</label>
+                                            <input type="text" name="mobile" class="form-control" id="exampleInputEmail1" placeholder="Enter mobile" value="{{$user->mobile}}">
+                                        </div>
 
-                                    <div class="form-group">
-                                        <label>Status</label>
-                                        <select class="form-control" name="status" required>
-                                            <option value="1" {{$user->status==1?'selected':''}} >Yes</option>
-                                            <option value="0" {{$user->status==0?'selected':''}} >No</option>
-                                        </select>
+
+                                        <div class="form-group">
+                                            <label>Status</label>
+                                            <select class="form-control" name="status" required>
+                                                <option value="1" {{$user->status==1?'selected':''}} >Yes</option>
+                                                <option value="0" {{$user->status==0?'selected':''}} >No</option>
+                                            </select>
+                                        </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Email</label>
+                                                <input type="text" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Email" value="{{$user->email}}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Password</label>
+                                                <input type="text" name="password" class="form-control" id="exampleInputEmail1" placeholder="Enter password" value="{{$user->password}}">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- /.card-body -->
