@@ -12,14 +12,14 @@ use Storage;
 class ProductController extends Controller
 {
      public function index(Request $request){
-		 
+
 		 $products=Product::where(function($products) use($request){
                 $products->where('name','LIKE','%'.$request->search.'%');
             });
-            
+
             if($request->ordertype)
                 $products=$products->orderBy('name', $request->ordertype);
-                
+
             $products=$products->paginate(10);
             return view('admin.product.view',['products'=>$products]);
               }
@@ -119,6 +119,7 @@ class ProductController extends Controller
                                'file_path.*'=>'image'
                                ]);
                 $product=Product::find($id);
+
               foreach($request->file_path as $file){
                 $product->saveDocument($file, 'products');
                   }

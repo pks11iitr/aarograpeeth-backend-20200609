@@ -64,9 +64,7 @@
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="far fa fa-user"></i>
                 </a>
-                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <a class="dropdown-item dropdown-header">Settings</a>
-                    <div class="dropdown-divider"></div>
+                <div class="dropdown-menu dropdown-menu-right">
                     <a href="{{ route('logout') }}"
                        onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();" class="dropdown-item dropdown-header">Logout</a>
