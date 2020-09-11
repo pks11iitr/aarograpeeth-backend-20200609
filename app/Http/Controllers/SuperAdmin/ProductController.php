@@ -13,7 +13,8 @@ class ProductController extends Controller
 {
      public function index(Request $request){
 
-		 $products=Product::where(function($products) use($request){
+		 $products=Product::with('reviews')
+             ->where(function($products) use($request){
                 $products->where('name','LIKE','%'.$request->search.'%');
             });
 

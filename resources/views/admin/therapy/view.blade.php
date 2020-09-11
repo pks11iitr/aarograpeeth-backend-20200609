@@ -72,7 +72,7 @@
                   <tbody>
 				@foreach($therapist as $therapy)
                   <tr>
-					  <td>{{$therapy->name}}</td>
+                      <td>{{$therapy->name}}<br><span style="color:darkblue">Reviews:{{$therapy->reviews()->count()}}</span><br><span style="color:green">Reviews:{{number_format($therapy->reviews()->avg('rating'),1)}}</span></td>
 					  <!--<td>{{$therapy->description}}</td>-->
 					  <td>{{$therapy->grade1_price}}</td>
 					  <td>{{$therapy->grade2_price}}</td>

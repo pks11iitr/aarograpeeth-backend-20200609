@@ -83,7 +83,7 @@
                                         <th>Cost</th>
                                         <th>Status</th>
                                         <th>Payment Status</th>
-                                        <th>Payment Mode</th>
+{{--                                        <th>Payment Mode</th>--}}
                                         <th>Action</th>
                                     </tr>
                                     </thead>
@@ -118,7 +118,7 @@
                                         <th>Cost</th>
                                         <th>Status</th>
                                         <th>Payment Status</th>
-                                        <th>Payment Mode</th>
+{{--                                        <th>Payment Mode</th>--}}
                                         <th>Action</th>
                                     </tr>
                                     </tfoot>

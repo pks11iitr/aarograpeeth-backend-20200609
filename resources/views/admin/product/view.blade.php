@@ -74,7 +74,7 @@
                   <tbody>
 				@foreach($products as $product)
                   <tr>
-					  <td>{{$product->name}}</td>
+                      <td>{{$product->name}}<br><span style="color:darkblue">Reviews:{{$product->reviews()->count()}}</span><br><span style="color:green">Reviews:{{number_format($product->reviews()->avg('rating'),1)}}</span></td>
 {{--					  <td>{{$product->description}}</td>--}}
 					  <td>{{$product->company}}</td>
 					  <td>{{$product->price}}</td>

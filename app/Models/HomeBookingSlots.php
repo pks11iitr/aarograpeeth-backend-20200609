@@ -8,11 +8,18 @@ class HomeBookingSlots extends Model
 {
     protected $table='home_booking_slots';
 
-    protected $fillable=['order_id', 'grade', 'date', 'time', 'display_time', 'status', 'slot_id', 'is_instant'];
+    protected $fillable=['order_id', 'grade', 'date', 'time', 'display_time', 'status', 'slot_id', 'is_instant', 'assigned_therapist', 'therapy_id', 'therapist_status', 'start_time', 'end_time'];
 
+    public function assignedTo(){
+        return $this->belongsTo('App\Models\Therapist', 'assigned_therapist');
+    }
 
     public function timeslot(){
         return $this->belongsTo('App\Models\DailyBookingsSlots', 'slot_id');
+    }
+
+    public function therapy(){
+        return $this->belongsTo('App\Models\Therapy', 'therapy_id');
     }
 
 
@@ -38,6 +45,8 @@ class HomeBookingSlots extends Model
                 'slot_id'=>$slots[$i]->id,
                 'grade'=>$grade,
                 'status'=>$status,
+                'date'=>$slots[$i]->date,
+                'time'=>$slots[$i]->internal_start_time
             ]);
             $alloted++;
             $i++;
