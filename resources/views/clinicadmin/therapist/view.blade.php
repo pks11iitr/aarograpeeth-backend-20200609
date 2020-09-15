@@ -58,33 +58,35 @@
                                     <thead>
                                     <tr>
                                         <th>Name</th>
-                                        <th>Bookings</th>
+{{--                                        <th>Bookings</th>--}}
                                         <th>email</th>
-                                        <th>mobile</th>
+{{--                                        <th>mobile</th>--}}
                                         <th>address</th>
-                                        <th>city</th>
-                                        <th>state</th>
+{{--                                        <th>city</th>--}}
+{{--                                        <th>state</th>--}}
                                         <th>Image</th>
                                         <th>Isactive</th>
-                                        <th>Action</th>
+                                        <th>Bookings</th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach($therapists as $therapist)
                                         <tr>
                                             <td>{{$therapist->name}}<br><span style="color:darkblue">Reviews:{{$therapist->reviews()->count()}}</span><br><span style="color:green">Reviews:{{number_format($therapist->reviews()->avg('rating'),1)}}</span></td>
-                                            <td>{{$therapist->bookings()->where('status', 'completed')->count()}}</td>
-                                            <td>{{$therapist->email}}</td>
-                                            <td>{{$therapist->mobile}}</td>
-                                            <td>{{$therapist->address}}</td>
-                                            <td>{{$therapist->city}}</td>
-                                            <td>{{$therapist->state}}</td>
+{{--                                            <td>{{$therapist->bookings()->where('status', 'completed')->count()}}</td>--}}
+                                            <td>{{$therapist->email}}<br>{{$therapist->mobile}}</td>
+{{--                                            <td>{{$therapist->mobile}}</td>--}}
+                                            <td>{{$therapist->address}}<br>{{$therapist->city}},{{$therapist->state}}</td>
+{{--                                            <td>{{$therapist->city}}</td>--}}
+{{--                                            <td>{{$therapist->state}}</td>--}}
                                             <td><img src="{{$therapist->image}}" height="80px" width="80px"/></td>
                                             <td>
                                                 @if($therapist->isactive==1){{'Yes'}}
                                                 @else{{'No'}}
                                                 @endif
                                             </td>
+                                            <td><a href="{{route('clinicadmin.therapist.edit',['id'=>$therapist->id])}}" class="">Pending&nbsp;&nbsp;({{$therapist->bookings()->where('status', '!=', 'completed')->count()}})</a><br><a href="{{route('clinicadmin.therapist.edit',['id'=>$therapist->id])}}" class="">Completed&nbsp;&nbsp;({{$therapist->bookings()->where('status',  'completed')->count()}})</a></td>
                                             <td><a href="{{route('clinicadmin.therapist.edit',['id'=>$therapist->id])}}" class="btn btn-primary">Edit</a></td>
                                         </tr>
                                     @endforeach

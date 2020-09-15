@@ -57,8 +57,6 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::post('store','SuperAdmin\ClinicController@store')->name('clinic.store');
         Route::get('edit/{id}','SuperAdmin\ClinicController@edit')->name('clinic.edit');
         Route::post('update/{id}','SuperAdmin\ClinicController@update')->name('clinic.update');
-        Route::post('document/{id}','SuperAdmin\ClinicController@document')->name('clinic.document');
-        Route::get('delete/{id}','SuperAdmin\ClinicController@delete')->name('clinic.delete');
         Route::post('therapystore/{id}','SuperAdmin\ClinicController@therapystore')->name('clinic.therapystore');
         Route::get('therapyeedit/{id}','SuperAdmin\ClinicController@therapyedit')->name('clinic.therapyedit');
         Route::post('therapyeedit/{id}','SuperAdmin\ClinicController@therapyupdate');
@@ -145,6 +143,16 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
 
 });
 
+Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin|clinic-admin'], function(){
+
+    Route::group(['prefix'=>'clinic'], function(){
+        Route::post('document/{id}','SuperAdmin\ClinicController@document')->name('clinic.document');
+        Route::get('delete/{id}','SuperAdmin\ClinicController@delete')->name('clinic.delete');
+    });
+
+});
+
+
 
 Route::group(['prefix'=>'partners', 'middleware'=>['auth', 'acl'], 'is'=>'clinic-admin'], function() {
     Route::get('/dashboard', 'ClinicAdmin\DashboardController@index')->name('clinicadmin.home');
@@ -152,6 +160,7 @@ Route::group(['prefix'=>'partners', 'middleware'=>['auth', 'acl'], 'is'=>'clinic
     Route::get('/profile', 'ClinicAdmin\ProfileController@view')->name('clinicadmin.profile');
     Route::post('/profile', 'ClinicAdmin\ProfileController@update');
 
+    Route::post('/add-therapy', 'ClinicAdmin\ProfileController@therapystore')->name('clinicadmin.therapy.add');
 
     Route::group(['prefix'=>'order'], function(){
         Route::get('/','ClinicAdmin\OrderController@index')->name('clinicadmin.order.list');

@@ -182,7 +182,7 @@
                                         <th>Grade 3</th>
                                         <th>Grade 4</th>
                                         <th>Isactive</th>
-                                        <th>Action</th>
+{{--                                        <th>Action</th>--}}
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -199,22 +199,11 @@
                                                 @endif
                                             </td>
                                             {{--                                          <td><a href="{{route('clinic.therapyedelete',['id'=>$clinictherapy->id])}}" class="btn btn-success">Delete</a><br><br>--}}
-                                            <td><a href="{{route('clinic.therapyedit',['id'=>$clinictherapy->id])}}" class="btn btn-success">Edit</a>
-                                            </td>
+{{--                                            <td><a href="{{route('clinic.therapyedit',['id'=>$clinictherapy->id])}}" class="btn btn-success">Edit</a>--}}
+{{--                                            </td>--}}
                                         </tr>
                                     @endforeach
                                     </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Threapy Name</th>
-                                        <th>Grade 1 </th>
-                                        <th>Grade 2 </th>
-                                        <th>Grade 3</th>
-                                        <th>Grade 4</th>
-                                        <th>Isactive</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </tfoot>
                                 </table>
                             </div>
 
@@ -241,7 +230,7 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form role="form" method="post" enctype="multipart/form-data" action="{{route('clinic.therapystore',['id'=>$clinic->id])}}">
+                            <form role="form" method="post" enctype="multipart/form-data" action="{{route('clinicadmin.therapy.add')}}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="row">
@@ -303,16 +292,6 @@
                                                 <input type="text" name="grade4_original_price" class="form-control" id="exampleInputEmail1" placeholder="Enter price" >
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Is Active</label>
-                                                <select name="isactive" class="form-control" id="exampleInputistop" placeholder="">
-                                                    <option value="1">Yes</option>
-                                                    <option value="0">No</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
                                 <!-- /.card-body -->
