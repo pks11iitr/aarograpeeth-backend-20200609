@@ -48,6 +48,9 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::post('document/{id}','SuperAdmin\TherapistController@document')->name('therapy.document');
         Route::get('delete/{id}','SuperAdmin\TherapistController@delete')->name('therapy.delete');
 
+       Route::get('available-therapists','SuperAdmin\TherapistController@getAvailableHomeTherapist')->name('therapy.available.therapist');
+       Route::get('available-slots','SuperAdmin\TherapistController@getAvailableTimeSlots')->name('therapy.available.slots');
+
     });
   Route::group(['prefix'=>'clinic'], function(){
         Route::get('/','SuperAdmin\ClinicController@index')->name('clinic.list');
@@ -55,11 +58,15 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::post('store','SuperAdmin\ClinicController@store')->name('clinic.store');
         Route::get('edit/{id}','SuperAdmin\ClinicController@edit')->name('clinic.edit');
         Route::post('update/{id}','SuperAdmin\ClinicController@update')->name('clinic.update');
-        Route::post('document/{id}','SuperAdmin\ClinicController@document')->name('clinic.document');
-        Route::get('delete/{id}','SuperAdmin\ClinicController@delete')->name('clinic.delete');
         Route::post('therapystore/{id}','SuperAdmin\ClinicController@therapystore')->name('clinic.therapystore');
         Route::get('therapyeedit/{id}','SuperAdmin\ClinicController@therapyedit')->name('clinic.therapyedit');
         Route::post('therapyeedit/{id}','SuperAdmin\ClinicController@therapyupdate');
+
+        Route::get('available-therapists','SuperAdmin\ClinicController@getAvailableTherapistInClinic')->name('clinic.available.therapist');
+        Route::get('available-slots','SuperAdmin\ClinicController@getAvailableTimeSlots')->name('clinic.available.slots');
+
+
+
     });
     Route::group(['prefix'=>'customer'], function(){
         Route::get('/','SuperAdmin\CustomerController@index')->name('customer.list');
@@ -83,6 +90,10 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::get('product','SuperAdmin\OrderController@product')->name('orders.product');
         Route::get('productdetails/{id}','SuperAdmin\OrderController@productdetails')->name('order.productdetails');
         Route::get('change-status/{id}','SuperAdmin\OrderController@changeStatus')->name('orders.status.change');
+
+        Route::get('booking-edit','SuperAdmin\OrderController@editTherapySession')->name('order.booking.edit');
+        Route::post('booking-edit','SuperAdmin\OrderController@updateTherapySession');
+
     });
 
     Route::group(['prefix'=>'complain'], function(){
@@ -126,29 +137,44 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::post('therapystore/{id}','SuperAdmin\NewTherapistController@therapystore')->name('therapists.therapystore');
         Route::get('therapyedit/{id}','SuperAdmin\NewTherapistController@therapyedit')->name('therapists.therapyedit');
         Route::post('therapyupdate/{id}','SuperAdmin\NewTherapistController@therapyupdate')->name('therapists.therapyupdate');
+        Route::get('available-therapists','SuperAdmin\TherapistController@getAvailableHomeTherapist')->name('therapy.available.therapist');
+        Route::get('available-slots','SuperAdmin\TherapistController@getAvailableTimeSlots')->name('therapy.available.slots');
 
     });
 
 });
 
+Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin|clinic-admin'], function(){
 
-Route::group(['prefix'=>'partners', 'middleware'=>['auth', 'acl'], 'is'=>'clinic-admin'], function() {
-    Route::get('/dashboard', 'ClinicAdmin\DashboardController@index')->name('clinic.home');
-
-    Route::group(['prefix'=>'order'], function(){
-        Route::get('/','ClinicAdmin\OrderController@index')->name('order.list');
-        Route::get('details/{id}','ClinicAdmin\OrderController@details')->name('order.details');
-        Route::get('edit/{id}','ClinicAdmin\OrderController@edit')->name('order.edit');
-        Route::post('store','ClinicAdmin\OrderController@store')->name('order.store');
-
+    Route::group(['prefix'=>'clinic'], function(){
+        Route::post('document/{id}','SuperAdmin\ClinicController@document')->name('clinic.document');
+        Route::get('delete/{id}','SuperAdmin\ClinicController@delete')->name('clinic.delete');
     });
 
-    Route::group(['prefix'=>'therapistadmin'], function(){
-        Route::get('/','ClinicAdmin\TherapistController@index')->name('therapistadmin.list');
-        Route::get('create','ClinicAdmin\TherapistController@create')->name('therapistadmin.create');
-        Route::post('store','ClinicAdmin\TherapistController@store')->name('therapistadmin.store');
-        Route::get('edit/{id}','ClinicAdmin\TherapistController@edit')->name('therapistadmin.edit');
-        Route::post('update/{id}','ClinicAdmin\TherapistController@update')->name('therapistadmin.update');
+});
+
+
+
+Route::group(['prefix'=>'partners', 'middleware'=>['auth', 'acl'], 'is'=>'clinic-admin'], function() {
+    Route::get('/dashboard', 'ClinicAdmin\DashboardController@index')->name('clinicadmin.home');
+
+    Route::get('/profile', 'ClinicAdmin\ProfileController@view')->name('clinicadmin.profile');
+    Route::post('/profile', 'ClinicAdmin\ProfileController@update');
+
+    Route::post('/add-therapy', 'ClinicAdmin\ProfileController@therapystore')->name('clinicadmin.therapy.add');
+
+    Route::group(['prefix'=>'order'], function(){
+        Route::get('/','ClinicAdmin\OrderController@index')->name('clinicadmin.order.list');
+        Route::get('details/{id}','ClinicAdmin\OrderController@details')->name('clinicadmin.order.details');
+        Route::get('edit/{id}','ClinicAdmin\OrderController@edit')->name('clinicadmin.order.edit');
+    });
+
+    Route::group(['prefix'=>'therapist'], function(){
+        Route::get('/','ClinicAdmin\TherapistController@index')->name('clinicadmin.therapist.list');
+        Route::get('create','ClinicAdmin\TherapistController@create')->name('clinicadmin.therapist.create');
+        Route::post('store','ClinicAdmin\TherapistController@store')->name('clinicadmin.therapist.store');
+        Route::get('edit/{id}','ClinicAdmin\TherapistController@edit')->name('clinicadmin.therapist.edit');
+        Route::post('update/{id}','ClinicAdmin\TherapistController@update')->name('clinicadmin.therapist.update');
 
     });
 

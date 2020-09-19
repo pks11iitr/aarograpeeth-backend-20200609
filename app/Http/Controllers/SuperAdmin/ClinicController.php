@@ -7,6 +7,7 @@ use App\Models\Clinic;
 use App\Models\Document;
 use App\Models\Therapy;
 use App\Models\ClinicTherapy;
+use App\Models\TimeSlot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Storage;
@@ -14,14 +15,16 @@ use Storage;
 class ClinicController extends Controller
 {
      public function index(Request $request){
-		 
-		 $clinics=Clinic::where(function($clinics) use($request){
+
+		 $clinics=Clinic::with('reviews')
+
+            ->where(function($clinics) use($request){
                 $clinics->where('name','LIKE','%'.$request->search.'%');
             });
-            
+
             if($request->ordertype)
                 $clinics=$clinics->orderBy('name', $request->ordertype);
-                
+
             $clinics=$clinics->paginate(10);
             return view('admin.clinic.view',['clinics'=>$clinics]);
               }
@@ -64,7 +67,7 @@ class ClinicController extends Controller
              $clinic = Clinic::findOrFail($id);
              $documents = $clinic->gallery;
              $therapys=Therapy::where('isactive',1)->get();
-             $clinictherapys=ClinicTherapy::where('clinic_id',$id)->paginate(5);
+             $clinictherapys=ClinicTherapy::where('clinic_id',$id)->get();
              return view('admin.clinic.edit',['clinic'=>$clinic,'documents'=>$documents,'therapys'=>$therapys,'clinictherapys'=>$clinictherapys]);
              }
 
@@ -209,9 +212,23 @@ class ClinicController extends Controller
         return redirect()->back()->with('error', 'Clinic create failed');
     }
 
-          public function therapyedelete(Request $request, $id){
+      public function therapyedelete(Request $request, $id){
            ClinicTherapy::where('id', $id)->delete();
            return redirect()->back()->with('success', 'Clinic Therapy has been deleted');
+      }
+
+        public function getAvailableTherapistInClinic(Request $request){
+            $clinic=Clinic::findOrFail($request->clinic_id);//die;
+            return $clinic->getAvailableTherapist($request->slot_id);
         }
+
+
+        public function getAvailableTimeSlots(Request $request){
+            $clinic=Clinic::findOrFail($request->clinic_id);
+            $slots=TimeSlot::getTimeSlotsForAdmin($clinic, $request->date, $request->grade);
+            return $slots;
+
+        }
+
 
   }

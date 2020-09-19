@@ -35,54 +35,62 @@
                             <form role="form" method="post" enctype="multipart/form-data" action="{{route('therapists.update',['id'=>$therapist->id])}}">
                                 @csrf
                                 <div class="card-body">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Name</label>
-                                        <input type="text" name="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name" value="{{$therapist->name}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Email</label>
-                                        <input type="text" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Email" value="{{$therapist->email}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Mobile</label>
-                                        <input type="text" name="mobile" class="form-control" id="exampleInputEmail1" placeholder="Enter mobile" value="{{$therapist->mobile}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Password</label>
-                                        <input type="text" name="password" class="form-control" id="exampleInputEmail1" placeholder="Enter password" value="{{$therapist->password}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Address</label>
-                                        <input type="text" name="address" class="form-control" id="exampleInputEmail1" placeholder="Enter address" value="{{$therapist->address}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">City</label>
-                                        <input type="text"name="city" class="form-control" id="exampleInputEmail1" placeholder="Enter city" value="{{$therapist->city}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">State</label>
-                                        <input type="text"name="state" class="form-control" id="exampleInputEmail1" placeholder="Enter state" value="{{$therapist->state}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Is Active</label>
-                                        <select class="form-control" name="isactive" required>
-                                            <option value="1" {{$therapist->isactive==1?'selected':''}} >Yes</option>
-                                            <option value="0" {{$therapist->isactive==0?'selected':''}} >No</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputFile">File input</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" name="image" class="custom-file-input" id="exampleInputFile" accept="image/*">
-                                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Name</label>
+                                                <input type="text" name="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name" value="{{$therapist->name}}" required>
                                             </div>
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="">Upload</span>
+
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Mobile</label>
+                                                <input type="text" name="mobile" class="form-control" id="exampleInputEmail1" placeholder="Enter mobile" value="{{$therapist->mobile}}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">City</label>
+                                                <input type="text"name="city" class="form-control" id="exampleInputEmail1" placeholder="Enter city" value="{{$therapist->city}}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">State</label>
+                                                <input type="text"name="state" class="form-control" id="exampleInputEmail1" placeholder="Enter state" value="{{$therapist->state}}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Is Active</label>
+                                                <select class="form-control" name="isactive" required>
+                                                    <option value="1" {{$therapist->isactive==1?'selected':''}} >Yes</option>
+                                                    <option value="0" {{$therapist->isactive==0?'selected':''}} >No</option>
+                                                </select>
+                                            </div>
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Email</label>
+                                                    <input type="text" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Email" value="{{$therapist->email}}" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Password (Leave Blank If Unchanged)</label>
+                                                    <input type="text" name="password" class="form-control" id="exampleInputEmail1" placeholder="Enter password" value="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Address</label>
+                                                    <input type="text" name="address" class="form-control" id="exampleInputEmail1" placeholder="Enter address" value="{{$therapist->address}}" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputFile">File input</label>
+                                                    <div class="input-group">
+                                                        <div class="custom-file">
+                                                            <input type="file" name="image" class="custom-file-input" id="exampleInputFile" accept="image/*">
+                                                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                                        </div>
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text" id="">Upload</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <image src="{{$therapist->image}}" height="100" width="200"/>
                                             </div>
                                         </div>
-                                    </div>
-                                    <image src="{{$therapist->image}}" height="100" width="200">
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">

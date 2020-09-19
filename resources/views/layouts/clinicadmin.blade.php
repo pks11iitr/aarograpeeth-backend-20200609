@@ -109,17 +109,27 @@
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
                     <li class="nav-item has-treeview menu-open">
-                        <a href="{{route('clinic.home')}}" class="nav-link active">
+                        <a href="{{route('clinicadmin.home')}}" class="nav-link active">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
                                 Dashboard
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('clinicadmin.profile')}}" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Profile
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                    </li>
                     <!--**************************************************************************************************-->
 
                     <li class="nav-item">
-                        <a href="{{route('order.list')}}" class="nav-link">
+                        <a href="{{route('clinicadmin.order.list')}}" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
                                 Orders
@@ -128,7 +138,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{route('therapistadmin.list')}}" class="nav-link">
+                        <a href="{{route('clinicadmin.therapist.list')}}" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
                                 Therapist

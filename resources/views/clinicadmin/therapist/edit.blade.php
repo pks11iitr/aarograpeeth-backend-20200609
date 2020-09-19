@@ -32,32 +32,64 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form role="form" method="post" enctype="multipart/form-data" action="{{route('therapistadmin.update',['id'=>$user->id])}}">
+                            <form role="form" method="post" enctype="multipart/form-data" action="{{route('clinicadmin.therapist.update',['id'=>$user->id])}}">
                                 @csrf
                                 <div class="card-body">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Name</label>
-                                        <input type="text" name="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name" value="{{$user->name}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Email</label>
-                                        <input type="text" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Email" value="{{$user->email}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Mobile</label>
-                                        <input type="text" name="mobile" class="form-control" id="exampleInputEmail1" placeholder="Enter mobile" value="{{$user->mobile}}">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Password</label>
-                                        <input type="text" name="password" class="form-control" id="exampleInputEmail1" placeholder="Enter password" value="{{$user->password}}">
-                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Name</label>
+                                                <input type="text" name="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name" value="{{$user->name}}" required>
+                                            </div>
 
-                                    <div class="form-group">
-                                        <label>Status</label>
-                                        <select class="form-control" name="status" required>
-                                            <option value="1" {{$user->status==1?'selected':''}} >Yes</option>
-                                            <option value="0" {{$user->status==0?'selected':''}} >No</option>
-                                        </select>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Mobile</label>
+                                                <input type="text" name="mobile" class="form-control" id="exampleInputEmail1" placeholder="Enter mobile" value="{{$user->mobile}}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">City</label>
+                                                <input type="text"name="city" class="form-control" id="exampleInputEmail1" placeholder="Enter city" value="{{$user->city}}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">State</label>
+                                                <input type="text"name="state" class="form-control" id="exampleInputEmail1" placeholder="Enter state" value="{{$user->state}}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Is Active</label>
+                                                <select class="form-control" name="isactive" required>
+                                                    <option value="1" {{$user->isactive==1?'selected':''}} >Yes</option>
+                                                    <option value="0" {{$user->isactive==0?'selected':''}} >No</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Email</label>
+                                                <input type="text" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter Email" value="{{$user->email}}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Password (Leave Blank If Unchanged)</label>
+                                                <input type="text" name="password" class="form-control" id="exampleInputEmail1" placeholder="Enter password" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Address</label>
+                                                <input type="text" name="address" class="form-control" id="exampleInputEmail1" placeholder="Enter address" value="{{$user->address}}" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputFile">File input</label>
+                                                <div class="input-group">
+                                                    <div class="custom-file">
+                                                        <input type="file" name="image" class="custom-file-input" id="exampleInputFile" accept="image/*">
+                                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                                    </div>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text" id="">Upload</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <image src="{{$user->image}}" height="100" width="200"/>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- /.card-body -->

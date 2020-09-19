@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Clinic;
+use App\Models\DailyBookingsSlots;
+use App\Models\Therapist;
 use App\Models\Therapy;
 use App\Models\Document;
+use App\Models\TimeSlot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Storage;
@@ -12,7 +16,8 @@ use Storage;
 class TherapistController extends Controller
 {
      public function index(Request $request){
-		 $therapist=Therapy::where(function($therapist) use($request){
+		 $therapist=Therapy::with(['reviews'])
+         ->where(function($therapist) use($request){
                 $therapist->where('name','LIKE','%'.$request->search.'%');
             });
 
@@ -121,4 +126,26 @@ class TherapistController extends Controller
            Document::where('id', $id)->delete();
            return redirect()->back()->with('success', 'Document has been deleted');
         }
+
+
+    public function getAvailableHomeTherapist(Request $request){
+        $therapist=Therapist::active()->whereHas('therapies', function($therapies) use($request){
+            $therapies->where('therapies.id', $request->therapy_id);
+        })
+            ->whereDoesntHave('bookings', function($bookings) use($request){
+                $bookings->where('slot_id', $request->slot_id);
+            })
+            ->select('id', 'name')
+            ->get();//die;
+
+        return $therapist;
+    }
+
+
+    public function getAvailableTimeSlots(Request $request){
+        $therapy=Therapy::findOrFail($request->therapy_id);
+        $slots=DailyBookingsSlots::getTimeSlotsForAdmin($therapy, $request->date, $request->grade);
+        return $slots;
+
+    }
   }

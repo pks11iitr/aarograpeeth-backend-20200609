@@ -8,10 +8,10 @@ class BookingSlot extends Model
 {
     protected $table='bookings_slots';
 
-    protected $fillable=['order_id', 'clinic_id', 'therapy_id', 'slot_id', 'status', 'grade'];
+    protected $fillable=['order_id', 'clinic_id', 'therapy_id', 'slot_id', 'status', 'grade', 'price', 'assigned_therapist', 'date', 'time'];
 
 
-    public static function createAutomaticSchedule($order, $grade, $slot, $num_sessions, $status){
+    public static function createAutomaticSchedule($order, $grade, $slot, $num_sessions, $status, $cost){
         //var_dump($slot->toArray());die;
 
         $booked_slots=BookingSlot::with('timeslot')
@@ -70,6 +70,9 @@ class BookingSlot extends Model
                     'slot_id'=>$slots[$i]->id,
                     'grade'=>$grade,
                     'status'=>$status,
+                    'price'=>$cost,
+                    'date'=>$slots[$i]->date,
+                    'time'=>$slot->internal_start_time
                 ]);
                 $alloted+=1;
             }
@@ -84,6 +87,8 @@ class BookingSlot extends Model
                         'slot_id'=>$slots[$i]->id,
                         'grade'=>$grade,
                         'status'=>$status,
+                        'date'=>$slots[$i]->date,
+                        'time'=>$slot->internal_start_time
                     ]);
                     $alloted+=1;
                 }
@@ -108,6 +113,14 @@ class BookingSlot extends Model
 
     public function assignedTo(){
         return $this->belongsTo('App\Models\User', 'assigned_therapist');
+    }
+
+    public function clinic(){
+        return $this->belongsTo('App\Models\Clinic', 'clinic_id');
+    }
+
+    public function therapy(){
+        return $this->belongsTo('App\Models\Therapy', 'therapy_id');
     }
 
 }

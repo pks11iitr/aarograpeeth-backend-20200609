@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Hash;
 class NewTherapistController extends Controller
 {
     public function index(Request $request){
-        $therapists=Therapist::where(function($therapists) use($request){
+        $therapists=Therapist::with(['reviews','bookings'])
+        ->where(function($therapists) use($request){
             $therapists->where('name','LIKE','%'.$request->search.'%');
         });
 
@@ -38,6 +39,12 @@ class NewTherapistController extends Controller
             'state'=>'required',
             'image'=>'required|image'
         ]);
+
+        $therapist=Therapist::where('email', $request->email)
+            ->orWhere('mobile', $request->mobile)
+            ->first();
+        if($therapist)
+            return redirect()->back()->with('error', 'Email or Mobile already registered with us');
 
         if($therapist=Therapist::create([
             'isactive'=>$request->isactive,
@@ -75,29 +82,23 @@ class NewTherapistController extends Controller
             'image'=>'image'
         ]);
         $therapist = Therapist::findOrFail($id);
-        if($request->image){
-            $therapist->update([
-                'isactive'=>$request->isactive,
-                'name'=>$request->name,
-                'email'=>$request->email,
-                'mobile'=>$request->mobile,
-                'address'=>$request->address,
-                'city'=>$request->city,
-                'state'=>$request->state,
-                'password'=>Hash::make($request->password),
-                'image'=>'a']);
-            $therapist->saveImage($request->image, 'therapists');
-        }else{
-            $therapist->update([
-                'isactive'=>$request->isactive,
-                'name'=>$request->name,
-                'email'=>$request->email,
-                'mobile'=>$request->mobile,
-                'address'=>$request->address,
-                'city'=>$request->city,
-                'state'=>$request->state,
-                'password'=>Hash::make($request->password),]);
+        $therapist->update([
+            'isactive'=>$request->isactive,
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'mobile'=>$request->mobile,
+            'address'=>$request->address,
+            'city'=>$request->city,
+            'state'=>$request->state,
+            //'password'=>Hash::make($request->password),
+        ]);
+        if($request->password){
+            $therapist->password=Hash::make($request->password);
+            $therapist->save();
         }
+
+        if(!empty($request->image))
+            $therapist->saveImage($request->image, 'therapists');
         if($therapist)
         {
             return redirect()->route('therapists.list')->with('success', 'Therapist has been updated');

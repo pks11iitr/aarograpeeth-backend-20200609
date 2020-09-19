@@ -20,7 +20,7 @@ use App\Http\Controllers\Controller;
 class TherapiestOrderController extends Controller
 {
 
-    public function openbooking(Request $request){
+    public function openbooking1(Request $request){
         $user=$request->user;
         $order=[];
         $openbooking=TherapiestWork::with('therapieswork.therapiesorder.details.entity')->where('therapist_id', $user->id)->where('status','Pending')->get();
@@ -51,7 +51,41 @@ class TherapiestOrderController extends Controller
 
     }
 
-    public function openbookingdetails(Request $request,$id){
+    public function openbooking(Request $request){
+        $user=$request->user;
+        $order=[];
+        $openbooking=HomeBookingSlots::with(['therapy','timeslot', 'order'])
+            ->where('therapist_id', $user->id)
+            ->where('therapist_status','Pending')
+            ->get();
+        if($openbooking) {
+            foreach ($openbooking as $item) {
+                $order[]=array(
+                    'status'=>$item->therapist_status,
+                    'display_time'=>$item->timeslot->display_time??$item->time,
+                    'time'=>$item->therapieswork->time,
+                    'created_at'=>$item->created_at,
+                    'refid'=>$item->order->refid,
+                    'therapy_name'=>$item->therapy->name,
+                    'image'=>$item->therapy->image,
+                    'id'=>$item->id
+                );
+            }
+            return [
+                'status' => 'success',
+                'data' =>compact('order'),
+            ];
+
+        }
+        return [
+            'status'=>'failed',
+            'message'=>'No Therapy Found'
+        ];
+
+
+    }
+
+    public function openbookingdetails1(Request $request,$id){
         $user=$request->user;
         $userlat=$request->lat;
         //$userlat="28.618528";
@@ -113,15 +147,78 @@ class TherapiestOrderController extends Controller
 
 
     }
+    public function openbookingdetails(Request $request,$id){
+        $user=$request->user;
+        $userlat=$request->lat;
+        //$userlat="28.618528";
+        $userlang=$request->lang;
+       // $userlang="77.372627";
+
+        $openbookingdetails=HomeBookingSlots::with(['therapy','timeslot', 'order'])
+            ->find($id);
+        //instant timing
+        if($openbookingdetails) {
+            if($openbookingdetails->is_instant==0){
+              $timing=  ($openbookingdetails->timeslot->date??$openbookingdetails->date)." ".($openbookingdetails->timeslot->start_time??$openbookingdetails->time);
+            }else{
+                $timing='Instant';
+            }
+           // distance calculate
+            $lat=  $openbookingdetails->order->lat;
+            $lang= $openbookingdetails->order->lang;
+            $delta_lat = $lat - $userlat ;
+            $delta_lon = $lang - $userlang ;
+
+            $earth_radius = 6372.795477598;
+
+            $alpha    = $delta_lat/2;
+            $beta     = $delta_lon/2;
+            $a        = sin(deg2rad($alpha)) * sin(deg2rad($alpha)) + cos(deg2rad($userlat)) * cos(deg2rad($lat)) * sin(deg2rad($beta)) * sin(deg2rad($beta)) ;
+            $c        = asin(min(1, sqrt($a)));
+            $distance = 2*$earth_radius * $c;
+            $distance = round($distance, 4);
+            //button show
+            if($openbookingdetails->therapist_status=='Pending'){
+                $buttonshow="start_journey";
+            }elseif($openbookingdetails->therapist_status=='Confirmed'){
+                $buttonshow="start_therapies";
+            }else{
+                $buttonshow="hide";
+            }
+            return [
+                'status' => 'success',
+                'booking_status'=>$openbookingdetails->therapist_status,
+                'total_cost'=>$openbookingdetails->price,
+                'schedule_type'=>$openbookingdetails->order->schedule_type,
+                'name'=>$openbookingdetails->order->name,
+                'mobile'=>$openbookingdetails->order->mobile,
+                'address'=>$openbookingdetails->order->address,
+                'distance_away'=>$distance,
+                'timing'=>$timing,
+                'buttonshow'=>$buttonshow,
+                'therapy_name'=>$openbookingdetails->therapy->entity->name,
+                'image'=>$openbookingdetails->therapy->image,
+                'id'=>$id
+                /*'data' =>$openbookingdetails,*/
+            ];
+
+        }
+        return [
+            'status'=>'failed',
+            'message'=>'No Therapy Found'
+        ];
+
+
+    }
     public function journey_started(Request $request, $id){
         $user=$request->user;
-        $updatejourney=TherapiestWork::find($id);
-        if($updatejourney->status=='Pending'){
-            $updatejourney->status='Confirmed';
+        $updatejourney=HomeBookingSlots::find($id);
+        if($updatejourney->therapist_status=='Pending'){
+            $updatejourney->therapist_status='Confirmed';
             $updatejourney->save();
-        }elseif($updatejourney->status=='Confirmed'){
-            $updatejourney->status='Started';
-            $updatejourney->start_time=date("h:i:s");
+        }elseif($updatejourney->therapist_status=='Confirmed'){
+            $updatejourney->therapist_status='Started';
+            $updatejourney->start_time=date("Y-m-d H:i:s");
             $updatejourney->save();
         }
         if($updatejourney){
@@ -180,20 +277,20 @@ class TherapiestOrderController extends Controller
                 'disease_id' => $disease_id
             ]);
         }
-        $updatejourney=TherapiestWork::find($id);
-        if($updatejourney->status=='Started'){
-            $updatejourney->status='Diagnosed';
+        $updatejourney=HomeBookingSlots::find($id);
+        if($updatejourney->therapist_status=='Started'){
+            $updatejourney->therapist_status='Diagnosed';
             $updatejourney->save();
         }
- if($updatejourney) {
-     return [
-         'status' => 'success'
-     ];
- }else{
-     return [
-         'status' => 'failed'
-     ];
- }
+         if($updatejourney) {
+             return [
+                 'status' => 'success'
+             ];
+         }else{
+             return [
+                 'status' => 'failed'
+             ];
+         }
     }
     public function treatmentlist(Request $request){
 
@@ -218,9 +315,9 @@ class TherapiestOrderController extends Controller
         $request->validate([
             'treatment_id'=>'required',
         ]);
-        $updatejourney=TherapiestWork::find($id);
-        if($updatejourney->status=='Diagnosed'){
-            $updatejourney->status='TreatmentSelected';
+        $updatejourney=HomeBookingSlots::find($id);
+        if($updatejourney->therapist_status=='Diagnosed'){
+            $updatejourney->therapist_status='TreatmentSelected';
             $updatejourney->treatment_id=$request->treatment_id;
             $updatejourney->save();
         }
@@ -267,10 +364,12 @@ class TherapiestOrderController extends Controller
         //  'painpoint_id'=>'required',
       ]);
 
-        $therapiestwork=TherapiestWork::find($id);
+        $therapiestwork=HomeBookingSlots::find($id);
         if($therapiestwork->count()>0 ){
            $therapiestwork->message=$request->message;
-           $therapiestwork->end_time=$request->end_time;
+           $therapiestwork->end_time=date('Y-m-d H:i:s');
+           $therapiestwork->therapist_status='Completed';
+           $therapiestwork->status='completed';
           $therapiestwork->save();
           // $arrdisease_id= explode(",", $request->painpoint_id);
           // $arrdisease_id= explode(",", $request->disease_id);

@@ -75,7 +75,7 @@
                         </select>
                     </div>
                   <div class="form-group">
-                    <label for="exampleInputFile">File input</label>
+                    <label for="exampleInputFile">Thumbnail Image</label>
                     <div class="input-group">
                       <div class="custom-file">
                         <input type="file" name="image" class="custom-file-input" id="exampleInputFile" accept="image/*" required>

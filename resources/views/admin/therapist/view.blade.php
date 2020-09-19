@@ -59,6 +59,7 @@
                                     <thead>
                                     <tr>
                                         <th>Name</th>
+                                        <th>Bookings</th>
                                         <th>email</th>
                                         <th>mobile</th>
                                         <th>address</th>
@@ -72,7 +73,8 @@
                                     <tbody>
                                     @foreach($therapists as $therapist)
                                         <tr>
-                                            <td>{{$therapist->name}}</td>
+                                            <td>{{$therapist->name}}<br><span style="color:darkblue">Reviews:{{$therapist->reviews()->count()}}</span><br><span style="color:green">Reviews:{{number_format($therapist->reviews()->avg('rating'),1)}}</span></td>
+                                            <td>{{$therapist->bookings()->where('status', 'completed')->count()}}</td>
                                             <td>{{$therapist->email}}</td>
                                             <td>{{$therapist->mobile}}</td>
                                             <td>{{$therapist->address}}</td>

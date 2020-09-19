@@ -299,6 +299,54 @@ class TimeSlot extends Model
         }
     }
 
+    public static function getTimeSlotsForAdmin($clinic, $date, $grade)
+    {
+
+        $tsids = [];
+        $booking_data = [];
+        $total_used=[];
+        $timeslots = TimeSlot::where('clinic_id', $clinic->id)->where('date', $date)->orderBy('internal_start_time', 'asc')->get();
+
+        //return $timeslots;
+
+        foreach ($timeslots as $ts)
+            $tsids[] = $ts->id;
+        //return $tsids;
+        if ($tsids){
+            $bookings = BookingSlot::whereIn('slot_id', $tsids)
+                ->where('status', 'confirmed')
+                ->groupBy('slot_id', 'grade')
+                ->select(DB::raw('count(*) as count'), 'slot_id', 'grade')
+                ->get();
+            //return $bookings;
+            foreach ($bookings as $b) {
+                if (!isset($booking_data[$b->slot_id])) {
+                    $booking_data[$b->slot_id] = [];
+                }
+                if(!isset($total_used[$b->grade]))
+                    $total_used[$b->grade]=0;
+                $booking_data[$b->slot_id][$b->grade] = $b->count;
+                $total_used[$b->grade]=$total_used[$b->grade]+$b->count;
+            }
+        }
+
+        $slots = [];
+
+        foreach ($timeslots as $ts) {
+                    $grade1='grade_'.$grade;
+                    if ($ts->$grade1 > 0) {
+                        $check=self::checkSlotAvailablity($ts, $booking_data, 1);
+                        $check['start_time']=$ts->start_time;
+                        $check['date']=$ts->date;
+                        $slots[] = $check;
+                    }
+        }
+
+        return $slots;
+
+    }
+
+
     public static function calculateRemainingSlotCount($total, $used){
         if($total-$used > 0)
             return $total-$used;
