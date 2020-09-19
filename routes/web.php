@@ -38,6 +38,7 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::post('update/{id}','SuperAdmin\BannerController@update')->name('banners.update');
         Route::get('delete/{id}','SuperAdmin\BannerController@delete')->name('banners.delete');
     });
+   
    Route::group(['prefix'=>'therapy'], function(){
         Route::get('/','SuperAdmin\TherapistController@index')->name('therapy.list');
         Route::get('create','SuperAdmin\TherapistController@create')->name('therapy.create');
