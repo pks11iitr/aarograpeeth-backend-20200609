@@ -23,4 +23,21 @@ class Review extends Model
         return $this->belongsTo('App\Models\Customer', 'user_id');
     }
 
+    public function clinic(){
+        return $this->belongsTo('App\Models\Clinic', 'entity_id');
+    }
+
+    public function therapy(){
+        return $this->belongsTo('App\Models\Therapy', 'entity_id');
+    }
+
+    public function product(){
+        return $this->belongsTo('App\Models\Product', 'entity_id');
+    }
+
+    public function user(){
+        return $this->belongsTo('App\Models\User', 'entity_id');
+    }
+
+
 }
