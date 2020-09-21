@@ -125,7 +125,7 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
     Route::group(['prefix'=>'sessions'], function(){
         Route::get('list/{type}','SuperAdmin\SessionController@index')->name('sessions.list');
         Route::get('details/{type}/{id}','SuperAdmin\SessionController@details')->name('session.details');
-        Route::get('therapist/{type}/{id}','SuperAdmin\SessionController@details')->name('therapist.sessions');
+        Route::get('therapist/{type}/{id}','SuperAdmin\SessionController@index')->name('therapist.sessions');
     });
 
 

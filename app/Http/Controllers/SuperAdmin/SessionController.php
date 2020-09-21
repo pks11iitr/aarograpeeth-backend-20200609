@@ -20,7 +20,7 @@ class SessionController extends Controller
 
     public function getClinicSessionList(Request $request, $therapist_id){
         if($therapist_id){
-            $sessions=BookingSlot::where('assigned_therapist', $therapist_id)
+            $sessions=BookingSlot::with(['clinic','assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order'])->where('assigned_therapist', $therapist_id)
             ->orderBy('id', 'desc')->paginate(10);
         }else{
             $sessions=BookingSlot::orderBy('id', 'desc')->paginate(10);
@@ -32,7 +32,7 @@ class SessionController extends Controller
 
     public function getTherapySessionList(Request $request, $therapist_id){
         if($therapist_id){
-            $sessions=HomeBookingSlots::where('assigned_therapist', $therapist_id)
+            $sessions=HomeBookingSlots::with(['assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order'])->where('assigned_therapist', $therapist_id)
                 ->orderBy('id', 'desc')->paginate(10);
         }else{
             $sessions=HomeBookingSlots::orderBy('id', 'desc')->paginate(10);
