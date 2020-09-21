@@ -69,4 +69,16 @@ class HomeBookingSlots extends Model
         return $this->hasOne('App\Models\Review', 'session_id')->where('reviews.entity_type', 'App\Models\Therapist');
     }
 
+    public function diseases(){
+        return $this->belongsToMany('App\Models\Disease', 'customer_disease', 'therapiest_work_id', 'disease_id')->where('type', 'therapy');
+    }
+
+    public function painpoints(){
+        return $this->belongsToMany('App\Models\PainPoint', 'Customer_point_pain','therapiest_work_id', 'pain_point_id')->withPivot('related_rating')->where('type', 'therapy');
+    }
+
+    public function treatment(){
+        return $this->belongsTo('App\Models\Treatment', 'treatment_id');
+    }
+
 }

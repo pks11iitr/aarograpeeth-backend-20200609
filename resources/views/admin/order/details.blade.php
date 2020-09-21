@@ -119,6 +119,7 @@
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
+                                        <th>Session ID</th>
                                         <th>Grade</th>
                                         <th>Price</th>
                                         <th>Date</th>
@@ -133,6 +134,7 @@
 
                                         @foreach($order->bookingSlots()->with(['timeslot', 'assignedTo'])->get() as $bookingSlot)
                                             <tr>
+                                                <td><a href="{{route('session.details', ['type'=>'clinic-session', 'id'=>$bookingSlot->id])}}">SESSION{{$bookingSlot->id??''}}</a></td>
                                                 <td>{{$bookingSlot->grade??''}}</td>
 
                                                 <td>Rs. {{$bookingSlot->price??''}}</td>                                               <td>{{$bookingSlot->timeslot->date??''}}</td>
@@ -146,7 +148,7 @@
                                     @else
                                         @foreach($order->homebookingslots as $homebookingslot)
                                             <tr>
-                                                <td>{{$homebookingslot->grade??''}}</td>
+                                                <td><a href="{{route('session.details', ['type'=>'therapist-session', 'id'=>$bookingSlot->id])}}">SESSION{{$bookingSlot->id??''}}</a></td>    <td>{{$homebookingslot->grade??''}}</td>
                                                 <td>{{$homebookingslot->price??''}}</td>
                                                 <td>{{$homebookingslot->timeslot->date??$homebookingslot->date}}</td>
                                                 <td>{{$homebookingslot->timeslot->start_time??$homebookingslot->time}}</td>

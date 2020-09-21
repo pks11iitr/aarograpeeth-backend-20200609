@@ -123,7 +123,14 @@ class ClinicController extends Controller
                     'file_path.*'=>'required|image'
                 ]);
 
-                $clinic=Clinic::find($id);
+                $user=auth()->user();
+                if($user->hasRole('admin'))
+                    $clinic=Clinic::findOrFail($id);
+                else if($user->hasRole('clinic-admin'))
+                    $clinic=Clinic::where('user_id', $user->id)->findOrFail($id);
+                else
+                    return redirect()->back()->with('error', 'Access Denied');
+
               foreach($request->file_path as $file){
                 $clinic->saveDocument($file, 'clinics');
                   }
@@ -134,7 +141,21 @@ class ClinicController extends Controller
           }
 
      public function delete(Request $request, $id){
-           Document::where('id', $id)->delete();
+
+         $user=auth()->user();
+         if($user->hasRole('admin'))
+             Document::where('id', $id)->delete();
+         else if($user->hasRole('clinic-admin')){
+                 $document=Document::with('entity')
+                ->where('documents.id', $id)->firstOrFail();
+                 if($document && $document->entity->user_id==$user->id)
+                     $document->delete();
+
+             //dd($document);
+         }
+         else
+             return redirect()->back()->with('error', 'Access Denied');
+
            return redirect()->back()->with('success', 'Document has been deleted');
         }
 

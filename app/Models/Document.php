@@ -14,7 +14,7 @@ class Document extends Model
     protected $hidden = ['created_at','deleted_at','updated_at','entity_id', 'entity_type'];
 
     public function entity(){
-        $this->morphTo();
+        return $this->morphTo();
     }
 
     public function getFilePathAttribute($value){

@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use App\Models\BaseModel as Model;
+use App\Models\Traits\DocumentUploadTrait;
 use Illuminate\Support\Facades\Storage;
 
 class Clinic extends Model
 {
+    use DocumentUploadTrait;
+
     protected $table = 'clinics';
 
     protected $fillable=['name','description','address','city','state','contact','lat','lang','image','isactive'];

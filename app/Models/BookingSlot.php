@@ -123,4 +123,16 @@ class BookingSlot extends Model
         return $this->belongsTo('App\Models\Therapy', 'therapy_id');
     }
 
+    public function diseases(){
+        return $this->belongsToMany('App\Models\Disease', 'customer_disease', 'therapiest_work_id', 'disease_id')->where('type', 'clinic');
+    }
+
+    public function painpoints(){
+        return $this->belongsToMany('App\Models\PainPoint', 'Customer_point_pain','therapiest_work_id', 'pain_point_id')->where('type', 'clinic');
+    }
+
+    public function treatment(){
+        return $this->belongsTo('App\Models\Treatment', 'treatment_id');
+    }
+
 }
