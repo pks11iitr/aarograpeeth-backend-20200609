@@ -175,6 +175,12 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
 
     });
 
+    Route::group(['prefix'=>'review'], function(){
+        Route::get('/','SuperAdmin\ReviewController@index')->name('review.list');
+        Route::get('status/{id}/{isactive}','SuperAdmin\ReviewController@status')->name('review.status');
+
+    });
+
 });
 
 Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin|clinic-admin'], function(){
