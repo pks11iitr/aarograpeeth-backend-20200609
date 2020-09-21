@@ -147,8 +147,32 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{route('disease.list')}}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Disease
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('painpoint.list')}}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Pain Point
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('treatment.list')}}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Treatment
+                            </p>
+                        </a>
+                    </li>
 
-                     <li class="nav-item">
+                    <li class="nav-item">
                         <a href="{{route('therapy.list')}}" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>

@@ -38,7 +38,35 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::post('update/{id}','SuperAdmin\BannerController@update')->name('banners.update');
         Route::get('delete/{id}','SuperAdmin\BannerController@delete')->name('banners.delete');
     });
-   Route::group(['prefix'=>'therapy'], function(){
+
+    Route::group(['prefix'=>'disease'], function(){
+        Route::get('/','SuperAdmin\DiseaseController@index')->name('disease.list');
+        Route::get('create','SuperAdmin\DiseaseController@create')->name('disease.create');
+        Route::post('store','SuperAdmin\DiseaseController@store')->name('disease.store');
+        Route::get('edit/{id}','SuperAdmin\DiseaseController@edit')->name('disease.edit');
+        Route::post('update/{id}','SuperAdmin\DiseaseController@update')->name('disease.update');
+        Route::get('delete/{id}','SuperAdmin\DiseaseController@delete')->name('disease.delete');
+    });
+
+    Route::group(['prefix'=>'painpoint'], function(){
+        Route::get('/','SuperAdmin\PainPointController@index')->name('painpoint.list');
+        Route::get('create','SuperAdmin\PainPointController@create')->name('painpoint.create');
+        Route::post('store','SuperAdmin\PainPointController@store')->name('painpoint.store');
+        Route::get('edit/{id}','SuperAdmin\PainPointController@edit')->name('painpoint.edit');
+        Route::post('update/{id}','SuperAdmin\PainPointController@update')->name('painpoint.update');
+        Route::get('delete/{id}','SuperAdmin\PainPointController@delete')->name('painpoint.delete');
+    });
+
+    Route::group(['prefix'=>'treatment'], function(){
+        Route::get('/','SuperAdmin\TreatmentController@index')->name('treatment.list');
+        Route::get('create','SuperAdmin\TreatmentController@create')->name('treatment.create');
+        Route::post('store','SuperAdmin\TreatmentController@store')->name('treatment.store');
+        Route::get('edit/{id}','SuperAdmin\TreatmentController@edit')->name('treatment.edit');
+        Route::post('update/{id}','SuperAdmin\TreatmentController@update')->name('treatment.update');
+        Route::get('delete/{id}','SuperAdmin\TreatmentController@delete')->name('treatment.delete');
+    });
+
+    Route::group(['prefix'=>'therapy'], function(){
         Route::get('/','SuperAdmin\TherapistController@index')->name('therapy.list');
         Route::get('create','SuperAdmin\TherapistController@create')->name('therapy.create');
         Route::post('store','SuperAdmin\TherapistController@store')->name('therapy.store');
@@ -46,11 +74,11 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::post('update/{id}','SuperAdmin\TherapistController@update')->name('therapy.update');
         Route::post('document/{id}','SuperAdmin\TherapistController@document')->name('therapy.document');
         Route::get('delete/{id}','SuperAdmin\TherapistController@delete')->name('therapy.delete');
-
        Route::get('available-therapists','SuperAdmin\TherapistController@getAvailableHomeTherapist')->name('therapy.available.therapist');
        Route::get('available-slots','SuperAdmin\TherapistController@getAvailableTimeSlots')->name('therapy.available.slots');
 
     });
+
   Route::group(['prefix'=>'clinic'], function(){
         Route::get('/','SuperAdmin\ClinicController@index')->name('clinic.list');
         Route::get('create','SuperAdmin\ClinicController@create')->name('clinic.create');
@@ -64,15 +92,15 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::get('available-therapists','SuperAdmin\ClinicController@getAvailableTherapistInClinic')->name('clinic.available.therapist');
         Route::get('available-slots','SuperAdmin\ClinicController@getAvailableTimeSlots')->name('clinic.available.slots');
 
-
-
     });
+
     Route::group(['prefix'=>'customer'], function(){
         Route::get('/','SuperAdmin\CustomerController@index')->name('customer.list');
         Route::get('edit/{id}','SuperAdmin\CustomerController@edit')->name('customer.edit');
         Route::post('update/{id}','SuperAdmin\CustomerController@update')->name('customer.update');
         Route::post('send_message','SuperAdmin\CustomerController@send_message')->name('customer.send_message');
     });
+
    Route::group(['prefix'=>'product'], function(){
         Route::get('/','SuperAdmin\ProductController@index')->name('product.list');
         Route::get('create','SuperAdmin\ProductController@create')->name('product.create');
@@ -89,7 +117,6 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::get('product','SuperAdmin\OrderController@product')->name('orders.product');
         Route::get('productdetails/{id}','SuperAdmin\OrderController@productdetails')->name('order.productdetails');
         Route::get('change-status/{id}','SuperAdmin\OrderController@changeStatus')->name('orders.status.change');
-
         Route::get('booking-edit','SuperAdmin\OrderController@editTherapySession')->name('order.booking.edit');
         Route::post('booking-edit','SuperAdmin\OrderController@updateTherapySession');
 
