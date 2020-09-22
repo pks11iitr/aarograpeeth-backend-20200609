@@ -56,25 +56,29 @@
                                             <td>{{$review->rating}}</td>
                                             <td>{{$review->description}}</td>
                                         <!-- *****************************************************-->
-                                            @if($review->entity_type=='App\Models\Clinic')
-                                            <td>{{$review->clinic->name??''}}</td>
+                                            <td>
+                                                @if($review->entity_type=='App\Models\Clinic')
+                                                {{$review->clinic->name??''}}
                                             @elseif($review->entity_type=='App\Models\Therapy')
-                                                <td>{{$review->therapy->name??''}}</td>
+                                                {{$review->therapy->name??''}}
                                             @elseif($review->entity_type=='App\Models\Product')
-                                                <td>{{$review->product->name??''}}</td>
+                                                {{$review->product->name??''}}
                                             @elseif($review->entity_type=='App\Models\User')
-                                                <td>{{$review->user->name??''}}</td>
+                                                {{$review->user->name??''}}
                                             @endif
+                                            </td>
                                         <!-- *****************************************************-->
+                                            <td>
                                             @if($review->entity_type=='App\Models\Clinic')
-                                            <td>{{'Clinic'}}</td>
+                                                    {{'Clinic'}}
                                             @elseif($review->entity_type=='App\Models\Therapy')
-                                                <td>{{'Therapy'}}</td>
+                                                    {{'Therapy'}}
                                             @elseif($review->entity_type=='App\Models\Product')
-                                                <td>{{'Product'}}</td>
+                                                    {{'Product'}}
                                             @elseif($review->entity_type=='App\Models\User')
-                                                <td>{{'User'}}</td>
+                                                    {{'User'}}
                                             @endif
+                                            </td>
                                             <td>
                                                 @if($review['isactive']=='1')
                                                     <a href="{{route('review.status',['id'=>$review['id']??'','isactive'=>0])}}" class="btn btn-success">Hide</a>
