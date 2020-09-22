@@ -86,7 +86,7 @@
                                                 @else{{'No'}}
                                                 @endif
                                             </td>
-                                            <td><a href="{{route('therapists.edit',['id'=>$therapist->id])}}" class="btn btn-primary">Edit</a>&nbsp;&nbsp;<a href="{{route('therapist.sessions',['type'=>'therapist-session', 'id'=>$therapist->id])}}" class="btn btn-primary">Sessions</a></td>
+                                            <td><a href="{{route('therapists.edit',['id'=>$therapist->id])}}" class="btn btn-primary">Edit</a>&nbsp;&nbsp;<a href="{{route('sessions.list',['type'=>'therapist-session', 'id'=>$therapist->id])}}" class="btn btn-primary">Sessions</a></td>
                                         </tr>
                                     @endforeach
                                     </tbody>
