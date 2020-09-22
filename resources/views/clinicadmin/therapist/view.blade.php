@@ -87,7 +87,7 @@
                                                 @endif
                                             </td>
                                             <td><a href="{{route('clinicadmin.therapist.edit',['id'=>$therapist->id])}}" class="">Pending&nbsp;&nbsp;({{$therapist->bookings()->where('status', '!=', 'completed')->count()}})</a><br><a href="{{route('clinicadmin.therapist.edit',['id'=>$therapist->id])}}" class="">Completed&nbsp;&nbsp;({{$therapist->bookings()->where('status',  'completed')->count()}})</a></td>
-                                            <td><a href="{{route('clinicadmin.therapist.edit',['id'=>$therapist->id])}}" class="btn btn-primary">Edit</a></td>
+                                            <td><a href="{{route('clinicadmin.therapist.edit',['id'=>$therapist->id])}}" class="btn btn-primary">Edit</a>  <a href="{{route('therapist.sessions.list',['type'=>'clinic-session', 'id'=>$therapist->id])}}" class="btn btn-primary">Sessions</a></td>
                                         </tr>
                                     @endforeach
                                     </tbody>

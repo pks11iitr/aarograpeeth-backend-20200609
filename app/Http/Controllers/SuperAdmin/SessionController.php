@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Models\BookingSlot;
+use App\Models\DailyBookingsSlots;
 use App\Models\HomeBookingSlots;
 use App\Models\TimeSlot;
 use Illuminate\Http\Request;
@@ -111,8 +112,8 @@ class SessionController extends Controller
                 'type'=>'required|in:clinic,home'
             ]);
             //var_dump($request->slot_id);die();
-            $slot=HomeBookingSlots::find($request->slot_id);
-//  var_dump($slot);die();
+            $slot=DailyBookingsSlots::find($request->slot_id);
+  //var_dump($slot);die();
             $booking=HomeBookingSlots::findOrFail($request->id);
             if(empty($request->slot_id)){
                 $booking->update(array_merge($request->only( 'status'),['assigned_therapist'=>$request->therapist_id]));

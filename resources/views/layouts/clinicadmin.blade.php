@@ -145,6 +145,14 @@
                             </p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{route('therapist.sessions.list',['type'=>'clinic-session'])}}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Session
+                            </p>
+                        </a>
+                    </li>
 
  <!--********************************************************************************************************-->
                 </ul>

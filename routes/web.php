@@ -201,13 +201,19 @@ Route::group(['prefix'=>'partners', 'middleware'=>['auth', 'acl'], 'is'=>'clinic
 
     Route::get('/profile', 'ClinicAdmin\ProfileController@view')->name('clinicadmin.profile');
     Route::post('/profile', 'ClinicAdmin\ProfileController@update');
-
     Route::post('/add-therapy', 'ClinicAdmin\ProfileController@therapystore')->name('clinicadmin.therapy.add');
 
     Route::group(['prefix'=>'order'], function(){
         Route::get('/','ClinicAdmin\OrderController@index')->name('clinicadmin.order.list');
         Route::get('details/{id}','ClinicAdmin\OrderController@details')->name('clinicadmin.order.details');
         Route::get('edit/{id}','ClinicAdmin\OrderController@edit')->name('clinicadmin.order.edit');
+        Route::get('booking-edit','ClinicAdmin\OrderController@editClinicSession')->name('clinicadmin.booking.edit');
+        Route::post('booking-edit','ClinicAdmin\OrderController@updateClinicSession');
+
+        Route::get('available-therapists','ClinicAdmin\OrderController@getAvailableTherapistInClinic')->name('clinic.available.therapist');
+
+        Route::get('available-slots','ClinicAdmin\OrderController@getAvailableTimeSlots')->name('clinic.available.slots');
+
     });
 
     Route::group(['prefix'=>'therapist'], function(){
@@ -216,7 +222,8 @@ Route::group(['prefix'=>'partners', 'middleware'=>['auth', 'acl'], 'is'=>'clinic
         Route::post('store','ClinicAdmin\TherapistController@store')->name('clinicadmin.therapist.store');
         Route::get('edit/{id}','ClinicAdmin\TherapistController@edit')->name('clinicadmin.therapist.edit');
         Route::post('update/{id}','ClinicAdmin\TherapistController@update')->name('clinicadmin.therapist.update');
-
+        Route::get('list/{type}','ClinicAdmin\TherapistController@index_session')->name('therapist.sessions.list');
+        Route::get('details/{type}/{id}','ClinicAdmin\TherapistController@details')->name('therapist.session.details');
     });
 
 });

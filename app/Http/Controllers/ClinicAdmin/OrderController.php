@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\ClinicAdmin;
 
+use App\Models\BookingSlot;
 use App\Models\Clinic;
+use App\Models\HomeBookingSlots;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\TherapiestWork;
 use App\Models\Therapist;
+use App\Models\TimeSlot;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -95,4 +98,76 @@ class OrderController extends Controller
         return redirect()->back()->with('success', 'teacher has been updated');
 
     }
+
+    public function editClinicSession(Request $request){
+
+        $type=$request->type;
+        if($request->type=='clinic'){
+            $booking=BookingSlot::with('clinic', 'therapy', 'timeslot')->findOrFail($request->id);
+        }else if($request->type=='home'){
+            $booking=HomeBookingSlots::with( 'therapy', 'timeslot')->findOrFail($request->id);
+        }else{
+            return redirect()->back()->with('error', 'Invalid Request');
+        }
+
+        return view('clinicadmin.order.booking', compact('booking', 'type'));
+    }
+
+
+    public function updateClinicSession(Request $request){
+
+        if($request->type=='clinic'){
+
+            $request->validate([
+                'id'=>'required|integer',
+                'slot_id'=>'required|integer',
+                'therapist_id'=>'required|integer',
+                'status'=>'required|in:pending,confirmed,cancelled,completed',
+                'type'=>'required|in:clinic,home'
+            ]);
+
+            $slot=TimeSlot::find($$request->slot_id);
+
+            $booking=BookingSlot::with('clinic', 'therapy', 'timeslot')->findOrFail($request->id);
+
+            $booking->update(array_merge($request->only( 'status', 'slot_id'),['assigned_therapist'=>$request->therapist_id, 'date'=>$slot->date, 'time'=>$slot->internal_start_time]));
+
+        }else if($request->type=='home'){
+
+            $request->validate([
+                'id'=>'required|integer',
+                'therapist_id'=>'required|integer',
+                'status'=>'required|in:pending,confirmed,cancelled,completed',
+                'type'=>'required|in:clinic,home'
+            ]);
+
+            $slot=HomeBookingSlots::find($$request->slot_id);
+
+            $booking=HomeBookingSlots::findOrFail($request->id);
+            if(empty($request->slot_id)){
+                $booking->update(array_merge($request->only( 'status'),['assigned_therapist'=>$request->therapist_id]));
+            }else{
+                $booking->update(array_merge($request->only( 'status', 'slot_id'),['assigned_therapist'=>$request->therapist_id, 'date'=>$slot->date, 'time'=>$slot->internal_start_time]));
+            }
+
+        }
+
+        return redirect()->back()->with('success', 'Booking Has Been Updated');
+    }
+
+    public function getAvailableTherapistInClinic(Request $request){
+        $clinic=Clinic::findOrFail($request->clinic_id);//die;
+        return $clinic->getAvailableTherapist($request->slot_id);
+    }
+
+
+    public function getAvailableTimeSlots(Request $request){
+        $clinic=Clinic::findOrFail($request->clinic_id);
+        $slots=TimeSlot::getTimeSlotsForAdmin($clinic, $request->date, $request->grade);
+        return $slots;
+
+    }
+
+
+
 }

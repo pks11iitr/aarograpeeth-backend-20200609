@@ -251,7 +251,7 @@
             $("#booking-form-section").html('')
             $.ajax({
 
-                url: '{{route('order.booking.edit')}}',
+                url: '{{route('clinicadmin.booking.edit')}}',
                 method: 'get',
                 data:{type:type, id:id},
                 success: function(data){
