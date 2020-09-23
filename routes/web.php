@@ -241,7 +241,7 @@ Route::group(['prefix'=>'therapistadmin', 'middleware'=>['auth', 'acl'], 'is'=>'
         Route::post('update-diagnose/{id}','TherapistAdmin\TherapistWorkController@updateDiagnose')->name('therapistwork.diagnose');
         Route::post('select-treatment/{id}','TherapistAdmin\TherapistWorkController@startTherapy')->name('therapistwork.start');
 
-        Route::post('update-feedback/{id}','TherapistAdmin\TherapistWorkController@update')->name('therapistwork.feedback');
+        Route::post('update-feedback/{id}','TherapistAdmin\TherapistWorkController@completeTherapy')->name('therapistwork.feedback');
 
 
 

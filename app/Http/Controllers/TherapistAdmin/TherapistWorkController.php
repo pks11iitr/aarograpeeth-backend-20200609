@@ -64,8 +64,11 @@ class TherapistWorkController extends Controller
        $user=auth()->user();
 
        $session=BookingSlot::where('assigned_therapist', $user->id)
-           ->where('status', '!=', 'completed')
+           //->where('status', '!=', 'completed')
            ->findOrFail($id);
+       if($session->status=='completed')
+           return redirect()->back()->with('error', 'Completed Therapy Cannot Be updated');
+
 
         CustomerPainpoint::where('therapiest_work_id', $id)->delete();
 
@@ -100,17 +103,50 @@ class TherapistWorkController extends Controller
         $user=auth()->user();
 
         $session=BookingSlot::where('assigned_therapist', $user->id)
-            ->where('status', '!=', 'completed')
+            //->where('status', '!=', 'completed')
             ->findOrFail($id);
 
+        if($session->status=='completed')
+            return redirect()->back()->with('error', 'Completed Therapy Cannot Be updated');
+
         $session->treatment_id=$request->treatment_id;
+        $session->start_time=date('Y-m-d H:i:s');
         $session->save();
+
 
         return redirect()->back()->with('success', 'Treatment has been selected. Please start therapy');
 
     }
 
-    public function updateFeedback(Request $request, $id){
+    public function completeTherapy(Request $request, $id){
+        $request->validate([
+            'comments'=>'required',
+            'rating'=>'required|array',
+            'rating.*'=>'required|integer|min:1|max:5'
+        ]);
+
+        $user=auth()->user();
+
+        $session=BookingSlot::where('assigned_therapist', $user->id)
+            //->where('status', '!=', 'completed')
+            ->findOrFail($id);
+        if($session->status=='completed')
+            return redirect()->back()->with('error', 'Completed Therapy Cannot Be updated');
+
+
+        foreach($request->rating as $key=>$value){
+            CustomerPainpoint::updateOrCreate([
+                'therapiest_work_id'=>$id,
+                'pain_point_id'=>$key
+            ],['related_rating'=>$value]);
+        }
+
+        $session->end_time=date('Y-m-d H:i:s');
+        $session->message=$request->comments;
+        $session->status='completed';
+        $session->save();
+
+        return redirect()->back()->with('success', 'Therapy Session Has Been Completed');
 
     }
 }

@@ -1,5 +1,73 @@
 @extends('layouts.therapistadmin')
+@section('stylesheets')
+    <style>
+        .rating {
+            display: inline-block;
+            position: relative;
+            height: 50px;
+            line-height: 50px;
+            font-size: 50px;
+        }
 
+        .rating label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .rating label:last-child {
+            position: static;
+        }
+
+        .rating label:nth-child(1) {
+            z-index: 5;
+        }
+
+        .rating label:nth-child(2) {
+            z-index: 4;
+        }
+
+        .rating label:nth-child(3) {
+            z-index: 3;
+        }
+
+        .rating label:nth-child(4) {
+            z-index: 2;
+        }
+
+        .rating label:nth-child(5) {
+            z-index: 1;
+        }
+
+        .rating label input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+        }
+
+        .rating label .icon {
+            float: left;
+            color: transparent;
+        }
+
+        .rating label:last-child .icon {
+            color: #000;
+        }
+
+        .rating:not(:hover) label input:checked ~ .icon,
+        .rating:hover label:hover input ~ .icon {
+            color: #09f;
+        }
+
+        .rating label input:focus:not(:checked) ~ .icon:last-child {
+            color: #000;
+            text-shadow: 0 0 5px #09f;
+        }
+    </style>
+@endsection
 @section('content')
 
     <!-- Content Wrapper. Contains page content -->
@@ -144,7 +212,7 @@
                                                     </div>
                                                 @endforeach
                                             </div>
-                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                            <button type="submit" class="btn btn-primary">Start Therapy</button>
                                         </div>
 
                                     </div>
@@ -156,7 +224,7 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Diagnose</h3>
+                                <h3 class="card-title">Complete Response</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                                 </div>
@@ -166,34 +234,61 @@
                             <!-- form start -->
 
                             <div class="card-body">
-                                <form action="" method="post">
+                                <form action="{{route('therapistwork.feedback', ['id'=>$openbooking->id])}}" method="post" class="">
+                                    @csrf
                                 <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                 <h3>Pain Point:</h3>
                                 @foreach($painpoints as $painpoint)
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="pain_point_id[]" value="{{$painpoint->id}}">
                                         <label class="form-check-label" for="exampleCheck1">{{$painpoint->name}}</label>
+                                        <label>
+                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="1" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==1){{'checked'}} @endif @endforeach/>
+                                            <span class="icon">★</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="2" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==2){{'checked'}} @endif/>
+                                            <span class="icon">★</span>
+                                            <span class="icon">★</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="3" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==3){{'checked'}} @endif/>
+                                            <span class="icon">★</span>
+                                            <span class="icon">★</span>
+                                            <span class="icon">★</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="4" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==4){{'checked'}} @endif/>
+                                            <span class="icon">★</span>
+                                            <span class="icon">★</span>
+                                            <span class="icon">★</span>
+                                            <span class="icon">★</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="5" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==5){{'checked'}} @endif/>
+                                            <span class="icon">★</span>
+                                            <span class="icon">★</span>
+                                            <span class="icon">★</span>
+                                            <span class="icon">★</span>
+                                            <span class="icon">★</span>
+                                        </label>
+
                                     </div>
                                 @endforeach
                                     </div>
                                 </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                <!-- One "tab" for each step in the form: -->
-                                <h3>Disease it Any:</h3>
-                                @foreach($diseases as $disease)
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck2" name="disease_id[]" value="{{$disease->id}}">
-                                        <label class="form-check-label" for="exampleCheck2">{{$disease->name}}</label>
-                                    </div>
-                                @endforeach
+                                            <label for="exampleInputEmail1">Customer Comments</label>
+                                            <textarea class="form-control" name="comments" required></textarea>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary">Complete Therapy</button>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Submit</button>
                                     </div>
 
-                                </div>
+
                                 </form>
                             </div>
 
@@ -215,4 +310,11 @@
     </div>
     <!-- ./wrapper -->
 
+@endsection
+@section('scripts')
+    <script>
+    $(':radio').change(function() {
+    console.log('New star rating: ' + this.value);
+    });
+    </script>
 @endsection
