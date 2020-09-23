@@ -237,7 +237,13 @@ Route::group(['prefix'=>'therapistadmin', 'middleware'=>['auth', 'acl'], 'is'=>'
         Route::get('/','TherapistAdmin\TherapistWorkController@index')->name('therapistwork.list');
         Route::get('past','TherapistAdmin\TherapistWorkController@past')->name('therapistwork.past');
         Route::get('details/{id}','TherapistAdmin\TherapistWorkController@details')->name('therapistwork.details');
-        Route::post('detailstore/{id}','TherapistAdmin\TherapistWorkController@detailstore')->name('therapistwork.detailstore');
+
+        Route::post('update-diagnose/{id}','TherapistAdmin\TherapistWorkController@updateDiagnose')->name('therapistwork.diagnose');
+        Route::post('select-treatment/{id}','TherapistAdmin\TherapistWorkController@startTherapy')->name('therapistwork.start');
+
+        Route::post('update-feedback/{id}','TherapistAdmin\TherapistWorkController@update')->name('therapistwork.feedback');
+
+
 
     });
 

@@ -35,29 +35,28 @@
                                 <thead>
                                 <tr>
                                     <th>Order ID</th>
-                                    <th>Therapist Name</th>
-                                    <th>Home Booking Time</th>
-                                    <th>Home Booking Date</th>
-                                    <th>Message</th>
+                                    <th>Session ID</th>
+                                    <th>Therapy</th>
+                                    <th>Booking Date</th>
+                                    <th>Booking Time</th>
                                     <th>Status</th>
-                                    <th>Date & Time</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($openbookings as $openbooking)
+                                @foreach($sessions as $session)
                                     <tr>
                                         <td>
-                                            {{$openbooking->therapieswork->therapiesorder->refid??''}}</td>
+                                            {{$session->order->refid??''}}</td>
+                                         <td>
+                                             SESSION{{$session->id??''}}</td>
                                         <td>
-                                            {{$openbooking->therapieswork->therapiesorder->details[0]->entity->name??''}}
+                                            {{$session->therapy->name??''}}
                                         </td>
-                                        <td>{{$openbooking->therapieswork->time??''}}</td>
-                                        <td>{{$openbooking->therapieswork->date??''}}</td>
-                                        <td>{{$openbooking->message}}</td>
-                                        <td>{{$openbooking->status}}</td>
-                                        <td>{{$openbooking->created_at}}</td>
-                                        <td><a href="{{route('therapistwork.details',['id'=>$openbooking->id])}}" class="btn btn-success">Details</a>
+                                        <td>{{$session->timeslot->date}}</td>
+                                        <td>{{$session->timeslot->start_time}}</td>
+                                        <td>{{$session->status}}</td>
+                                        <td><a href="{{route('therapistwork.details',['id'=>$session->id])}}" class="btn btn-success">Details</a>
                                         </td>
                                     </tr>
                                 @endforeach
