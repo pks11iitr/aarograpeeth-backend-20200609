@@ -29,14 +29,12 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>Total: {{$therapy['total']??0}}</h3>
-
-                                <p>Confirmed:{{$therapy['confirmed']??0}}<br>Completed:{{$therapy['completed']??0}}<br>Cancelled:{{$therapy['cancelled']??0}}</p>
+                                <h3>Total: {{$completed??0}}</h3>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
                             </div>
-                            <span class="small-box-footer">Therapy Bookings &nbsp;<i class="fas fa-info-circle"></i></span>
+                            <span class="small-box-footer">Completed Sessions &nbsp;<i class="fas fa-info-circle"></i></span>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -74,14 +72,12 @@
                         <!-- small box -->
                         <div class="small-box bg-danger">
                             <div class="inner">
-                                <h3>Total:{{--{{$revenue['total']}}--}}</h3>
-
-                                <p>Therapy:{{--{{$revenue['therapy']??0}}--}}<br><br><br></p>
+                                <h3>Total:{{$inprocess??0}}</h3>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-pie-graph"></i>
                             </div>
-                            <span class="small-box-footer">Revenue info <i class="fas fa-info-circle"></i></span>
+                            <span class="small-box-footer">Inprocess Sessions<i class="fas fa-info-circle"></i></span>
                         </div>
                     </div>
                     <!-- ./col -->
