@@ -248,25 +248,25 @@
                                             <span class="icon">★</span>
                                         </label>
                                         <label>
-                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="2" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==2){{'checked'}} @endif/>
+                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="2" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==2){{'checked'}} @endif @endforeach/>
                                             <span class="icon">★</span>
                                             <span class="icon">★</span>
                                         </label>
                                         <label>
-                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="3" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==3){{'checked'}} @endif/>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="4" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==4){{'checked'}} @endif/>
-                                            <span class="icon">★</span>
+                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="3" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==3){{'checked'}} @endif @endforeach/>
                                             <span class="icon">★</span>
                                             <span class="icon">★</span>
                                             <span class="icon">★</span>
                                         </label>
                                         <label>
-                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="5" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==5){{'checked'}} @endif/>
+                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="4" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==4){{'checked'}} @endif @endforeach/>
+                                            <span class="icon">★</span>
+                                            <span class="icon">★</span>
+                                            <span class="icon">★</span>
+                                            <span class="icon">★</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="5" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==5){{'checked'}} @endif @endforeach/>
                                             <span class="icon">★</span>
                                             <span class="icon">★</span>
                                             <span class="icon">★</span>
@@ -281,7 +281,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Customer Comments</label>
-                                            <textarea class="form-control" name="comments" required></textarea>
+                                            <textarea class="form-control" name="comments" required>{{$openbooking->message}}</textarea>
                                             </div>
 
                                             <button type="submit" class="btn btn-primary">Complete Therapy</button>
