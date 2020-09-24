@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Customers</h1>
+                        <h1>Order Details</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -119,6 +119,7 @@
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                         <tr>
+                                            <th>Session ID</th>
                                             <th>Grade</th>
                                             <th>Price</th>
                                             <th>Date</th>
@@ -133,6 +134,7 @@
 
                                             @foreach($order->bookingSlots()->with(['timeslot', 'assignedTo'])->get() as $bookingSlot)
                                                 <tr>
+                                                    <td><a href="{{route('therapist.session.details', ['type'=>'clinic-session', 'id'=>$bookingSlot])}}">SESSION{{$bookingSlot->id??''}}</a></td>
                                                     <td>{{$bookingSlot->grade??''}}</td>
 
                                                     <td>Rs. {{$bookingSlot->price??''}}</td>                                               <td>{{$bookingSlot->timeslot->date??''}}</td>
@@ -146,7 +148,8 @@
                                         @else
                                             @foreach($order->homebookingslots as $homebookingslot)
                                                 <tr>
-                                                    <td>{{$homebookingslot->grade??''}}</td>
+                                                    <td>SESSION{{$homebookingslot->id??''}}</td>
+                                                    <td>kllk{{$homebookingslot->grade??''}}</td>
                                                     <td>{{$homebookingslot->price??''}}</td>
                                                     <td>{{$homebookingslot->timeslot->date??$homebookingslot->date}}</td>
                                                     <td>{{$homebookingslot->timeslot->start_time??$homebookingslot->time}}</td>

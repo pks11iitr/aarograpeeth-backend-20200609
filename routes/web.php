@@ -222,8 +222,13 @@ Route::group(['prefix'=>'partners', 'middleware'=>['auth', 'acl'], 'is'=>'clinic
         Route::post('store','ClinicAdmin\TherapistController@store')->name('clinicadmin.therapist.store');
         Route::get('edit/{id}','ClinicAdmin\TherapistController@edit')->name('clinicadmin.therapist.edit');
         Route::post('update/{id}','ClinicAdmin\TherapistController@update')->name('clinicadmin.therapist.update');
-        Route::get('list/{type}','ClinicAdmin\TherapistController@index_session')->name('therapist.sessions.list');
-        Route::get('details/{type}/{id}','ClinicAdmin\TherapistController@details')->name('therapist.session.details');
+    });
+
+    Route::group(['prefix'=>'session'], function(){
+
+        Route::get('list/{type}/{id?}','ClinicAdmin\SessionController@index_session')->name('therapist.sessions.list');
+        Route::get('details/{type}/{id}','ClinicAdmin\SessionController@details')->name('therapist.session.details');
+
     });
 
 });

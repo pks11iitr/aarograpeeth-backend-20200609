@@ -1,10 +1,4 @@
-@if(auth()->user()->hasRole('admin'))
-    @extends('layouts.admin')
-@elseif(auth()->user()->hasRole('clinic-admin'))
-    @extends('layouts.clinicadmin')
-@else
-    @extends('layouts.therapistadmin')
-@endif
+@extends('layouts.admin')
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
