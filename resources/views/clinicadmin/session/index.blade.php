@@ -54,7 +54,7 @@
                                             <td>{{$session->timeslot->date??''}}</td>
                                             <td>{{$session->timeslot->start_time??''}}</td>
                                             <td>{{$session->status}}</td>
-                                            <td><a href="javascript:void(0)" onclick="getBooking({{$session->id}}, 'home')">Edit</a></td>
+                                            <td><a href="javascript:void(0)" onclick="getBooking({{$session->id}}, 'clinic')">Edit</a></td>
                                         </tr>
                                     @endforeach
                                     </tbody>
