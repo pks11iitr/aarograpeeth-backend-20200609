@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Models\BookingSlot;
+use App\Models\Clinic;
 use App\Models\DailyBookingsSlots;
 use App\Models\HomeBookingSlots;
+use App\Models\Therapist;
+use App\Models\Therapy;
 use App\Models\TimeSlot;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -21,26 +25,101 @@ class SessionController extends Controller
 
 
     public function getClinicSessionList(Request $request, $therapist_id){
+
+        $sessions=BookingSlot::with(['clinic','assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order']);
+
+        $clinics=Clinic::select('name', 'id')->get();
+        $therapies=Therapy::select('name', 'id')->get();
+        $therapists=User::where('clinic_id', '!=', null)
+            ->select('name', 'id')
+            ->get();
+
+        if($request->clinic_id)
+            $sessions=$sessions->where('clinic_id', $request->clinic_id);
+
         if($therapist_id){
-            $sessions=BookingSlot::with(['clinic','assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order'])->where('assigned_therapist', $therapist_id)
-            ->orderBy('id', 'desc')->paginate(10);
-        }else{
-            $sessions=BookingSlot::orderBy('id', 'desc')->paginate(10);
+            $sessions=$sessions->where('assigned_therapist', $therapist_id);
         }
+
+        if($request->therapist_id){
+            $sessions=$sessions->where('assigned_therapist', $request->therapist_id);
+        }
+
+        if($request->therapy_id){
+            $sessions=$sessions->where('therapy_id', $request->therapy_id);
+        }
+
+        if($request->status){
+            $sessions=$sessions->where('status', $request->status);
+        }
+
+        if($request->datefrom){
+//            $sessions=$sessions->where(function($session){
+//                if()
+//                $sessions->
+//            })
+//            $sessions=$sessions->whereHas('status', $request->status);
+        }
+
+        if($request->dateto){
+//            $sessions=$sessions->where('status', $request->status);
+        }
+
+        $sessions=$sessions->orderBy('id', 'desc')
+            ->paginate(10);
+
         $type='clinic';
-        return view('admin.sessions.index', compact('sessions', 'type'));
+        return view('admin.sessions.index', compact('sessions', 'type', 'clinics', 'therapies', 'therapists'));
 
     }
 
     public function getTherapySessionList(Request $request, $therapist_id){
+
+        $sessions=HomeBookingSlots::with(['assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order']);
+
+//        if($request->clinic_id)
+//            $sessions=$sessions->where('clinic_id', $request->clinic_id);
+
+        $therapies=Therapy::select('name', 'id')->get();
+        $therapists=Therapist::select('name', 'id')
+            ->get();
+
         if($therapist_id){
-            $sessions=HomeBookingSlots::with(['assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order'])->where('assigned_therapist', $therapist_id)
-                ->orderBy('id', 'desc')->paginate(10);
-        }else{
-            $sessions=HomeBookingSlots::orderBy('id', 'desc')->paginate(10);
+            $sessions=$sessions->where('assigned_therapist', $therapist_id);
         }
+
+        if($request->therapist_id){
+            $sessions=$sessions->where('assigned_therapist', $request->therapist_id);
+        }
+
+        if($request->therapy_id){
+            $sessions=$sessions->where('therapy_id', $request->therapy_id);
+        }
+
+        if($request->status){
+            $sessions=$sessions->where('status', $request->status);
+        }
+
+        if($request->datefrom){
+//            $sessions=$sessions->where(function($session){
+//                if()
+//                $sessions->
+//            })
+//            $sessions=$sessions->whereHas('status', $request->status);
+        }
+
+        if($request->dateto){
+//            $sessions=$sessions->where('status', $request->status);
+        }
+
+        if($therapist_id){
+            $sessions=$sessions->where('assigned_therapist', $therapist_id);
+        }
+
+        $sessions=$sessions->orderBy('id', 'desc')->paginate(10);
+
         $type='home';
-        return view('admin.sessions.index', compact('sessions', 'type'));
+        return view('admin.sessions.index', compact('sessions', 'type', 'therapies', 'therapists'));
     }
 
     public function details(Request $request, $session_type, $id){

@@ -82,8 +82,8 @@
 {{--                                            <td>{{$therapist->state}}</td>--}}
                                             <td><img src="{{$therapist->image}}" height="80px" width="80px"/></td>
                                             <td>
-                                                @if($therapist->isactive==1){{'Yes'}}
-                                                @else{{'No'}}
+                                                @if($therapist->isactive==1)<span style="color:green">Yes</span>
+                                                @else<span style="color:red">No</span>
                                                 @endif
                                             </td>
                                             <td><a href="{{route('therapists.edit',['id'=>$therapist->id])}}" class="btn btn-primary">Edit</a>&nbsp;&nbsp;<a href="{{route('sessions.list',['type'=>'therapist-session', 'id'=>$therapist->id])}}" class="btn btn-primary">Sessions</a></td>

@@ -32,26 +32,47 @@
                                         <form class="form-validate form-horizontal"  method="get" action="" enctype="multipart/form-data">
 
                                             <div class="row">
+                                                @if($type=='clinic')
                                                 <div class="col-4">
-                                                    <input  id="fullname"  class="form-control" name="search" placeholder=" search name" value="{{request('search')}}"  type="text" />
+
+                                                    <select id="clinic" name="clinic_id" class="form-control" >
+
+                                                        <option value="" {{ request('status')==''?'selected':''}}>Select Clinic</option>
+                                                        @foreach($clinics as $c)
+                                                            <option value="{{$c->id}}" {{ request('clinic_id')==$c->id?'selected':''}}>{{$c->name}}</option>
+                                                        @endforeach
+                                                    </select>
+
                                                 </div>
+                                                @endif
                                                 <div class="col-4">
 
-                                                    <select id="status" name="status" class="form-control" >
+                                                    <select id="therapy_id" name="therapy_id" class="form-control" >
 
-                                                        <option value="" {{ request('status')==''?'selected':''}}>Please select</option>
-                                                        <option value="pending" {{ request('status')=='pending'?'selected':''}}>pending</option>
-                                                        <option value="confirmed" {{ request('status')==='confirmed'?'selected':''}}>confirmed</option>
-                                                        <option value="cancelled" {{ request('status')=='cancelled'?'selected':''}}>cancelled</option>
+                                                        <option value="" {{ request('therapy_id')==''?'selected':''}}>Select Therapy</option>
+                                                        @foreach($therapies as $therapy)
+                                                            <option value="{{$therapy->id}}" {{ request('therapy_id')==$therapy->id?'selected':''}}>{{$therapy->name}}</option>
+                                                        @endforeach
                                                     </select>
 
                                                 </div>
                                                 <div class="col-4">
-                                                    <select id="payment_status" name="payment_status" class="form-control" >
 
-                                                        <option value="" {{ request('payment_status')==''?'selected':''}}>Please Select</option>
-                                                        <option value="paid" {{ request('payment_status')=='paid'?'selected':''}}>paid</option>
-                                                        <option value="payment-wait" {{ request('payment_status')==='payment-wait'?'selected':''}}>payment-wait</option>
+                                                    <select id="therapist_id" name="therapist_id" class="form-control" >
+
+                                                        <option value="" {{ request('therapist_id')==''?'selected':''}}>Select Therapist</option>
+                                                        @foreach($therapists as $therapist)
+                                                            <option value="{{$therapist->id}}" {{ request('therapist_id')==$therapist->id?'selected':''}}>{{$therapist->name}}</option>
+                                                        @endforeach
+                                                    </select>
+
+                                                </div>
+                                                <div class="col-4">
+                                                    <select id="status" name="status" class="form-control" >
+
+                                                        <option value="" {{ request('status')==''?'selected':''}}>Selected Status</option>
+                                                        <option value="pending" {{ request('status')=='pending'?'selected':''}}>Pending</option>
+                                                        <option value="completed" {{ request('status')==='completed'?'selected':''}}>Completed</option>
 
                                                     </select>
 

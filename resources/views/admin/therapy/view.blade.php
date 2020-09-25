@@ -80,8 +80,10 @@
 					  <td>{{$therapy->grade4_price}}</td>
                       <td><img src="{{$therapy->image}}" height="80px" width="80px"/></td>
                        <td>
-                        @if($therapy->isactive==1){{'Yes'}}
-                             @else{{'No'}}
+                        @if($therapy->isactive==1)
+                               <span style="color:green">Yes</span>
+                             @else
+                               <span style="color:red">No</span>
                              @endif
                         </td>
                       <td><a href="{{route('therapy.edit',['id'=>$therapy->id])}}" class="btn btn-success">Edit</a></td>

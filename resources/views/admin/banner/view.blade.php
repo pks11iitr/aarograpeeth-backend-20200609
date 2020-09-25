@@ -46,8 +46,10 @@
                       <td><img src="{{$bann->image}}" height="80px" width="80px"/></td>
                       <td>{{$bann->type}}</td>
                        <td>
-                        @if($bann->isactive==1){{'Yes'}}
-                             @else{{'No'}}
+                        @if($bann->isactive==1)
+                               <span style="color:green">Yes</span>
+                             @else
+                               <span style="color:red">No</span>
                              @endif
                         </td>
                       <td><a href="{{route('banners.edit',['id'=>$bann->id])}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;

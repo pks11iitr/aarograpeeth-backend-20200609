@@ -86,8 +86,9 @@
 {{--					  <td>{{$clinic->lat}}/{{$clinic->lang}}</td>--}}
                       <td><img src="{{$clinic->image}}" height="80px" width="80px"/></td>
                        <td>
-                        @if($clinic->isactive==1){{'Yes'}}
-                             @else{{'No'}}
+                        @if($clinic->isactive==1)<span style="color:green">Yes</span>
+                             @else
+                               <span style="color:red">No</span>
                              @endif
                         </td>
                       <td><a href="{{route('clinic.edit',['id'=>$clinic->id])}}" class="btn btn-success">Edit</a></td>
