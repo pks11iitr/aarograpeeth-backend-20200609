@@ -125,20 +125,20 @@
                         <a href="{{--{{route('order.list')}}--}}" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
-                                Therapist
+                                Therapy Sessions
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="{{route('therapistwork.list')}}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Therapist Work</p>
+                                    <p>Open Sessions</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{route('therapistwork.past')}}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>PastTherapist Work</p>
+                                    <p>Completed Sessions</p>
                                 </a>
                             </li>
                         </ul>
