@@ -139,55 +139,64 @@
                     </li>
                     <!--**************************************************************************************************-->
                     <li class="nav-item">
-                        <a href="{{route('banners.list')}}" class="nav-link">
+                        <a href="javascript:void(0)" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
-                                Banner
+                                Setttings
 
                             </p>
                         </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{route('disease.list')}}" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Disease
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{route('painpoint.list')}}" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Pain Point
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{route('treatment.list')}}" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Treatment
-                            </p>
-                        </a>
-                    </li>
+                                                <ul class="nav nav-treeview">
+                                                    <li class="nav-item">
+                                                        <a href="{{route('banners.list')}}" class="nav-link active">
+                                                            <i class="far fa-circle nav-icon"></i>
+                                                            <p>Banners</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{route('treatment.list')}}" class="nav-link">
+                                                            <i class="far fa-circle nav-icon"></i>
+                                                            <p>Treatment</p>
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{route('painpoint.list')}}" class="nav-link">
+                                                            <i class="far fa-circle nav-icon"></i>
+                                                            <p>Pain Points</p>
+                                                        </a>
 
-                    <li class="nav-item">
-                        <a href="{{route('therapy.list')}}" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Therapy
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{route('disease.list')}}" class="nav-link">
+                                                            <i class="far fa-circle nav-icon"></i>
+                                                            <p>Diseases</p>
+                                                        </a>
 
-                            </p>
-                        </a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{route('video.list')}}" class="nav-link">
+                                                            <i class="far fa-circle nav-icon"></i>
+                                                            <p>Videos</p>
+                                                        </a>
+
+                                                    </li>
+                                                </ul>
                     </li>
 
                     <li class="nav-item">
                         <a href="{{route('clinic.list')}}" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
-                                Clinic
+                                Clinics Partners
 
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('therapists.list')}}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Field Therapist
                             </p>
                         </a>
                     </li>
@@ -195,7 +204,16 @@
                         <a href="{{route('customer.list')}}" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
-                                Customer
+                                Customers
+
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('therapy.list')}}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Therapies
 
                             </p>
                         </a>
@@ -204,8 +222,7 @@
                         <a href="{{route('product.list')}}" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
-                                Product
-
+                                Products
                             </p>
                         </a>
                     </li>
@@ -213,7 +230,7 @@
                         <a href="{{route('orders.list')}}" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
-                                Orders
+                                Orders & Bookings
 
                             </p>
                         </a>
@@ -221,21 +238,45 @@
                            <li class="nav-item">
                                 <a href="{{route('orders.list')}}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Therapy</p>
+                                    <p>Therapy Bookings</p>
                                </a>
                            </li>
                             <li class="nav-item">
                                 <a href="{{route('sessions.list',['type'=>'therapist-session'])}}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Session</p>
+                                    <p>Therapy Session</p>
                                 </a>
                             </li>
                            <li class="nav-item">
                                 <a href="{{route('orders.product')}}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Product</p>
+                                    <p>Product Purchase</p>
                                </a>
                            </li>
+                        </ul>
+
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('orders.list')}}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Theapy Sessions
+
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{route('sessions.list',['type'=>'clinic-session'])}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Clinic Sessions</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('sessions.list',['type'=>'therapist-session'])}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Home Sessions</p>
+                                </a>
+                            </li>
                         </ul>
 
                     </li>
@@ -243,10 +284,24 @@
                         <a href="{{route('complain.list')}}" class="nav-link">
                             <i class="nav-icon fas fa-th"></i>
                             <p>
-                                Complaints
+                                Complaints & Reviews
 
                             </p>
                         </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{route('complain.list')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Complaints</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{route('review.list')}}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Reviews</p>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a href="{{route('news.list')}}" class="nav-link">
@@ -264,31 +319,6 @@
                             <p>
                                 Send Notification
 
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{route('video.list')}}" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Video
-
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{route('therapists.list')}}" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Therapist
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{route('review.list')}}" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Review
                             </p>
                         </a>
                     </li>

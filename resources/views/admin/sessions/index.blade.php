@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Session</h1>
+                        <h1>All Sessions</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -24,10 +24,52 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <div class="card card-primary">
+                        <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Session List</h3>
+                                <div class="row">
+                                    <div class="col-12">
 
+                                        <form class="form-validate form-horizontal"  method="get" action="" enctype="multipart/form-data">
+
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <input  id="fullname"  class="form-control" name="search" placeholder=" search name" value="{{request('search')}}"  type="text" />
+                                                </div>
+                                                <div class="col-4">
+
+                                                    <select id="status" name="status" class="form-control" >
+
+                                                        <option value="" {{ request('status')==''?'selected':''}}>Please select</option>
+                                                        <option value="pending" {{ request('status')=='pending'?'selected':''}}>pending</option>
+                                                        <option value="confirmed" {{ request('status')==='confirmed'?'selected':''}}>confirmed</option>
+                                                        <option value="cancelled" {{ request('status')=='cancelled'?'selected':''}}>cancelled</option>
+                                                    </select>
+
+                                                </div>
+                                                <div class="col-4">
+                                                    <select id="payment_status" name="payment_status" class="form-control" >
+
+                                                        <option value="" {{ request('payment_status')==''?'selected':''}}>Please Select</option>
+                                                        <option value="paid" {{ request('payment_status')=='paid'?'selected':''}}>paid</option>
+                                                        <option value="payment-wait" {{ request('payment_status')==='payment-wait'?'selected':''}}>payment-wait</option>
+
+                                                    </select>
+
+                                                </div><br><br>
+                                                <div class="col-4">
+                                                    <input  id="fullname"  class="form-control" name="fromdate" placeholder=" search name" value="{{request('fromdate')}}"  type="date" />
+                                                </div>
+                                                <div class="col-4">
+                                                    <input  id="fullname"  class="form-control" name="todate" placeholder=" search name" value="{{request('todate')}}"  type="date" />
+                                                </div>
+                                                <div class="col-4">
+                                                    <button type="submit" name="save" class="btn btn-primary">Submit</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -54,7 +96,7 @@
                                             <td>{{$session->timeslot->date??''}}</td>
                                             <td>{{$session->timeslot->start_time??''}}</td>
                                             <td>{{$session->status}}</td>
-                                            <td><a href="javascript:void(0)" onclick="getBooking({{$session->id}}, 'home')">Edit</a></td>
+                                            <td><a href="javascript:void(0)" onclick="getBooking({{$session->id}}, '{{$type}}')">Edit</a></td>
                                         </tr>
                                     @endforeach
                                     </tbody>

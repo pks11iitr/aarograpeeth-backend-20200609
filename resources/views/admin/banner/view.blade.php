@@ -50,7 +50,7 @@
                              @else{{'No'}}
                              @endif
                         </td>
-                      <td><a href="{{route('banners.edit',['id'=>$bann->id])}}" class="btn btn-success">Edit</a><br><br>
+                      <td><a href="{{route('banners.edit',['id'=>$bann->id])}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;
                       <a href="{{route('banners.delete',['id'=>$bann->id])}}" class="btn btn-success">Delete</a></td>
                  </tr>
                  @endforeach

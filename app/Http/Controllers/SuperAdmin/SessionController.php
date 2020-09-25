@@ -16,7 +16,7 @@ class SessionController extends Controller
             case 'clinic-session':return $this->getClinicSessionList($request, $therapist_id);
             case 'therapist-session':return $this->getTherapySessionList($request, $therapist_id);
         }
-        return view('admin.session.index');
+        //return view('admin.session.index');
     }
 
 
@@ -27,8 +27,8 @@ class SessionController extends Controller
         }else{
             $sessions=BookingSlot::orderBy('id', 'desc')->paginate(10);
         }
-
-        return view('admin.sessions.index', compact('sessions'));
+        $type='clinic';
+        return view('admin.sessions.index', compact('sessions', 'type'));
 
     }
 
@@ -39,7 +39,8 @@ class SessionController extends Controller
         }else{
             $sessions=HomeBookingSlots::orderBy('id', 'desc')->paginate(10);
         }
-        return view('admin.sessions.index', compact('sessions'));
+        $type='home';
+        return view('admin.sessions.index', compact('sessions', 'type'));
     }
 
     public function details(Request $request, $session_type, $id){

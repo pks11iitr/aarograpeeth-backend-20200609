@@ -76,7 +76,7 @@
                              @else{{'No'}}
                              @endif
                         </td>
-                      <td><a href="{{route('news.edit',['id'=>$newsupdate->id])}}" class="btn btn-success">Edit</a></br></br>
+                      <td><a href="{{route('news.edit',['id'=>$newsupdate->id])}}" class="btn btn-success">Edit</a></td>
                  </tr>
                  @endforeach
                   </tbody>
