@@ -32,6 +32,7 @@ class OtpController extends Controller
         switch($request->type){
             case 'register': return $this->verifyRegister($request);
             case 'login': return $this->verifyLogin($request);
+            case 'reset': return $this->verifyResetPassword($request);
         }
 
         return [
@@ -40,10 +41,39 @@ class OtpController extends Controller
         ];
     }
 
+    protected function verifyResetPassword(Request $request){
+        $user=Therapist::where('mobile', $request->mobile)->first();
+        if(in_array($user->status, [0,1])){
+            if(OTPModel::verifyOTP('therapist',$user->id,$request->type,$request->otp)){
+
+                $user->status=1;
+                $user->save();
+
+                return [
+                    'status'=>'success',
+                    'message'=>'OTP Has Been Verified',
+                    'token'=>Auth::guard('customerapi')->fromUser($user)
+                ];
+            }
+
+            return [
+                'status'=>'failed',
+                'message'=>'OTP is not correct',
+                'token'=>''
+            ];
+
+        }
+        return [
+            'status'=>'failed',
+            'message'=>'Account has been blocked',
+            'token'=>''
+        ];
+    }
+
     protected function verifyRegister(Request $request){
         $user=Therapist::where('mobile', $request->mobile)->first();
         if($user->status==0){
-            if(OTPModel::verifyOTP('therapistadmin',$user->id,$request->type,$request->otp)){
+            if(OTPModel::verifyOTP('therapist',$user->id,$request->type,$request->otp)){
 
                 $user->status=1;
                 $user->save();
@@ -73,7 +103,7 @@ class OtpController extends Controller
     protected function verifyLogin(Request $request){
         $user=Therapist::where('mobile', $request->mobile)->first();
         if(in_array($user->status, [0,1])){
-            if(OTPModel::verifyOTP('therapistadmin',$user->id,$request->type,$request->otp)){
+            if(OTPModel::verifyOTP('therapist',$user->id,$request->type,$request->otp)){
 
                 $user->status=1;
                 $user->save();
@@ -108,7 +138,7 @@ class OtpController extends Controller
 
         $user=Customer::where('mobile', $request->mobile)->first();
         if(in_array($user->status, [0,1])){
-                $otp=OTPModel::createOTP('customer', $user->id, $request->type);
+                $otp=OTPModel::createOTP('therapist', $user->id, $request->type);
                 $msg=str_replace('{{otp}}', $otp, config('sms-templates.'.$request->type));
                 event(new SendOtp($user->mobile, $msg));
                 return [
