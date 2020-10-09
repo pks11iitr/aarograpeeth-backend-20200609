@@ -139,7 +139,7 @@ $api->group(['middleware' => ['customer-auth']], function ($api) {
  * Therapist Apis Starts Here
  */
 
-$api->group(['prefix' => 'therapistadmin'], function ($api) {
+$api->group(['prefix' => 'therapist'], function ($api) {
     $api->post('login', 'Therapist\Auth\LoginController@login');
     $api->post('login-with-otp', 'Therapist\Auth\LoginController@loginWithOtp');
     $api->post('register', 'Therapist\Auth\RegisterController@register');
