@@ -46,7 +46,8 @@ class HomeBookingSlots extends Model
                 'grade'=>$grade,
                 'status'=>$status,
                 'date'=>$slots[$i]->date,
-                'time'=>$slots[$i]->internal_start_time
+                'time'=>$slots[$i]->internal_start_time,
+                'therapy_id'=>$order->details[0]->entity_id
             ]);
             $alloted++;
             $i++;

@@ -538,7 +538,8 @@ $refid=env('MACHINE_ID').time();
                     'grade'=>$request->grade,
                     'status'=>'pending',
                     'date'=>$slot->date,
-                    'time'=>$slot->internal_start_time
+                    'time'=>$slot->internal_start_time,
+                    'therapy_id'=>$therapy->id
 
                 ]);
 
