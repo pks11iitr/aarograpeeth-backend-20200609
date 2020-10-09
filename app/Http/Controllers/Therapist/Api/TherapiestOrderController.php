@@ -65,9 +65,10 @@ class TherapiestOrderController extends Controller
                     'display_time'=>$item->timeslot->display_time??date('h:iA', strtotime($item->time)),
                     'time'=>date('h:iA', strtotime($item->time)),
                     'created_at'=>date('d/m/Y h:iA', strtotime($item->created_at)),
-                    'refid'=>$item->order->refid,
-                    'therapy_name'=>$item->therapy->name,
-                    'image'=>$item->therapy->image,
+                    'date'=>$item->date,
+                    'refid'=>$item->order->refid??'',
+                    'therapy_name'=>$item->therapy->name??'',
+                    'image'=>$item->therapy->image??'',
                     'id'=>$item->id
                 );
             }
