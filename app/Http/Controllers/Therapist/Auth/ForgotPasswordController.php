@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class ForgotPasswordController extends Controller
 {
-    public function sendResetOTP(Request $request){
+    public function forgot(Request $request){
 
         $customer=$this->getCustomer($request);
         if(!$customer){
@@ -52,7 +52,7 @@ class ForgotPasswordController extends Controller
         $user=auth()->guard('customerapi')->user();
         if(!$user){
             return [
-                'status'=>'failed',
+                'status'=>'success',
                 'message'=>'Invalid Request'
             ];
         }
