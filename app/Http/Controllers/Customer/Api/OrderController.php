@@ -246,7 +246,8 @@ $refid=env('MACHINE_ID').time();
             'grade'=>$request->grade,
             'time'=>null,
             'status'=>'pending',
-            'is_instant'=>true
+            'is_instant'=>true,
+            'therapy_id'=>$therapy->id
         ]);
 
         return [
