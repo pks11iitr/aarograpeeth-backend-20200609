@@ -63,7 +63,7 @@ class TherapiestOrderController extends Controller
                 $order[]=array(
                     'status'=>$item->therapist_status,
                     'display_time'=>$item->timeslot->display_time??$item->time,
-                    'time'=>$item->therapieswork->time,
+                    'time'=>$item->time,
                     'created_at'=>$item->created_at,
                     'refid'=>$item->order->refid,
                     'therapy_name'=>$item->therapy->name,
