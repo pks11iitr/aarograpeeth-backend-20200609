@@ -136,7 +136,7 @@ class OtpController extends Controller
             'mobile'=>'required|string|digits:10|exists:customers',
         ]);
 
-        $user=Customer::where('mobile', $request->mobile)->first();
+        $user=Therapist::where('mobile', $request->mobile)->first();
         if(in_array($user->status, [0,1])){
                 $otp=OTPModel::createOTP('therapist', $user->id, $request->type);
                 $msg=str_replace('{{otp}}', $otp, config('sms-templates.'.$request->type));

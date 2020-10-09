@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Therapist\Auth;
 
 use App\Models\Customer;
 use App\Models\OTPModel;
+use App\Models\Therapist;
 use App\Services\SMS\Msg91;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -20,7 +21,7 @@ class ForgotPasswordController extends Controller
                 'message'=>'This account is not registered with us'
             ];
         }
-        $otp=OTPModel::createOTP('customer', $customer->id, 'reset');
+        $otp=OTPModel::createOTP('therapist', $customer->id, 'reset');
         $msg=str_replace('{{otp}}', $otp, config('sms-templates.reset'));
         Msg91::send($customer->mobile,$msg);
         return ['status'=>'success', 'message'=>'otp verify', 'token'=>''];
@@ -28,7 +29,7 @@ class ForgotPasswordController extends Controller
 
 
     protected function getCustomer(Request $request){
-        $customer=Customer::where($this->userId($request),$request->user_id)->first();
+        $customer=Therapist::where($this->userId($request),$request->user_id)->first();
         $customer->notification_token=$request->notification_token;
         $customer->save();
         return $customer;
@@ -49,7 +50,7 @@ class ForgotPasswordController extends Controller
 
     public function updatePassword(Request $request){
 
-        $user=auth()->guard('customerapi')->user();
+        $user=auth()->guard('therapistapi')->user();
         if(!$user){
             return [
                 'status'=>'success',
