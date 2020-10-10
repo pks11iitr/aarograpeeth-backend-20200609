@@ -197,7 +197,7 @@ class TherapiestOrderController extends Controller
                 'distance_away'=>$distance,
                 'timing'=>$timing,
                 'buttonshow'=>$buttonshow,
-                'therapy_name'=>$openbookingdetails->therapy->entity->name,
+                'therapy_name'=>$openbookingdetails->therapy->name,
                 'image'=>$openbookingdetails->therapy->image,
                 'id'=>$id
                 /*'data' =>$openbookingdetails,*/
