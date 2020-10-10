@@ -146,6 +146,7 @@ $api->group(['prefix' => 'therapist'], function ($api) {
     $api->post('forgot', 'Therapist\Auth\ForgotPasswordController@forgot');
     $api->post('verify-otp', 'Therapist\Auth\OtpController@verify');
     $api->post('resend-otp', 'Therapist\Auth\OtpController@resend');
+    $api->post('update-password', 'Therapist\Auth\ForgotPasswordController@updatePassword');
 
     $api->group(['middleware' => ['therapistadmin-auth']], function ($api) {
         $api->post('update-location', 'Therapist\Api\LocationController@updateLocation');
