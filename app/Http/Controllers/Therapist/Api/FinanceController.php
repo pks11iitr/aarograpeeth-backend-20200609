@@ -17,20 +17,21 @@ class FinanceController extends Controller
         $dateto=$request->dateto??'';
         $type=$request->type??'daily';
 
-        $bookings=HomeBookingSlots::where('status', 'completed')
-            ->where('therapist_id', $user->id);
+        $bookings=[];
+        $total_count=0;
+        $total_cost=0;
+
+        $bookingsobj=HomeBookingSlots::where('status', 'completed')
+            ->where('assigned_therapist', $user->id);
 
         switch($request->type){
 
             case 'daily':
-                $bookingsobj=$bookings
+                $bookingsobj=$bookingsobj
                     ->groupBy('date')
                     ->orderBy('date', 'desc')
                     ->selectRaw('count(*) as count, sum(price) as price, date')
                     ->get();
-                $bookings=[];
-                $total_count=0;
-                $total_cost=0;
                 foreach($bookingsobj as $booking){
                     $bookings[]=[
                         'name'=>date('d/m/Y', strtotime($booking->date)),
@@ -48,9 +49,6 @@ class FinanceController extends Controller
                     ->orderBy(DB::raw('MONTH(date) as m1'), 'desc')
                     ->selectRaw('count(*) as count, sum(price) as price, monthname(date) as month, YEAR(date) as year')
                     ->get();
-                $bookings=[];
-                $total_count=0;
-                $total_cost=0;
                 foreach($bookingsobj as $booking){
                     $bookings[]=[
                         'name'=>$booking->month.' '.$booking->year,
@@ -67,9 +65,6 @@ class FinanceController extends Controller
                     ->orderBy('year', 'desc')
                     ->selectRaw('count(*) as count, sum(price) as price, YEAR(date) as year')
                     ->get();
-                $bookings=[];
-                $total_count=0;
-                $total_cost=0;
                 foreach($bookingsobj as $booking){
                     $bookings[]=[
                         'name'=>$booking->month.' '.$booking->year,
