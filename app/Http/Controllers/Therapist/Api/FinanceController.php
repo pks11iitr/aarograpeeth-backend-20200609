@@ -62,7 +62,7 @@ class FinanceController extends Controller
                 break;
             case 'annually':
                 $bookingsobj=$bookingsobj
-                    ->groupBy(DB::raw('YEAR(date) as year'))
+                    ->groupBy(DB::raw('YEAR(date)'))
                     ->orderBy('year', 'desc')
                     ->selectRaw('count(*) as count, sum(price) as price, YEAR(date) as year')
                     ->get();
