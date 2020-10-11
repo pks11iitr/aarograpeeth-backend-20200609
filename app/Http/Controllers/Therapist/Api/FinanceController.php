@@ -45,9 +45,9 @@ class FinanceController extends Controller
             case 'monthly':
 
                 $bookingsobj=$bookingsobj
-                    ->groupBy(DB::raw('YEAR(date) as year'), DB::raw('MONTH(date) as m1') , DB::raw('monthname(date) as month') )
+                    ->groupBy(DB::raw('YEAR(date)'), DB::raw('MONTH(date)') , DB::raw('monthname(date)') )
                     ->orderBy('year', 'desc')
-                    ->orderBy(DB::raw('MONTH(date) as m1'), 'desc')
+                    ->orderBy(DB::raw('MONTH(date)'), 'desc')
                     ->selectRaw('count(*) as count, sum(price) as price, monthname(date) as month, YEAR(date) as year')
                     ->get();
                 foreach($bookingsobj as $booking){
