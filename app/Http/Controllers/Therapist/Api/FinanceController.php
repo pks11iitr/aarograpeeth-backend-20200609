@@ -24,7 +24,7 @@ class FinanceController extends Controller
         $bookingsobj=HomeBookingSlots::where('status', 'completed')
             ->where('assigned_therapist', $user->id);
 
-        switch($request->type){
+        switch($type){
 
             case 'daily':
                 $bookingsobj=$bookingsobj
@@ -41,6 +41,7 @@ class FinanceController extends Controller
                     $total_cost=$total_cost+$booking->price;
                     $total_count=$total_count+$booking->count;
                 }
+                break;
             case 'monthly':
 
                 $bookingsobj=$bookings
@@ -58,7 +59,7 @@ class FinanceController extends Controller
                     $total_cost=$total_cost+$booking->price;
                     $total_count=$total_count+$booking->count;
                 }
-
+                break;
             case 'annually':
                 $bookingsobj=$bookings
                     ->groupBy(DB::raw('YEAR(date) as year'))
@@ -74,6 +75,7 @@ class FinanceController extends Controller
                     $total_cost=$total_cost+$booking->price;
                     $total_count=$total_count+$booking->count;
                 }
+                break;
 
         }
 
