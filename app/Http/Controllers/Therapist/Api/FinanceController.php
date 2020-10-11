@@ -68,7 +68,7 @@ class FinanceController extends Controller
                     ->get();
                 foreach($bookingsobj as $booking){
                     $bookings[]=[
-                        'name'=>$booking->month.' '.$booking->year,
+                        'name'=>$booking->year,
                         'count'=>$booking->count,
                         'price'=>$booking->price
                     ];
