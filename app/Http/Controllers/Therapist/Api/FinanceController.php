@@ -44,7 +44,7 @@ class FinanceController extends Controller
                 break;
             case 'monthly':
 
-                $bookingsobj=$bookings
+                $bookingsobj=$bookingsobj
                     ->groupBy(DB::raw('YEAR(date) as year'), DB::raw('MONTH(date) as m1') , DB::raw('monthname(date) as month') )
                     ->orderBy('year', 'desc')
                     ->orderBy(DB::raw('MONTH(date) as m1'), 'desc')
@@ -61,7 +61,7 @@ class FinanceController extends Controller
                 }
                 break;
             case 'annually':
-                $bookingsobj=$bookings
+                $bookingsobj=$bookingsobj
                     ->groupBy(DB::raw('YEAR(date) as year'))
                     ->orderBy('year', 'desc')
                     ->selectRaw('count(*) as count, sum(price) as price, YEAR(date) as year')
