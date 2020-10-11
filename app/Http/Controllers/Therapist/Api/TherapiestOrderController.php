@@ -456,8 +456,9 @@ class TherapiestOrderController extends Controller
             'therapy_name'=>$openbookingdetails->therapy->name,
             'image'=>$openbookingdetails->therapy->image,
             'id'=>$id,
-            'diseases'=>$openbookingdetails->diseases->only('name'),
-            'painpoints'=>$openbookingdetails->painpoints->only('name')
+            'diseases'=>$openbookingdetails->diseases,
+            'painpoints'=>$openbookingdetails->painpoints,
+            'treatment'=>$openbookingdetails->treatment
             /*'data' =>$openbookingdetails,*/
         ];
 
