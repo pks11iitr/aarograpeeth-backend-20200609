@@ -171,7 +171,7 @@ $api->group(['prefix' => 'therapist'], function ($api) {
         $api->get('painpoint-relif/{id}', 'Therapist\Api\TherapiestOrderController@pain_point_relif');
         $api->post('pain-relief-rating/{id}', 'Therapist\Api\TherapiestOrderController@pain_relief_update_rating');
 
-        $api->post('my-finances', 'Therapist\Api\FinanceController@index');
+        $api->get('my-finances', 'Therapist\Api\FinanceController@index');
 
     });
 
