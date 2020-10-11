@@ -16,18 +16,20 @@ class TherapistWorkController extends Controller
 {
     public function index(Request $request){
         $user=auth()->user();
-        $sessions=BookingSlot::with([ 'therapy', 'timeslot', 'order'])->where('assigned_therapist', $user->id)
+        $sessions=BookingSlot::with([ 'therapy', 'timeslot', 'order'])
+            ->where('assigned_therapist', $user->id)
             ->orderBy('id', 'desc')
-            ->where('status', 'pending')
+            ->whereIn('status', ['pending','confirmed'])
             ->paginate(10);
         return view('therapistadmin.therapistwork.view',compact('sessions'));
     }
 
     public function past(Request $request){
         $user=auth()->user();
-        $sessions=BookingSlot::with([ 'therapy', 'timeslot', 'order'])->where('assigned_therapist', $user->id)
+        $sessions=BookingSlot::with([ 'therapy', 'timeslot', 'order'])
+            ->where('assigned_therapist', $user->id)
             ->orderBy('id', 'desc')
-            ->where('status', '!=', 'pending')
+            ->where('status', 'completed')
             ->paginate(10);
         return view('therapistadmin.therapistwork.view',compact('sessions'));
     }
@@ -36,20 +38,32 @@ class TherapistWorkController extends Controller
 
         $user=auth()->user();
 
-        $session = BookingSlot::where('assigned_therapist', $user->id)
-            ->firstOrFail();
-
         $openbooking =BookingSlot::with(['clinic','assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order'])
+            ->where('assigned_therapist', $user->id)
             ->find($id);
+
+        if(!$openbooking)
+            return redirect()->back()->with('error', 'Your are not assigned to this session');
 
         $painpoints = PainPoint::active()->get();
 
         $treatments=Treatment::active()->get();
 
-        $selected_pain_points=CustomerPainpoint::where('therapiest_work_id', $id)->get();
-        $selected_diseases=CustomerDisease::where('therapiest_work_id', $id)->get();
-        $diseases =Disease::active()->get();
-        return view('therapistadmin.therapistwork.details',['openbooking'=>$openbooking,'painpoints'=>$painpoints,'diseases'=>$diseases, 'selected_pain_points'=>$selected_pain_points, 'selected_diseases'=>$selected_diseases, 'treatments'=>$treatments]);
+        $selected_pain_points=CustomerPainpoint::where('therapiest_work_id', $id)
+            ->get();
+        $selected_diseases=CustomerDisease::where('therapiest_work_id', $id)
+            ->get();
+        $diseases =Disease::active()
+            ->get();
+
+        return view('therapistadmin.therapistwork.details',[
+            'openbooking'=>$openbooking,
+            'painpoints'=>$painpoints,
+            'diseases'=>$diseases,
+            'selected_pain_points'=>$selected_pain_points,
+            'selected_diseases'=>$selected_diseases,
+            'treatments'=>$treatments
+        ]);
     }
 
 
@@ -89,6 +103,8 @@ class TherapistWorkController extends Controller
             ]);
         }
 
+        $session->status='confirmed';
+        $session->save();
 
        return redirect()->back()->with('success', 'Customer Has Been Diagnosed. Please select treatment and start therapy');
 
