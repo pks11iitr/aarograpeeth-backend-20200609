@@ -71,11 +71,15 @@ class HomeBookingSlots extends Model
     }
 
     public function diseases(){
-        return $this->belongsToMany('App\Models\Disease', 'customer_disease', 'therapiest_work_id', 'disease_id')->withPivot('type')->where('type', 'therapy');
+        return $this->belongsToMany('App\Models\Disease', 'customer_disease', 'therapiest_work_id', 'disease_id')
+            ->withPivot('type')
+            ->where('type', 'therapy');
     }
 
     public function painpoints(){
-        return $this->belongsToMany('App\Models\PainPoint', 'Customer_point_pain','therapiest_work_id', 'pain_point_id')->withPivot('related_rating')->where('type', 'therapy');
+        return $this->belongsToMany('App\Models\PainPoint', 'Customer_point_pain','therapiest_work_id', 'pain_point_id')
+            ->withPivot(['related_rating', 'type'])
+            ->where('type', 'therapy');
     }
 
     public function treatment(){
