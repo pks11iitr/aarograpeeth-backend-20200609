@@ -425,7 +425,7 @@ class TherapiestOrderController extends Controller
         $user=$request->user;
 
         $openbookingdetails=HomeBookingSlots::with(['therapy','timeslot', 'order', 'diseases', 'painpoints', 'treatment'])
-            ->where('status', '!=', 'completed')
+            ->where('status',  'completed')
             ->where('assigned_therapist', $user->id)
             ->find($id);
 
