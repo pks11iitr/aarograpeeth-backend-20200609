@@ -59,10 +59,21 @@ class TherapiestOrderController extends Controller
         $order=[];
         $openbooking=HomeBookingSlots::with(['therapy','timeslot', 'order'])
             ->where('assigned_therapist', $user->id)
-            ->where('therapist_status','Pending')
+            ->where('status','!=', 'completed')
             ->get();
         if($openbooking) {
             foreach ($openbooking as $item) {
+                if(in_array($item->therapist_status, ['Pending', 'Confirmed'])){
+                    $open_screen='details';
+                }else if($item->therapist_status=='Started'){
+                    $open_screen='pain-disease';
+                }else if($item->therapist_status=='Diagnosed'){
+                    $open_screen='treatment-list';
+                }else if($item->therapist_status=='TreatmentSelected'){
+                    $open_screen='customer-feedback';
+                }else{
+                    continue;
+                }
                 $order[]=array(
                     'status'=>$item->therapist_status,
                     'display_time'=>$item->timeslot->display_time??date('h:iA', strtotime($item->time)),
@@ -73,7 +84,7 @@ class TherapiestOrderController extends Controller
                     'therapy_name'=>$item->therapy->name??'',
                     'image'=>$item->therapy->image??'',
                     'id'=>$item->id,
-                    'open_screen'=>''
+                    'open_screen'=>$open_screen
                 );
             }
             return [
@@ -283,6 +294,9 @@ class TherapiestOrderController extends Controller
             ];
 
         $arrpainpoint_id = explode(",", $request->painpoint_id);
+
+        CustomerPainpoint::where('therapiest_work_id', $id)->delete();
+
        foreach($arrpainpoint_id as $key=>$painpoint_id) {
            CustomerPainpoint::create([
                'therapiest_work_id' => $id,
@@ -292,7 +306,10 @@ class TherapiestOrderController extends Controller
 
        }
         $arrdisease_id= explode(",", $request->disease_id);
-        foreach($arrdisease_id as $key=>$disease_id) {
+
+        CustomerDisease::where('therapiest_work_id', $id)->delete();
+
+       foreach($arrdisease_id as $key=>$disease_id) {
             CustomerDisease::create([
                 'therapiest_work_id' => $id,
                 'disease_id' => $disease_id
@@ -300,8 +317,8 @@ class TherapiestOrderController extends Controller
         }
 
         //if($updatejourney->therapist_status=='Started'){
-            $updatejourney->therapist_status='Diagnosed';
-            $updatejourney->save();
+        $updatejourney->therapist_status='Diagnosed';
+        $updatejourney->save();
         //}
 
          return [
@@ -342,28 +359,25 @@ class TherapiestOrderController extends Controller
         if(!$updatejourney)
             return [
                 'status' => 'failed',
-                'message' => 'No update Found'
+                'message' => 'No record Found'
             ];
 
 
-        if($updatejourney->therapist_status=='Diagnosed'){
-            $updatejourney->therapist_status='TreatmentSelected';
-            $updatejourney->treatment_id=$request->treatment_id;
-            $updatejourney->save();
-        }
+        //if($updatejourney->therapist_status=='Diagnosed'){
+        $updatejourney->therapist_status='TreatmentSelected';
+        $updatejourney->treatment_id=$request->treatment_id;
+        $updatejourney->save();
+        //}
 
-        if($updatejourney) {
-            return [
-                'status' => 'success'
-            ];
-        }else{
-            return [
-                'status' => 'failed'
-            ];
-        }
+
+        return [
+            'status' => 'success',
+            'message'=>'Treatment has been selected'
+        ];
+
     }
 
-    public function pain_point_relif(Request $request,$id){
+    public function pain_point_relif(Request $request, $id){
 
         $pain_point_relif=CustomerPainpoint::where('therapiest_work_id',$id)
             ->with('painpoint')
@@ -394,7 +408,8 @@ class TherapiestOrderController extends Controller
         $request->validate([
           'message'=>'required',
           'end_time'=>'required',
-        //  'painpoint_id'=>'required',
+            'painpoints'=>'required|array',
+            'painpoints.*'=>'required|integer|min:1|max:5'
         ]);
 
         $user=$request->user;
@@ -408,6 +423,19 @@ class TherapiestOrderController extends Controller
                 'status' => 'failed',
                 'message' => 'No Record Found'
             ];
+
+        $painpoints=[];
+        foreach($request->painpoints as $key=>$val){
+            $painpoints[]=[
+                $key=>[
+                    'related_rating'=>$val,
+                    'type'=>'therapy'
+                ]
+            ];
+        }
+
+        $therapiestwork->painpoints()->sync($painpoints);
+
 
        $therapiestwork->message=$request->message;
        $therapiestwork->end_time=date('Y-m-d H:i:s');
