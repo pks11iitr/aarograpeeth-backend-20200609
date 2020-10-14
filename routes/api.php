@@ -162,6 +162,9 @@ $api->group(['prefix' => 'therapist'], function ($api) {
         $api->post('update-availability', 'Therapist\Api\ProfileController@updateavalibility');
         $api->get('my-availability', 'Therapist\Api\ProfileController@myapdateavalibility');
         $api->get('open-booking', 'Therapist\Api\TherapiestOrderController@openbooking');
+
+        $api->get('completed-booking', 'Therapist\Api\TherapiestOrderController@completedbookings');
+
         $api->get('open-booking-details/{id}', 'Therapist\Api\TherapiestOrderController@openbookingdetails');
         $api->get('completed-booking-details/{id}', 'Therapist\Api\TherapiestOrderController@completedbookingdetails');
         $api->get('journey-started/{id}', 'Therapist\Api\TherapiestOrderController@journey_started');

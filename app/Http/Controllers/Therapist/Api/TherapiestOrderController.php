@@ -101,6 +101,43 @@ class TherapiestOrderController extends Controller
 
     }
 
+    public function completedbookings(Request $request){
+        $user=$request->user;
+        $order=[];
+        $openbooking=HomeBookingSlots::with(['therapy','timeslot', 'order'])
+            ->where('assigned_therapist', $user->id)
+            ->where('status', 'completed')
+            ->get();
+        if($openbooking) {
+            foreach ($openbooking as $item) {
+
+                $order[]=array(
+                    'status'=>$item->therapist_status,
+                    'display_time'=>$item->timeslot->display_time??date('h:iA', strtotime($item->time)),
+                    'time'=>date('h:iA', strtotime($item->time)),
+                    'created_at'=>date('d/m/Y h:iA', strtotime($item->created_at)),
+                    'date'=>$item->date,
+                    'refid'=>$item->order->refid??'',
+                    'therapy_name'=>$item->therapy->name??'',
+                    'image'=>$item->therapy->image??'',
+                    'id'=>$item->id,
+                );
+            }
+            return [
+                'status' => 'success',
+                'data' =>compact('order'),
+            ];
+
+        }
+        return [
+            'status'=>'failed',
+            'message'=>'No Therapy Found'
+        ];
+
+
+    }
+
+
 //    public function openbookingdetails1(Request $request,$id){
 //        $user=$request->user;
 //        $userlat=$request->lat;
