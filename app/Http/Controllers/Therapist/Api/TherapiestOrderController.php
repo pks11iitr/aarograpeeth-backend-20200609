@@ -383,6 +383,19 @@ class TherapiestOrderController extends Controller
 
     public function pain_point_relif(Request $request, $id){
 
+        $user=$request->user;
+
+        $session=HomeBookingSlots::where('assigned_therapist', $user->id)
+            ->where('status', '!=', 'completed')
+            ->find($id);
+
+        if(!$session){
+            return [
+                'status' => 'failed',
+                'message' => 'No Session Found'
+            ];
+        }
+
         $pain_point_relif=CustomerPainpoint::where('therapiest_work_id',$id)
             ->with('painpoint')
             ->get();
@@ -397,7 +410,7 @@ class TherapiestOrderController extends Controller
             return [
                 'status'=>'success',
                'data'=>$painpoint,
-                'start_time'=>date('h:iA', strtotime($pain_point_relif->start_time)),
+                'start_time'=>date('h:iA', strtotime($session->start_time)),
                 'end_time'=>date('h:iA')
             ];
         }else {
