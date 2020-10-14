@@ -341,20 +341,24 @@ class TherapiestOrderController extends Controller
            ]);
 
        }
-        $arrdisease_id= explode(",", $request->disease_id);
 
+       if(!empty($request->disease_id)){
+           $arrdisease_id= explode(",", $request->disease_id);
 
+           CustomerDisease::where('therapiest_work_id', $id)->delete();
 
-        CustomerDisease::where('therapiest_work_id', $id)->delete();
+           if(!empty($arrdisease_id)){
+               foreach($arrdisease_id as $disease_id) {
+                   if(is_numeric($disease_id)){
+                       CustomerDisease::create([
+                           'therapiest_work_id' => $id,
+                           'disease_id' => trim($disease_id)
+                       ]);
+                   }
+               }
+           }
+       }
 
-        if(!empty($arrdisease_id)){
-            foreach($arrdisease_id as $disease_id) {
-                CustomerDisease::create([
-                    'therapiest_work_id' => $id,
-                    'disease_id' => trim($disease_id)
-                ]);
-            }
-        }
 
 
         //if($updatejourney->therapist_status=='Started'){
