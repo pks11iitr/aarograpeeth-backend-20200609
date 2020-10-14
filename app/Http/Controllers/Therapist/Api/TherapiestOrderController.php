@@ -432,11 +432,9 @@ class TherapiestOrderController extends Controller
 
         $painpoints=[];
         foreach($request->painpoints as $key=>$val){
-            $painpoints[]=[
-                $key=>[
+            $painpoints[$key]=[
                     'related_rating'=>$val,
                     'type'=>'therapy'
-                ]
             ];
         }
 
