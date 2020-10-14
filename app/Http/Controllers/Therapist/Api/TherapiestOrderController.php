@@ -342,10 +342,12 @@ class TherapiestOrderController extends Controller
 
        }
 
+        CustomerDisease::where('therapiest_work_id', $id)->delete();
+
        if(!empty($request->disease_id)){
            $arrdisease_id= explode(",", $request->disease_id);
 
-           CustomerDisease::where('therapiest_work_id', $id)->delete();
+
 
            if(!empty($arrdisease_id)){
                foreach($arrdisease_id as $disease_id) {
