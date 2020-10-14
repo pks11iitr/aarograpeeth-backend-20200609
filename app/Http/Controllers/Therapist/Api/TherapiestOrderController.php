@@ -278,7 +278,7 @@ class TherapiestOrderController extends Controller
 
         $request->validate([
             'painpoint_id'=>'required',
-            'disease_id'=>'required',
+            //'disease_id'=>'required',
         ]);
 
         $user=$request->user;
@@ -301,20 +301,24 @@ class TherapiestOrderController extends Controller
            CustomerPainpoint::create([
                'therapiest_work_id' => $id,
                'pain_point_id' => $painpoint_id
-
            ]);
 
        }
         $arrdisease_id= explode(",", $request->disease_id);
 
+
+
         CustomerDisease::where('therapiest_work_id', $id)->delete();
 
-       foreach($arrdisease_id as $key=>$disease_id) {
-            CustomerDisease::create([
-                'therapiest_work_id' => $id,
-                'disease_id' => $disease_id
-            ]);
+        if(!empty($arrdisease_id)){
+            foreach($arrdisease_id as $key=>$disease_id) {
+                CustomerDisease::create([
+                    'therapiest_work_id' => $id,
+                    'disease_id' => $disease_id
+                ]);
+            }
         }
+
 
         //if($updatejourney->therapist_status=='Started'){
         $updatejourney->therapist_status='Diagnosed';
@@ -393,6 +397,8 @@ class TherapiestOrderController extends Controller
             return [
                 'status'=>'success',
                'data'=>$painpoint,
+                'start_time'=>date('h:iA', strtotime($pain_point_relif->start_time)),
+                'end_time'=>date('h:iA')
             ];
         }else {
             return [

@@ -158,6 +158,11 @@ class ProfileController extends Controller
         ]);
 
 
+        $user->is_available=$request->is_available=='yes'?true:false;
+        $user->from_date=$request->from_date;
+        $user->to_date=$request->to_date;
+        $user->save();
+
         return [
             'status'=>'success'
         ];
