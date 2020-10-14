@@ -413,7 +413,7 @@ class TherapiestOrderController extends Controller
 
         $request->validate([
           'message'=>'required',
-          'end_time'=>'required',
+          //'end_time'=>'required',
             'painpoints'=>'required|array',
             'painpoints.*'=>'required|integer|min:1|max:5'
         ]);
