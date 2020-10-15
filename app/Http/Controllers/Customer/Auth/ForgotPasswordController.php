@@ -29,8 +29,8 @@ class ForgotPasswordController extends Controller
 
     protected function getCustomer(Request $request){
         $customer=Customer::where($this->userId($request),$request->user_id)->first();
-        $customer->notification_token=$request->notification_token;
-        $customer->save();
+//        $customer->notification_token=$request->notification_token;
+//        $customer->save();
         return $customer;
     }
 
