@@ -546,9 +546,40 @@ class TherapiestOrderController extends Controller
             'id'=>$id,
             'diseases'=>$openbookingdetails->diseases,
             'painpoints'=>$openbookingdetails->painpoints,
-            'treatment'=>$openbookingdetails->treatment
+            'treatment'=>$openbookingdetails->treatment,
+            'show_feedback_button'=>isset($openbookingdetails->feedback_fom_therapist)?0:1,
+            'feedback_from_therapist'=>$openbookingdetails->feedback_fom_therapist??''
             /*'data' =>$openbookingdetails,*/
         ];
+
+    }
+
+
+    public function postCustomerReview(Request $request, $id){
+
+        $request->validate([
+            'feedback'=>'required'
+        ]);
+
+        $user=$request->user;
+        $session=HomeBookingSlots::where('therapist_id', $user->id)
+            ->whereNull('feedback_from_therapist')
+            ->find($id);
+        if(!$session)
+            return [
+                'status'=>'failed',
+                'message'=>'No Session Found'
+            ];
+
+        $session->feedback_from_therapist=$request->feedback;
+        $session->save();
+
+        return [
+            'status'=>'success',
+            'message'=>'Feedback Has Been Submitted'
+        ];
+
+
 
     }
 
