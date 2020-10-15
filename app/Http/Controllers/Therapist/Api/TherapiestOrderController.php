@@ -562,7 +562,7 @@ class TherapiestOrderController extends Controller
         ]);
 
         $user=$request->user;
-        $session=HomeBookingSlots::where('therapist_id', $user->id)
+        $session=HomeBookingSlots::where('assigned_therapist', $user->id)
             ->whereNull('feedback_from_therapist')
             ->find($id);
         if(!$session)
