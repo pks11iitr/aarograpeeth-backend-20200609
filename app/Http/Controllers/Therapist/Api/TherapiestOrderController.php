@@ -87,9 +87,10 @@ class TherapiestOrderController extends Controller
                     'open_screen'=>$open_screen
                 );
             }
+            $user=$user->only('name', 'image');
             return [
                 'status' => 'success',
-                'data' =>compact('order'),
+                'data' =>compact('order','user'),
             ];
 
         }
