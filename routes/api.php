@@ -177,7 +177,7 @@ $api->group(['prefix' => 'therapist'], function ($api) {
 
         $api->get('my-finances', 'Therapist\Api\FinanceController@index');
 
-        $api->post('therapist-feedback', 'Therapist\Api\TherapiestOrderController@postCustomerReview');
+        $api->post('therapist-feedback/{id}', 'Therapist\Api\TherapiestOrderController@postCustomerReview');
 
     });
 
