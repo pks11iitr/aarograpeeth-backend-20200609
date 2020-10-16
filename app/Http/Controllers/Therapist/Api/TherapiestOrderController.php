@@ -545,6 +545,7 @@ class TherapiestOrderController extends Controller
             'therapy_name'=>$openbookingdetails->therapy->name,
             'image'=>$openbookingdetails->therapy->image,
             'id'=>$id,
+            'message'=>$openbookingdetails->message??'',
             'diseases'=>$openbookingdetails->diseases,
             'painpoints'=>$openbookingdetails->painpoints,
             'treatment'=>$openbookingdetails->treatment,
