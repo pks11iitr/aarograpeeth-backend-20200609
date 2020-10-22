@@ -247,7 +247,8 @@ $refid=env('MACHINE_ID').time();
             'time'=>null,
             'status'=>'pending',
             'is_instant'=>true,
-            'therapy_id'=>$therapy->id
+            'therapy_id'=>$therapy->id,
+            'price'=>$cost
         ]);
 
         return [
@@ -380,7 +381,7 @@ $refid=env('MACHINE_ID').time();
                     break;
             }
 
-            if(!BookingSlot::createAutomaticSchedule($order, $request->grade, $slot, $request->num_sessions, 'pending', $cost)){
+            if(!BookingSlot::createAutomaticSchedule($order, $request->grade, $cost, $slot, $request->num_sessions, 'pending')){
                 return [
                     'status'=>'failed',
                     'message'=>'Enough Slots Are Not Available'
@@ -483,7 +484,23 @@ $refid=env('MACHINE_ID').time();
             HomeBookingSlots::where('order_id', $order->id)
                 ->delete();
 
-            if(!HomeBookingSlots::createAutomaticSchedule($order, $request->grade, $slot, $request->num_sessions, 'pending')){
+            $cost=0;
+            switch($request->grade){
+                case 1:
+                    $cost=$therapy->grade1_price??0;
+                    break;
+                case 2:
+                    $cost=$therapy->grade2_price??0;
+                    break;
+                case 3:
+                    $cost=$therapy->grade3_price??0;
+                    break;
+                case 4:
+                    $cost=$therapy->grade4_price??0;
+                    break;
+            }
+
+            if(!HomeBookingSlots::createAutomaticSchedule($order, $request->grade, $cost, $slot, $request->num_sessions, 'pending')){
                 return [
                     'status'=>'failed',
                     'message'=>'Enough Slots Are Not Available'
@@ -530,6 +547,20 @@ $refid=env('MACHINE_ID').time();
                     ->whereIn('slot_id', $slotsarr)->delete();
 
             $cost=0;
+            switch($request->grade){
+                case 1:
+                    $cost=$therapy->grade1_price??0;
+                    break;
+                case 2:
+                    $cost=$therapy->grade2_price??0;
+                    break;
+                case 3:
+                    $cost=$therapy->grade3_price??0;
+                    break;
+                case 4:
+                    $cost=$therapy->grade4_price??0;
+                    break;
+            }
 
             foreach($slots as $slot){
 
@@ -540,20 +571,10 @@ $refid=env('MACHINE_ID').time();
                     'status'=>'pending',
                     'date'=>$slot->date,
                     'time'=>$slot->internal_start_time,
-                    'therapy_id'=>$therapy->id
-
+                    'therapy_id'=>$therapy->id,
+                    'price'=>$cost,
                 ]);
 
-//                switch($request->grade){
-//                    case 1:$cost=$cost+($clinic->therapies[0]->pivot->grade1_price??0);
-//                        break;
-//                    case 2:$cost=$cost+($clinic->therapies[0]->pivot->grade2_price??0);
-//                        break;
-//                    case 3:$cost=$cost+($clinic->therapies[0]->pivot->grade3_price??0);
-//                        break;
-//                    case 4:$cost=$cost+($clinic->therapies[0]->pivot->grade4_price??0);
-//                        break;
-//                }
             }
 
             //$order->total_cost=$order->total_cost+$cost;

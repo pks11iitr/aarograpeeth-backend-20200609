@@ -23,7 +23,7 @@ class HomeBookingSlots extends Model
     }
 
 
-    public static function createAutomaticSchedule($order, $grade, $slot, $num_sessions, $status='pending'){
+    public static function createAutomaticSchedule($order, $grade, $cost, $slot, $num_sessions, $status='pending'){
 
         $alloted=0;
 
@@ -47,7 +47,8 @@ class HomeBookingSlots extends Model
                 'status'=>$status,
                 'date'=>$slots[$i]->date,
                 'time'=>$slots[$i]->internal_start_time,
-                'therapy_id'=>$order->details[0]->entity_id
+                'therapy_id'=>$order->details[0]->entity_id,
+                'price'=>$cost
             ]);
             $alloted++;
             $i++;

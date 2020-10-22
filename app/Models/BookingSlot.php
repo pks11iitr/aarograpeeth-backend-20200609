@@ -11,7 +11,7 @@ class BookingSlot extends Model
     protected $fillable=['order_id', 'clinic_id', 'therapy_id', 'slot_id', 'status', 'grade', 'price', 'assigned_therapist', 'date', 'time', 'therapist_status', 'start_time', 'end_time'];
 
 
-    public static function createAutomaticSchedule($order, $grade, $slot, $num_sessions, $status, $cost){
+    public static function createAutomaticSchedule($order, $grade, $cost, $slot, $num_sessions, $status){
         //var_dump($slot->toArray());die;
 
         $booked_slots=BookingSlot::with('timeslot')
