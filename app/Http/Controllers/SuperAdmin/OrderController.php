@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Models\BookingSlot;
+use App\Models\DailyBookingsSlots;
 use App\Models\HomeBookingSlots;
 use App\Models\Order;
 use App\Models\TimeSlot;
@@ -156,9 +157,13 @@ class OrderController extends Controller
                 'type'=>'required|in:clinic,home'
             ]);
 
-            $slot=HomeBookingSlots::find($request->slot_id);
+            $slot=DailyBookingsSlots::find($request->slot_id);
 
             $booking=HomeBookingSlots::findOrFail($request->id);
+
+            if(!$booking)
+                return redirect()->back()->with('error', 'No Such Booking Found');
+
             if(empty($request->slot_id)){
                 $booking->update(array_merge($request->only( 'status'),['assigned_therapist'=>$request->therapist_id]));
             }else{
