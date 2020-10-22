@@ -146,15 +146,15 @@
                                         @endforeach
 
                                     @else
-                                        @foreach($order->homebookingslots as $homebookingslot)
+                                        @foreach($order->homebookingslots as $bookingSlot)
                                             <tr>
-                                                <td><a href="{{route('session.details', ['type'=>'therapist-session', 'id'=>$bookingSlot->id])}}">SESSION{{$bookingSlot->id??''}}</a></td>    <td>{{$homebookingslot->grade??''}}</td>
-                                                <td>{{$homebookingslot->price??''}}</td>
-                                                <td>{{$homebookingslot->timeslot->date??$homebookingslot->date}}</td>
-                                                <td>{{$homebookingslot->timeslot->start_time??$homebookingslot->time}}</td>
-                                                <td>{{$homebookingslot->assignedTo->name??''}}</td>
-                                                <td>{{$homebookingslot->status}}</td>
-                                                <td><a href="javascript:void(0)" onclick="getBooking({{$homebookingslot->id}}, 'home')">Edit</a></td>
+                                                <td><a href="{{route('session.details', ['type'=>'therapist-session', 'id'=>$bookingSlot->id])}}">SESSION{{$bookingSlot->id??''}}</a></td>    <td>{{$bookingSlot->grade??''}}</td>
+                                                <td>{{$bookingSlot->price??''}}</td>
+                                                <td>{{$bookingSlot->timeslot->date??$bookingSlot->date}}</td>
+                                                <td>{{$bookingSlot->timeslot->start_time??$bookingSlot->time}}</td>
+                                                <td>{{$bookingSlot->assignedTo->name??''}}</td>
+                                                <td>{{$bookingSlot->status}}</td>
+                                                <td><a href="javascript:void(0)" onclick="getBooking({{$bookingSlot->id}}, 'home')">Edit</a></td>
                                             </tr>
                                         @endforeach
 
