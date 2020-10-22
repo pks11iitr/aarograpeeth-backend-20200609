@@ -22,10 +22,10 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Status</label>
                         <select class="form-control" name="status" required>
-                            <option value="pending">Pending</option>
-                            <option value="confirmed">Confirmed</option>
-                            <option value="completed">Pending</option>
-                            <option value="cancelled">Cancelled</option>
+                            <option value="pending" @if($booking->status=='pending'){{'selected'}}@endif>Pending</option>
+                            <option value="confirmed" @if($booking->status=='confirmed'){{'selected'}}@endif>Confirmed</option>
+                            <option value="completed" @if($booking->status=='completed'){{'selected'}}@endif>Completed</option>
+                            <option value="cancelled" @if($booking->status=='cancelled'){{'selected'}}@endif>Cancelled</option>
                         </select>
                     </div>
 
@@ -77,10 +77,12 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Status</label>
                         <select class="form-control" name="status" required>
-                            <option value="pending">Pending</option>
-                            <option value="confirmed">Confirmed</option>
-                            <option value="completed">Pending</option>
-                            <option value="cancelled">Cancelled</option>
+                            <select class="form-control" name="status" required>
+                                <option value="pending" @if($booking->status=='pending'){{'selected'}}@endif>Pending</option>
+                                <option value="confirmed" @if($booking->status=='confirmed'){{'selected'}}@endif>Confirmed</option>
+                                <option value="completed" @if($booking->status=='completed'){{'selected'}}@endif>Completed</option>
+                                <option value="cancelled" @if($booking->status=='cancelled'){{'selected'}}@endif>Cancelled</option>
+                            </select>
                         </select>
                     </div>
 
