@@ -156,7 +156,7 @@ class OrderController extends Controller
                 'type'=>'required|in:clinic,home'
             ]);
 
-            $slot=HomeBookingSlots::find($$request->slot_id);
+            $slot=HomeBookingSlots::find($request->slot_id);
 
             $booking=HomeBookingSlots::findOrFail($request->id);
             if(empty($request->slot_id)){
