@@ -178,7 +178,7 @@ class PaymentController extends Controller
                 if($order->details[0]->clinic_id){
                     $order->bookingSlots()->where('status', 'pending')->update(['bookings_slots.status'=>'confirmed']);
                 }else{
-                    $order->bookingSlots()->where('status', 'pending')->update(['home_booking_slots.status'=>'confirmed']);
+                    $order->homebookingslots()->where('status', 'pending')->update(['home_booking_slots.status'=>'confirmed']);
                 }
 
                 Wallet::updatewallet($order->user_id, 'Paid For Order ID: '.$order->refid, 'DEBIT',$order->balance_used, 'CASH', $order->id);
