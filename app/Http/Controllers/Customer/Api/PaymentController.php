@@ -176,7 +176,7 @@ class PaymentController extends Controller
                 ]);
 
                 if($order->details[0]->clinic_id){
-                    $order->bookingSlots()->where('status', 'pending')->update(['booking_slots.status'=>'confirmed']);
+                    $order->bookingSlots()->where('status', 'pending')->update(['bookings_slots.status'=>'confirmed']);
                 }else{
                     $order->bookingSlots()->where('status', 'pending')->update(['home_booking_slots.status'=>'confirmed']);
                 }
