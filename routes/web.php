@@ -89,8 +89,8 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::get('therapyeedit/{id}','SuperAdmin\ClinicController@therapyedit')->name('clinic.therapyedit');
         Route::post('therapyeedit/{id}','SuperAdmin\ClinicController@therapyupdate');
 
-        Route::get('available-therapists','SuperAdmin\ClinicController@getAvailableTherapistInClinic')->name('clinic.available.therapist');
-        Route::get('available-slots','SuperAdmin\ClinicController@getAvailableTimeSlots')->name('clinic.available.slots');
+//        Route::get('available-therapists','SuperAdmin\ClinicController@getAvailableTherapistInClinic')->name('clinic.available.therapist');
+//        Route::get('available-slots','SuperAdmin\ClinicController@getAvailableTimeSlots')->name('clinic.available.slots');
 
     });
 
