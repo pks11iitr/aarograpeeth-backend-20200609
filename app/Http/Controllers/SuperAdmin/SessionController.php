@@ -158,7 +158,7 @@ class SessionController extends Controller
                 ->findOrFail($request->id);
         }else{
             return redirect()->back()->with('error', 'Invalid Request');
-        }
+        }//die;
 
         return view('admin.sessions.booking', compact('booking', 'type'));
     }

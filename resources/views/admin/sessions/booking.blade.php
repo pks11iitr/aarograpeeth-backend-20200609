@@ -1,5 +1,5 @@
 @if($type=='clinic')
-    <form role="form" method="post" enctype="multipart/form-data" action="{{route('therapist.booking.edit', ['type'=>$type, 'id'=>$booking->id])}}">
+    <form role="form" method="post" enctype="multipart/form-data" action="{{route('session.booking.edit', ['type'=>$type, 'id'=>$booking->id])}}">
         @csrf
         <input type="hidden" name="clinic_id" id="slot-clinic-id" value="{{$booking->clinic_id}}">
         <div class="card-body">
@@ -59,7 +59,7 @@
         </div>
     </form>
 @elseif($type=='home')
-    <form role="form" method="post" enctype="multipart/form-data" action="{{route('therapist.booking.edit', ['type'=>$type, 'id'=>$booking->id])}}">
+    <form role="form" method="post" enctype="multipart/form-data" action="{{route('session.booking.edit', ['type'=>$type, 'id'=>$booking->id])}}">
         @csrf
         <input type="hidden" name="clinic_id" id="slot-therapy-id" value="{{$booking->therapy_id}}">
         <div class="card-body">
