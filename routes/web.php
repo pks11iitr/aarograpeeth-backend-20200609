@@ -74,8 +74,13 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::post('update/{id}','SuperAdmin\TherapistController@update')->name('therapy.update');
         Route::post('document/{id}','SuperAdmin\TherapistController@document')->name('therapy.document');
         Route::get('delete/{id}','SuperAdmin\TherapistController@delete')->name('therapy.delete');
-       Route::get('available-therapists','SuperAdmin\TherapistController@getAvailableHomeTherapist')->name('therapy.available.therapist');
-       Route::get('available-slots','SuperAdmin\TherapistController@getAvailableTimeSlots')->name('therapy.available.slots');
+
+        // routes for admin search available therapist
+        Route::get('available-therapists','SuperAdmin\TherapistController@getAvailableHomeTherapist')->name('therapy.available.therapist');
+
+        // routes for admin search available slots
+        Route::get('available-slots','SuperAdmin\TherapistController@getAvailableTimeSlots')->name('therapy.available.slots');
+
 
     });
 
