@@ -56,7 +56,7 @@
                                         <td>{{$session->assignedTo->name??''}}</td>
                                         <td>{{$session->status}}</td>
                                         <td>@if($session instanceof App\Models\BookingSlot)
-                                                <a href="javascript:void(0)" onclick="getBooking({{$session->id}}, 'home')">Edit</a>
+                                                <a href="javascript:void(0)" onclick="getBooking({{$session->id}}, 'clinic')">Edit</a>
                                             @elseif($session instanceof App\Models\HomeBookingSlots)
                                                 <a href="javascript:void(0)" onclick="homegetBooking({{$session->id}}, 'home')">Edit</a>
                                             @endif
