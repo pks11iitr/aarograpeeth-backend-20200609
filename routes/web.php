@@ -192,7 +192,7 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin|clinic-admin'], functi
 
     Route::group(['prefix'=>'session'], function(){
 
-        Route::get('booking-edit','SuperAdmin\SessionController@editTherapistSession')->name('therapist.booking.edit');
+        Route::get('booking-edit','SuperAdmin\SessionController@editTherapistSession')->name('session.booking.edit');
         Route::post('booking-edit','SuperAdmin\SessionController@updateTherapistSession');
 
     });

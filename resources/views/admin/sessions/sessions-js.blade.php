@@ -4,7 +4,7 @@
         $("#booking-form-section").html('')
         $.ajax({
 
-            url: '{{route('order.booking.edit')}}',
+            url: '{{route('session.booking.edit')}}',
             method: 'get',
             data:{type:type, id:id},
             success: function(data){
