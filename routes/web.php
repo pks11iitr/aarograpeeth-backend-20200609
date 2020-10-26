@@ -215,9 +215,9 @@ Route::group(['prefix'=>'partners', 'middleware'=>['auth', 'acl'], 'is'=>'clinic
         Route::get('booking-edit','ClinicAdmin\OrderController@editClinicSession')->name('clinicadmin.booking.edit');
         Route::post('booking-edit','ClinicAdmin\OrderController@updateClinicSession');
 
-        Route::get('available-therapists','ClinicAdmin\OrderController@getAvailableTherapistInClinic')->name('clinic.available.therapist');
+        Route::get('available-therapists','ClinicAdmin\OrderController@getAvailableTherapistInClinic')->name('clinicadmin.available.therapist');
 
-        Route::get('available-slots','ClinicAdmin\OrderController@getAvailableTimeSlots')->name('clinic.available.slots');
+        Route::get('available-slots','ClinicAdmin\OrderController@getAvailableTimeSlots')->name('clinicadmin.available.slots');
 
     });
 
