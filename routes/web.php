@@ -89,8 +89,8 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::get('therapyeedit/{id}','SuperAdmin\ClinicController@therapyedit')->name('clinic.therapyedit');
         Route::post('therapyeedit/{id}','SuperAdmin\ClinicController@therapyupdate');
 
-//        Route::get('available-therapists','SuperAdmin\ClinicController@getAvailableTherapistInClinic')->name('clinic.available.therapist');
-//        Route::get('available-slots','SuperAdmin\ClinicController@getAvailableTimeSlots')->name('clinic.available.slots');
+        Route::get('available-therapists','SuperAdmin\ClinicController@getAvailableTherapistInClinic')->name('clinic.available.therapist');
+        Route::get('available-slots','SuperAdmin\ClinicController@getAvailableTimeSlots')->name('clinic.available.slots');
 
     });
 
@@ -117,8 +117,8 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::get('product','SuperAdmin\OrderController@product')->name('orders.product');
         Route::get('productdetails/{id}','SuperAdmin\OrderController@productdetails')->name('order.productdetails');
         Route::get('change-status/{id}','SuperAdmin\OrderController@changeStatus')->name('orders.status.change');
-        Route::get('booking-edit','SuperAdmin\OrderController@editTherapySession')->name('order.booking.edit');
-        Route::post('booking-edit','SuperAdmin\OrderController@updateTherapySession');
+//        Route::get('booking-edit','SuperAdmin\OrderController@editTherapySession')->name('order.booking.edit');
+//        Route::post('booking-edit','SuperAdmin\OrderController@updateTherapySession');
 
     });
 
