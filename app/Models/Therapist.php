@@ -16,7 +16,7 @@ class Therapist extends Authenticatable implements JWTSubject
 
 	protected $table='therapists';
 
-	protected $fillable=['name','email','mobile','password', 'image','address','city','state','isactive','clinic_id'];
+	protected $fillable=['name','email','mobile','password', 'image','address','city','state','isactive','clinic_id', 'status'];
 
     public function locations(){
         return $this->hasMany('App\Models\TherapistLocations', 'therapist_id')->orderBy('id', 'desc');

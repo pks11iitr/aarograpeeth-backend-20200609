@@ -53,7 +53,9 @@ class TherapistController extends Controller
                       'grade2_price'=>$request->price2,
                       'grade3_price'=>$request->price3,
                       'grade4_price'=>$request->price4,
-                      'image'=>'a']))
+                      'image'=>'a',
+                      'status'=>1
+              ]))
             {
 				$therapy->saveImage($request->image, 'therapies');
              return redirect()->route('therapy.edit', ['id'=>$therapy->id])->with('success', 'Therapy has been created');
