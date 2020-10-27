@@ -21,6 +21,11 @@ class TherapistApiAuth
                 'status'=>'failed',
                 'message'=>'Please login to continue'
             ], 200);
+        if($user->isactive)
+            return response()->json([
+                'status'=>'failed',
+                'message'=>'Your Account Has Been Suspended'
+            ], 200);
 
         $request->merge(compact('user'));
         return $next($request);
