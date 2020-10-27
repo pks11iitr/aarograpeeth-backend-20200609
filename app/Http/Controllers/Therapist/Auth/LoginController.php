@@ -111,7 +111,7 @@ class LoginController extends Controller
         if(!in_array($user->status, [0,1]))
             return ['status'=>'failed', 'message'=>'This account has been blocked'];
 
-        $otp=OTPModel::createOTP('therapistadmin', $user->id, 'login');
+        $otp=OTPModel::createOTP('therapist', $user->id, 'login');
         $msg=str_replace('{{otp}}', $otp, config('sms-templates.login'));
         event(new SendOtp($user->mobile, $msg));
 
