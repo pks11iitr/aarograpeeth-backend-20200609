@@ -80,7 +80,7 @@ class LoginController extends Controller
 
     protected function sendLoginResponse($user, $token){
         if($user->status==0){
-            $otp=OTPModel::createOTP('therapistadmin', $user->id, 'login');
+            $otp=OTPModel::createOTP('therapist', $user->id, 'login');
             $msg=str_replace('{{otp}}', $otp, config('sms-templates.login'));
             Msg91::send($user->mobile,$msg);
             return ['status'=>'success', 'message'=>'otp verify', 'token'=>''];
