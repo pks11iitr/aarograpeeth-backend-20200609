@@ -20,11 +20,11 @@ class HomeController extends Controller
         $videos=Video::active()->get();
         $services=[
             [
-            'name'=>'Therapy at clinics',
+            'name'=>'Clinics',
             'url'=>route('clinics.list')
             ],
             [
-                'name'=>'Therapy at home',
+                'name'=>'Therapies',
                 'url'=>route('therapies.list')
             ],
         ];
