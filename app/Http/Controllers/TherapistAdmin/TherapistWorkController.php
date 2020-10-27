@@ -71,7 +71,7 @@ class TherapistWorkController extends Controller
        $request->validate([
            'pain_point_ids'=>'required|array',
            'pain_point_ids.*'=>'integer',
-           'disease_ids'=>'required|array',
+           'disease_ids'=>'array',
            'disease_ids.*'=>'integer'
        ]);
 
