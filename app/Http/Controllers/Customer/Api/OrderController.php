@@ -831,6 +831,9 @@ $refid=env('MACHINE_ID').time();
             }
         }
 
+        if($order->is_instant==1){
+            $verification_code=$order->homebookingslot[0]->verification_code??'';
+        }
 
         $itemdetails=[];
         foreach($order->details as $detail){
@@ -845,12 +848,12 @@ $refid=env('MACHINE_ID').time();
                     'price'=>$detail->cost,
                     'quantity'=>$detail->quantity,
                     'image'=>$detail->entity->image??'',
-                    'booking_date'=>$order->booking_date,
-                    'booking_time'=>$order->booking_time,
+                    'booking_date'=>($order->is_instant==1)?date('d/m/y', strtotime($order->created_at)):null,
+                    'booking_time'=>($order->is_instant==1)?'Instant Booking':null,
                     'item_id'=>$detail->entity_id,
                     'show_review'=>in_array($order->status,['completed'])?(empty($order->details[0]->clinic_id)?(isset($reviews[$detail->entity_id])?0:1):0):0,
                     'show_clinic_review'=>in_array($order->status,['completed'])?(!empty($order->details[0]->clinic_id)?(isset($reviews[$detail->entity_id])?0:1):0):0,
-                    'verification_code'=>''
+                    'verification_code'=>($order->is_instant==1)?($verification_code??''):''
                 ];
             }
             else{
