@@ -95,12 +95,13 @@ class TherapistWorkController extends Controller
 
 
         CustomerDisease::where('therapiest_work_id', $id)->delete();
-
-        foreach($request->disease_ids as $point){
-            CustomerDisease::create([
-                'therapiest_work_id'=>$session->id,
-                'disease_id'=>$point
-            ]);
+        if(!empty($request->disease_ids)){
+            foreach($request->disease_ids as $point){
+                CustomerDisease::create([
+                    'therapiest_work_id'=>$session->id,
+                    'disease_id'=>$point
+                ]);
+            }
         }
 
         $session->status='confirmed';
