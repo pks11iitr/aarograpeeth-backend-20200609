@@ -282,6 +282,12 @@ class TherapiestOrderController extends Controller
             $updatejourney->status='confirmed';
             $updatejourney->save();
         }elseif($updatejourney->therapist_status=='Confirmed'){
+            if($updatejourney->verification_code!=$request->code){
+                return [
+                    'status'=>'failed',
+                    'message'=>'Please enter correct verification code'
+                ];
+            }
             $updatejourney->therapist_status='Started';
             $updatejourney->start_time=date("Y-m-d H:i:s");
             $updatejourney->save();

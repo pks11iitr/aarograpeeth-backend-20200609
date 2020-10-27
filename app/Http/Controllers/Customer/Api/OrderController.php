@@ -239,7 +239,7 @@ $refid=env('MACHINE_ID').time();
             'quantity'=>$num_sessions,
             'grade'=>$request->grade
         ]);
-
+        $code=rand(0,9).''.rand(0,9).''.rand(0,9).''.rand(0,9).''.rand(0,9).''.rand(0,9);
         HomeBookingSlots::create([
             'order_id'=>$order->id,
             'date'=>date('Y-m-d'),
@@ -248,7 +248,8 @@ $refid=env('MACHINE_ID').time();
             'status'=>'pending',
             'is_instant'=>true,
             'therapy_id'=>$therapy->id,
-            'price'=>$cost
+            'price'=>$cost,
+            'verification_code'=>$code
         ]);
 
         return [
@@ -563,7 +564,7 @@ $refid=env('MACHINE_ID').time();
             }
 
             foreach($slots as $slot){
-
+                $code=rand(0,9).''.rand(0,9).''.rand(0,9).''.rand(0,9).''.rand(0,9).''.rand(0,9);
                 HomeBookingSlots::create([
                     'order_id'=>$order->id,
                     'slot_id'=>$slot->id,
@@ -573,6 +574,7 @@ $refid=env('MACHINE_ID').time();
                     'time'=>$slot->internal_start_time,
                     'therapy_id'=>$therapy->id,
                     'price'=>$cost,
+                    'verification_code'=>$code
                 ]);
 
             }

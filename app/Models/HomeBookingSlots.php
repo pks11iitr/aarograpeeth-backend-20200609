@@ -8,7 +8,7 @@ class HomeBookingSlots extends Model
 {
     protected $table='home_booking_slots';
 
-    protected $fillable=['order_id', 'grade', 'date', 'time', 'display_time', 'status', 'slot_id', 'is_instant', 'assigned_therapist', 'therapy_id', 'therapist_status', 'start_time', 'end_time', 'price'];
+    protected $fillable=['order_id', 'grade', 'date', 'time', 'display_time', 'status', 'slot_id', 'is_instant', 'assigned_therapist', 'therapy_id', 'therapist_status', 'start_time', 'end_time', 'price', 'verification_code'];
 
     public function assignedTo(){
         return $this->belongsTo('App\Models\Therapist', 'assigned_therapist');
@@ -39,7 +39,7 @@ class HomeBookingSlots extends Model
 
         $i=0;
         while($i<$num_sessions && isset($slots[$i])){
-
+            $code=rand(0,9).''.rand(0,9).''.rand(0,9).''.rand(0,9).''.rand(0,9).''.rand(0,9);
             HomeBookingSlots::create([
                 'order_id'=>$order->id,
                 'slot_id'=>$slots[$i]->id,
@@ -48,7 +48,8 @@ class HomeBookingSlots extends Model
                 'date'=>$slots[$i]->date,
                 'time'=>$slots[$i]->internal_start_time,
                 'therapy_id'=>$order->details[0]->entity_id,
-                'price'=>$cost
+                'price'=>$cost,
+                'verification_code'=>$code
             ]);
             $alloted++;
             $i++;
