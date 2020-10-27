@@ -836,8 +836,8 @@ $refid=env('MACHINE_ID').time();
         foreach($order->details as $detail){
             if($detail->entity instanceof Therapy){
 
-                $order->booking_date='2020-08-31';
-                $order->booking_time='08:00 PM';
+                //$order->booking_date='2020-08-31';
+                //$order->booking_time='08:00 PM';
 
                 $itemdetails[]=[
                     'name'=>($detail->entity->name??'')." ( Grade $detail->grade )",
@@ -849,7 +849,8 @@ $refid=env('MACHINE_ID').time();
                     'booking_time'=>$order->booking_time,
                     'item_id'=>$detail->entity_id,
                     'show_review'=>in_array($order->status,['completed'])?(empty($order->details[0]->clinic_id)?(isset($reviews[$detail->entity_id])?0:1):0):0,
-                    'show_clinic_review'=>in_array($order->status,['completed'])?(!empty($order->details[0]->clinic_id)?(isset($reviews[$detail->entity_id])?0:1):0):0
+                    'show_clinic_review'=>in_array($order->status,['completed'])?(!empty($order->details[0]->clinic_id)?(isset($reviews[$detail->entity_id])?0:1):0):0,
+                    'verification_code'=>''
                 ];
             }
             else{
@@ -915,7 +916,8 @@ $refid=env('MACHINE_ID').time();
                 'show_cancel_product'=>$show_cancel_product??0,
                 'dates'=>$dates,
                 'timings'=>$timings,
-                'show_time_slots_btn'=>$show_time_slots_button??0
+                'show_time_slots_btn'=>$show_time_slots_button??0,
+                'verification_code'=>''
             ]
         ];
     }
