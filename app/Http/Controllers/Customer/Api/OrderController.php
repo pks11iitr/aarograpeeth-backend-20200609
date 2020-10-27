@@ -920,7 +920,7 @@ $refid=env('MACHINE_ID').time();
                 'dates'=>$dates,
                 'timings'=>$timings,
                 'show_time_slots_btn'=>$show_time_slots_button??0,
-                'verification_code'=>''
+                'verification_code'=>$verification_code??''
             ]
         ];
     }
