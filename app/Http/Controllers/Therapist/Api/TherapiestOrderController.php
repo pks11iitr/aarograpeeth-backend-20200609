@@ -555,8 +555,8 @@ class TherapiestOrderController extends Controller
             'diseases'=>$openbookingdetails->diseases,
             'painpoints'=>$openbookingdetails->painpoints,
             'treatment'=>$openbookingdetails->treatment,
-            'show_feedback_button'=>empty($openbookingdetails->feedback_fom_therapist)?1:0,
-            'feedback_from_therapist'=>$openbookingdetails->feedback_fom_therapist??''
+            'show_feedback_button'=>empty($openbookingdetails->feedback_from_therapist)?1:0,
+            'feedback_from_therapist'=>$openbookingdetails->feedback_from_therapist??''
             /*'data' =>$openbookingdetails,*/
         ];
 
