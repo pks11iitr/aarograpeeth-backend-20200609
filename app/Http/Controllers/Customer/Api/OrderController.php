@@ -832,7 +832,7 @@ $refid=env('MACHINE_ID').time();
         }
 
         if($order->is_instant==1){
-            $verification_code=$order->homebookingslot[0]->verification_code??'';
+            $verification_code=$order->homebookingslots[0]->verification_code??'';
         }
 
         $itemdetails=[];
