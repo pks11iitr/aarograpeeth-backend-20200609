@@ -28,7 +28,7 @@ class TherapistRegisterListner
      */
     public function handle(TherapistRegistered $event)
     {
-        $otp=OTPModel::createOTP('therapistadmin', $event->user->id, 'register');
+        $otp=OTPModel::createOTP('therapist', $event->user->id, 'register');
         $msg=str_replace('{{otp}}', $otp, config('sms-templates.register'));
         Msg91::send($event->user->mobile,$msg);
     }

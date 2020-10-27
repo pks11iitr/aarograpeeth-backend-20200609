@@ -53,7 +53,7 @@ class Clinic extends Model
 
 
     public function getAvailableTherapist($time_slot){
-        return $this->therapist()->whereDoesntHave('bookings', function($bookings) use ($time_slot){
+        return $this->therapist()->where('therapist.id')->whereDoesntHave('bookings', function($bookings) use ($time_slot){
             $bookings->where('slot_id', $time_slot)
                 ->where('bookings_slots.status', 'pending');
         })->select('users.name', 'users.id')->get();
