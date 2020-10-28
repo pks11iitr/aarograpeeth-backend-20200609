@@ -929,7 +929,7 @@ $refid=env('MACHINE_ID').time();
                 'show_time_slots_btn'=>$show_time_slots_button??0,
                 'verification_code'=>$verification_code??'',
                 'show_download_invoice'=>$show_download_invoice,
-                'invoice_url'=>route('download.invoice')
+                'invoice_url'=>route('download.invoice', ['refid'=>$order->refid])
             ]
         ];
     }
