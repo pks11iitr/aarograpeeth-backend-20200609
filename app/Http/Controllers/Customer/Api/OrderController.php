@@ -937,7 +937,7 @@ $refid=env('MACHINE_ID').time();
     public function downloadInvoice(Request $request, $refid){
         $order = Order::with(['details.entity', 'details.clinic', 'bookingSlots'=>function($slots){
 
-            $slots->whereNotIn('booking_slots.status', ['cancelled']);
+            $slots->whereNotIn('bookings_slots.status', ['cancelled']);
 
         }, 'homebookingslots'=>function($slots){
 
