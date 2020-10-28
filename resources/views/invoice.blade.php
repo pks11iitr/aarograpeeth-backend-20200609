@@ -98,7 +98,7 @@
         <tbody>
         <tr class="border-bottom border-right grey">
             <td colspan="3"><strong>Product</strong></td>
-            <td colspan="1"><strong>Qty</strong></td>
+            <td colspan="3"><strong>Qty</strong></td>
             <td colspan="1"><strong>Price</strong></td>
             <td colspan="1"><strong>Tax</strong></td>
             <td colspan="1"><strong>Subtotal</strong></td>
