@@ -65,10 +65,10 @@
     <table width="100%" class="outline-table" style="margin-bottom: 10px;">
         <tbody>
         <tr class="black">
-            <td colspan="6" style="color: white"><strong>Order # {{$orders->refid}}</strong></td>
+            <td colspan="6" style="color: white"><strong>Order # {{$order->refid}}</strong></td>
         </tr>
         <tr class="black">
-            <td colspan="6" style="color: white"><strong>Order Date: {{date('D d ,Y h:iA', strtotime($orders->created_at))}}</strong></td>
+            <td colspan="6" style="color: white"><strong>Order Date: {{date('D d ,Y h:iA', strtotime($order->created_at))}}</strong></td>
         </tr>
         </tbody>
     </table>
@@ -80,15 +80,15 @@
         </tr>
 
         <tr class="border-right">
-            <td colspan="6">{{$orders->name??''}}<br>
-                <span>{{$orders->email??''}},</span><br>
-                <span>{{$orders->mobile??''}}</span><br>
-                <span>{{$orders->address??''}}</span>
+            <td colspan="6">{{$order->name??''}}<br>
+                <span>{{$order->email??''}},</span><br>
+                <span>{{$order->mobile??''}}</span><br>
+                <span>{{$order->address??''}}</span>
             </td>
-            <td colspan="6">{{$orders->name??''}}<br>
-                <span>{{$orders->email??''}},</span><br>
-                <span>{{$orders->mobile??''}}</span><br>
-                <span>{{$orders->address??''}}</span>
+            <td colspan="6">{{$order->name??''}}<br>
+                <span>{{$order->email??''}},</span><br>
+                <span>{{$order->mobile??''}}</span><br>
+                <span>{{$order->address??''}}</span>
             </td>
 
         </tbody>
