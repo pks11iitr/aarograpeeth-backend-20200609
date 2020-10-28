@@ -800,6 +800,8 @@ $refid=env('MACHINE_ID').time();
         $show_cancel=0;
         $show_reschedule=0;
         $show_time_slots_button=0;
+        $show_download_invoice=0;
+
 
         $user=auth()->guard('customerapi')->user();
         if(!$user)
@@ -833,6 +835,10 @@ $refid=env('MACHINE_ID').time();
 
         if($order->is_instant==1){
             $verification_code=$order->homebookingslots[0]->verification_code??'';
+        }
+
+        if(!in_array($order->status, ['pending', 'cancelled'])){
+            $show_download_invoice=1;
         }
 
         $itemdetails=[];
@@ -920,9 +926,34 @@ $refid=env('MACHINE_ID').time();
                 'dates'=>$dates,
                 'timings'=>$timings,
                 'show_time_slots_btn'=>$show_time_slots_button??0,
-                'verification_code'=>$verification_code??''
+                'verification_code'=>$verification_code??'',
+                'show_download_invoice'=>$show_download_invoice,
+                'invoice_url'=>route('download.invoice')
             ]
         ];
+    }
+
+
+    public function downloadInvoice(Request $request, $refid){
+        $order = Order::with(['details.entity', 'details.clinic', 'bookingSlots'=>function($slots){
+
+            $slots->whereNotIn('booking_slots.status', ['cancelled']);
+
+        }, 'homebookingslots'=>function($slots){
+
+            $slots->whereNotIn('home_booking_slots.status', ['cancelled']);
+
+        }, 'customer'])->where('refid', $refid)->first();
+        if(!$order)
+            return [
+                'status'=>'failed',
+                'message'=>'No Invoice Found'
+            ];
+
+        // var_dump($orders);die();
+        $pdf = PDF::loadView('invoice', compact('order'))
+            ->setPaper('a4', 'portrait');
+        return $pdf->download('invoice.pdf');
     }
 
     public function rescheduleOrder(Request $request, $id){

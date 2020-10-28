@@ -133,7 +133,7 @@ $api->group(['middleware' => ['customer-auth']], function ($api) {
 });
 
 
-
+$api->get('download-invoice/{refid}', ['as'=>'invoice.download', 'uses'=>'Customer\Api\OrderController@downloadInvoice']);
 
 /*
  * Therapist Apis Starts Here
