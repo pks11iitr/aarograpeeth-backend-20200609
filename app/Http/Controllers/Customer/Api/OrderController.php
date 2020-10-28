@@ -17,6 +17,7 @@ use App\Models\TimeSlot;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use PDF;
 
 class OrderController extends Controller
 {
