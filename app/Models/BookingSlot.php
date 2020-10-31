@@ -8,7 +8,7 @@ class BookingSlot extends Model
 {
     protected $table='bookings_slots';
 
-    protected $fillable=['order_id', 'clinic_id', 'therapy_id', 'slot_id', 'status', 'grade', 'price', 'assigned_therapist', 'date', 'time', 'therapist_status', 'start_time', 'end_time'];
+    protected $fillable=['order_id', 'clinic_id', 'therapy_id', 'slot_id', 'status', 'grade', 'price', 'assigned_therapist', 'date', 'time', 'therapist_status', 'start_time', 'end_time', 'is_confirmed', 'is_paid'];
 
 
     public static function createAutomaticSchedule($order, $grade, $cost, $slot, $num_sessions, $status){

@@ -8,7 +8,7 @@ class HomeBookingSlots extends Model
 {
     protected $table='home_booking_slots';
 
-    protected $fillable=['order_id', 'grade', 'date', 'time', 'display_time', 'status', 'slot_id', 'is_instant', 'assigned_therapist', 'therapy_id', 'therapist_status', 'start_time', 'end_time', 'price', 'verification_code'];
+    protected $fillable=['order_id', 'grade', 'date', 'time', 'display_time', 'status', 'slot_id', 'is_instant', 'assigned_therapist', 'therapy_id', 'therapist_status', 'start_time', 'end_time', 'price', 'verification_code', 'is_confirmed', 'is_paid'];
 
     public function assignedTo(){
         return $this->belongsTo('App\Models\Therapist', 'assigned_therapist');

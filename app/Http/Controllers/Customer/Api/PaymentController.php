@@ -277,9 +277,9 @@ class PaymentController extends Controller
             // comfirm slots booking
             if ($order->details[0]->entity_type == 'App\Models\Therapy'){
                 if ($order->details[0]->clinic_id != null) {
-                    $order->schedule()->where('bookings_slots.status', 'pending')->update(['bookings_slots.status' => 'confirmed']);
+                    $order->schedule()->where('bookings_slots.status', 'pending')->update(['bookings_slots.is_confirmed' => true, 'bookings_slots.is_paid'=>true]);
                 }else if($order->is_instant==0){
-                    $order->homebookingslots()->where('home_booking_slots.status', 'pending')->update(['home_booking_slots.status' => 'confirmed']);
+                    $order->homebookingslots()->where('home_booking_slots.status', 'pending')->update(['home_booking_slots.is_paid' => true,'home_booking_slots.is_confirmed' => true, ]);
                 }
             }
 
@@ -488,10 +488,14 @@ class PaymentController extends Controller
                 if ($reschedule_request->order->details[0]->clinic_id != null) {
                     $booking=BookingSlot::find($reschedule_request->booking_id);
                     $booking->slot_id=$reschedule_request->new_slot_id;
+                    $booking->time=$reschedule_request->new_slot_time;
+                    $booking->date=$reschedule_request->new_slot_date;
                     $booking->save();
                 }else{
                     $booking=HomeBookingSlots::find($reschedule_request->booking_id);
                     $booking->slot_id=$reschedule_request->new_slot_id;
+                    $booking->time=$reschedule_request->new_slot_time;
+                    $booking->date=$reschedule_request->new_slot_date;
                     $booking->is_instant=0;
                     $booking->save();
                 }
