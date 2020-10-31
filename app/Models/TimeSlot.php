@@ -31,7 +31,7 @@ class TimeSlot extends Model
 
         if ($tsids){
             $bookings = BookingSlot::whereIn('slot_id', $tsids)
-                ->where('status', 'confirmed')
+                ->where('is_confirmed', true)
                 ->groupBy('slot_id', 'grade')
                 ->select(DB::raw('count(*) as count'), 'slot_id', 'grade')
                 ->get();
@@ -170,7 +170,7 @@ class TimeSlot extends Model
 
         if ($tsids){
             $bookings = BookingSlot::whereIn('slot_id', $tsids)
-                ->where('status', 'confirmed')
+                ->where('is_confirmed', true)
                 ->groupBy('slot_id', 'grade')
                 ->select(DB::raw('count(*) as count'), 'slot_id', 'grade')
                 ->get();
@@ -314,7 +314,7 @@ class TimeSlot extends Model
         //return $tsids;
         if ($tsids){
             $bookings = BookingSlot::whereIn('slot_id', $tsids)
-                ->where('status', 'confirmed')
+                ->where('is_confirmed', true)
                 ->groupBy('slot_id', 'grade')
                 ->select(DB::raw('count(*) as count'), 'slot_id', 'grade')
                 ->get();
