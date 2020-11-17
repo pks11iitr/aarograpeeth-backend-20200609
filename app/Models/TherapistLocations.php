@@ -20,10 +20,13 @@ class TherapistLocations extends Model
             $destinations=$destinations.$n['lat_lang'].'|';
         }
 
-        $url="https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=$lat,$lang&destinations=$destinations&key=AIzaSyA38xR5NkHe1OsEAcC1aELO47qNOE3BL-k";
+        $url="https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=$destinations&destinations=$lat,$lang&key=AIzaSyA38xR5NkHe1OsEAcC1aELO47qNOE3BL-k";
 
         try{
             //die('dsd');
+
+            $distances=[];
+
             $client = new GuzzleHttp\Client();
 
             $response = $client->get($url);
@@ -31,7 +34,7 @@ class TherapistLocations extends Model
             $body=$response->getBody()->getContents();
 
             $jsonobject=json_decode($body, true);
-//print_r($jsonobject);die;
+            //print_r($jsonobject);die;
             if($jsonobject){
                 $distances=$jsonobject['rows'][0]['elements']??[];
             }
