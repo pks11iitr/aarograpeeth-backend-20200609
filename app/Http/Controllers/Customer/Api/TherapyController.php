@@ -101,7 +101,6 @@ class TherapyController extends Controller
             'therapy_id'=>'required|integer',
         ]);
 
-
         $therapist=Therapist::active()
             ->with([
                 'therapies'=>function($therapies)use($request){
@@ -113,6 +112,11 @@ class TherapyController extends Controller
                     $therapies->where('therapies.id', $request->therapy_id);
                     }
             )
+            // excludes therapist having pending bookings for the date
+            ->whereDoesntHave('bookings', function($bookings){
+                $bookings->where('date', date('Y-m-d'))
+                    ->where('home_booking_slots.status', 'pending');
+            })
             //->select('last_lat', 'last_lang')
             ->get();
 

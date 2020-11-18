@@ -62,4 +62,32 @@ class Therapist extends Authenticatable implements JWTSubject
         return $this->hasMany('App\Models\HomeBookingSlots', 'assigned_therapist');
     }
 
+
+    // excludes therapist having pending bookings for the date
+    public static function getAvailableHomeTherapist($therapy_id,$slot_id){
+
+        if(!$slot_id)
+            $date=date('Y-m-d');
+        else{
+            $daily_booking_slot=DailyBookingsSlots::find($slot_id);
+            $date=$daily_booking_slot->date;
+        }
+
+        $therapist=Therapist::active()
+            ->whereHas('therapies', function($therapies) use($therapy_id){
+                $therapies->where('therapies.id', $therapy_id);
+            })
+            ->whereDoesntHave('bookings', function($bookings) use($slot_id){
+                $bookings->where('slot_id', $slot_id);
+            })
+            ->whereDoesntHave('bookings', function($bookings) use($date){
+                $bookings->where('date', $date)
+                    ->where('home_booking_slots.status', 'pending');
+            })
+            ->select('id', 'name')
+            ->get();//die;
+
+        return $therapist;
+    }
+
 }
