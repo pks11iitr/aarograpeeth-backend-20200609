@@ -36,8 +36,13 @@ class TherapistLocations extends Model
             $jsonobject=json_decode($body, true);
             //print_r($jsonobject);die;
             if($jsonobject){
-                $distances=$jsonobject['rows'][0]['elements']??[];
+                $jsondistanceobject=$jsonobject['rows']??[];
+                foreach($jsondistanceobject as $distance)
+                    $distances[]=$distance['elements'][0];
             }
+
+
+
             //print_r($distances);die;
             $gradeswisedistances=[];
             $i=0;
