@@ -263,3 +263,8 @@ Route::group(['prefix'=>'therapistadmin', 'middleware'=>['auth', 'acl'], 'is'=>'
     });
 
 });
+
+
+Route::get('about-us','StaticPagesController@aboutus')->name('about.us');
+Route::get('terms-n-conditions','StaticPagesController@terms')->name('terms.cond');
+Route::get('privacy-policy','StaticPagesController@privacy')->name('privacy.policy');

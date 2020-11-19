@@ -107,7 +107,8 @@ class ReviewController extends Controller
 
         $request->validate([
             'rating'=>'required|in:1,2,3,4,5',
-            'review'=>'string|max:250'
+            'review'=>'string|max:250',
+            'result'=>'required|in:1,2,3,4'
         ]);
 
         $user=$request->user;
@@ -149,6 +150,9 @@ class ReviewController extends Controller
                 'status'=>'failed',
                 'message'=>'No Record Found'
             ];
+
+        $session->customer_result=$request->result;
+        $session->save();
 
         $review=Review::where('order_id', $order_id)
             ->where('session_id', $session_id)

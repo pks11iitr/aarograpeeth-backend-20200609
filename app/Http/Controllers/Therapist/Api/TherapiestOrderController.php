@@ -260,7 +260,9 @@ class TherapiestOrderController extends Controller
                 'buttonshow'=>$buttonshow,
                 'therapy_name'=>$openbookingdetails->therapy->name,
                 'image'=>$openbookingdetails->therapy->image,
-                'id'=>$id
+                'id'=>$id,
+                'lat'=>$openbookingdetails->order->lat??'',
+                'lang'=>$openbookingdetails->order->lang??'',
                 /*'data' =>$openbookingdetails,*/
             ];
     }
@@ -478,7 +480,8 @@ class TherapiestOrderController extends Controller
           'message'=>'required',
           //'end_time'=>'required',
             'painpoints'=>'required|array',
-            'painpoints.*'=>'required|integer|min:1|max:5'
+            'painpoints.*'=>'required|integer|min:1|max:5',
+            'result'=>'required|integer|in:1,2,3,4'
         ]);
 
         $user=$request->user;
@@ -508,6 +511,7 @@ class TherapiestOrderController extends Controller
        $therapiestwork->end_time=date('Y-m-d H:i:s');
        $therapiestwork->therapist_status='Completed';
        $therapiestwork->status='completed';
+       $therapiestwork->therapist_result=$request->result;
        $therapiestwork->save();
         return [
             'status'=>'success',
