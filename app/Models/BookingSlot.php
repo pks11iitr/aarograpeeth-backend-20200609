@@ -135,4 +135,9 @@ class BookingSlot extends Model
         return $this->belongsTo('App\Models\Treatment', 'treatment_id');
     }
 
+    public function mainDiseases(){
+        return $this->morphToMany('App\Models\MainDisease', 'entity', 'customer_main_diseases', 'entity_id', 'disease_id');
+    }
+
+
 }

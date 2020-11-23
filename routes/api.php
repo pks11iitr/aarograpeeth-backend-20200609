@@ -179,6 +179,11 @@ $api->group(['prefix' => 'therapist'], function ($api) {
 
         $api->post('therapist-feedback/{id}', 'Therapist\Api\TherapiestOrderController@postCustomerReview');
 
+        $api->get('diseases-list/{id}', 'Therapist\Api\TherapiestOrderController@mainDiseaseList');
+
+        $api->post('add-main-diseases/{id}', 'Therapist\Api\TherapiestOrderController@addMainDiseases');
+
+
     });
 
 });

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Therapist\Api;
 
+use App\Models\MainDisease;
+use App\Models\ReasonDisease;
 use App\Models\Therapist;
 use App\Models\TherapistLocations;
 use App\Models\TherapistTherapy;
@@ -301,6 +303,69 @@ class TherapiestOrderController extends Controller
         ];
 
     }
+
+    public function mainDiseaseList(Request $request, $id){
+
+        $user=$request->user;
+
+        $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
+            ->where('status', '!=', 'completed')
+            ->find($id);
+
+        $main_diseases=MainDisease::active()->select('name', 'id')->orderBY('name', 'asc')->get();
+        $reason_diseases=ReasonDisease::active()->select('name', 'id')->orderBY('name', 'asc')->get();
+
+        $customer_diseases=$home_booking_slot->reasonDiseases;
+
+        $selected_diseases=[];
+
+        foreach($customer_diseases as $sds){
+            if(!isset($selected_diseases[$sds->pivot->disease_id]))
+                $selected_diseases[$sds->pivot->disease_id]=[];
+            $selected_diseases[$sds->pivot->disease_id][]=$sds->id;
+        }
+
+        return [
+            'status'=>'success',
+            'data'=>compact('main_diseases', 'reason_diseases', 'selected_diseases')
+        ];
+    }
+
+
+    public function addMainDiseases(Request $request, $id){
+
+        $user=$request->user;
+        //echo $user->id;die;
+        $request->validate([
+            'diseases'=>'array|required',
+        ]);
+
+        $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
+            ->where('status', '!=', 'completed')
+            ->find($id);
+
+        //remove old data
+        $home_booking_slot->mainDiseases()->detach();
+        $home_booking_slot->reasonDiseases()->detach();
+
+        //add new data
+        foreach($request->diseases as $disease=>$reason_diseases){
+            $home_booking_slot->mainDiseases()->sync($disease);
+            if(!empty($reason_diseases)){
+                $reason_diseases=array_unique(explode(',',$reason_diseases));
+                if(!empty($reason_diseases))
+                    foreach($reason_diseases as $rid)
+                        $home_booking_slot->reasonDiseases()->attach([$rid=>['disease_id'=>$disease]]);
+            }
+        }
+
+        return [
+            'status'=>'success',
+            'message'=>'Diseases have been added'
+        ];
+    }
+
+
     public function diseasepoint(Request $request){
 
         $disease=Disease::active()->get();
