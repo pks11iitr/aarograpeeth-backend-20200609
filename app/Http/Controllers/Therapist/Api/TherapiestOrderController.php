@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Therapist\Api;
 
+use App\Models\DiagnosePoint;
 use App\Models\MainDisease;
 use App\Models\ReasonDisease;
 use App\Models\Therapist;
@@ -363,6 +364,61 @@ class TherapiestOrderController extends Controller
             'status'=>'success',
             'message'=>'Diseases have been added'
         ];
+    }
+
+    public function diagnoseListBeforeTreatment(Request $request, $id){
+        $user=$request->user;
+
+        $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
+            ->where('status', '!=', 'completed')
+            ->find($id);
+
+        $diagnose_points=DiagnosePoint::active()->select('id','name','type')->get();
+
+        return [
+            'status'=>'success',
+            'data'=>compact('diagnose_points')
+        ];
+
+    }
+
+    public function addDiagnoseBeforeTreatment(Request $request, $id){
+
+        $user=$request->user;
+
+        $request->validate([
+            'before_treatment'=>'required|array',
+            'after_treatment'=>'required|array'
+        ]);
+
+        $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
+            ->where('status', '!=', 'completed')
+            ->find($id);
+
+        $home_booking_slot->diagnose()->detach();
+
+        $diagnose_points=[];
+
+        foreach($request->before_treatment as $dp=>$value){
+            if(!isset($diagnose_points[$dp]))
+                $diagnose_points[$dp]=[];
+            $diagnose_points[$dp]['before_value']=$value;
+        }
+
+        foreach($request->after_treatment as $dp=>$value){
+            if(!isset($diagnose_points[$dp]))
+                $diagnose_points[$dp]=[];
+            $diagnose_points[$dp]['after_value']=$value;
+        }
+
+        if(!empty($diagnose_points))
+            $home_booking_slot->diagnose()->attach($diagnose_points);
+
+        return [
+            'status'=>'success',
+            'message'=>'Diagnose has been updated'
+        ];
+
     }
 
 
