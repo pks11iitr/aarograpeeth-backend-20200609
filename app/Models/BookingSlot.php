@@ -144,4 +144,9 @@ class BookingSlot extends Model
     }
 
 
+    public function diagnose(){
+        return $this->morphToMany('App\Models\DiagnosePoint', 'entity', 'customer_diagnose_points', 'entity_id', 'diagnose_point_id')->withPivot(['before_value', 'after_value']);
+    }
+
+
 }

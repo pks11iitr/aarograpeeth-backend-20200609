@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Therapist\Api;
 
 use App\Models\DiagnosePoint;
+use App\Models\DiseasewiseTreatment;
 use App\Models\MainDisease;
 use App\Models\ReasonDisease;
 use App\Models\Therapist;
@@ -420,6 +421,150 @@ class TherapiestOrderController extends Controller
         ];
 
     }
+
+    public function suggestedTreatments(Request $request, $id){
+        $user=$request->user;
+
+        $home_booking_slot=HomeBookingSlots::with(['mainDiseases','reasonDiseases', 'painpoints', 'diseases'])
+            ->where('assigned_therapist', $user->id)
+            ->where('status', '!=', 'completed')
+            ->find($id);
+
+        //main disease ids
+        $mdids=[];
+        foreach($home_booking_slot->mainDiseases as $md){
+            $mdids[]=$md->id;
+        }
+
+        //reason_disease_ids, indexed by main disease
+        $rdids=[];
+        foreach($home_booking_slot->reasonDiseases as $rd){
+            if(!isset($rdids[$rd->pivot->disease_id]))
+                $rdids[$rd->pivot->disease_id]=[];
+            $rdids[$rd->pivot->disease_id][]=$rd->id;
+        }
+
+        //pain points
+        $ppids=[];
+        foreach($home_booking_slot->painPoints as $pp){
+            $ppids[]=$pp->id;
+        }
+
+        //diseases to ignore treatments
+        $igids=[];
+        foreach($home_booking_slot->diseases as $igd){
+            $igids[]=$igd->id;
+        }
+
+        // all treatments for main diseases
+        $disease_treatments=DiseasewiseTreatment::active()
+            ->with(['mainDisease', 'reasonDiseases', 'painPoints', 'ignoreWhenDiseases'])
+            ->whereIn('main_disease_id', $mdids)
+            ->get();
+
+
+        // selection of treatments on basis of reason_disease, pain_point, ignore_disease
+        $disease_treatment_list=[];
+        foreach($disease_treatments as $dt){
+
+            //skip treatment if ignore disease found
+            $flag=false;
+            foreach($dt->ignoreWhenDiseases as $iwd){
+                if(in_array($iwd->id, $igids))
+                    $flag=true;
+            }
+            if($flag)
+                continue;
+            //skip treatment ends
+
+            // set main disease
+            if(!isset($disease_treatment_list[$dt->main_disease_id]))
+                $disease_treatment_list[$dt->main_disease_id]=[
+                    'main_disease'=>$dt->mainDisease->name??'',
+                    'treatments'=>[]
+                ];
+
+            // set treatment after filtering by reason disease & painpoints
+            $reasondiseases='';
+            if(!$dt->reasonDiseases->toArray()){
+                $treatment_for_reason_selected=true;
+            }else{
+                $treatment_for_reason_selected=false;
+                if(!$rdids[$dt->main_disease_id])
+                    $treatment_for_reason_selected=true;
+                else {
+                    foreach ($dt->reasonDiseases as $rd) {
+                        if (in_array($rd->id, $rdids[$dt->main_disease_id])) {
+                            $reasondiseases = $reasondiseases . $rd->name . ',';
+                            $treatment_for_reason_selected = true;
+                        }
+
+                    }
+                }
+            }
+
+            $painpoints='';
+            if(!$dt->painPoints->toArray()){
+                $treatment_for_painpoint_selected=true;
+            }else{
+                $treatment_for_painpoint_selected=false;
+                if(!$ppids)
+                    $treatment_for_painpoint_selected=true;
+                else{
+                    foreach($dt->painPoints as $pp){
+                        if(in_array($pp->id, $ppids)){
+                            $painpoints=$painpoints.$pp->name.',';
+                            $treatment_for_painpoint_selected=true;
+                        }
+                    }
+                }
+            }
+            //var_dump($treatment_for_painpoint_selected);die;
+            if($treatment_for_painpoint_selected && $treatment_for_reason_selected)
+            $disease_treatment_list[$dt->main_disease_id]['treatments'][]=[
+                'reason_disease'=>$reasondiseases,
+                'painpoint'=>$painpoints,
+                'treatment'=>$dt->only('id','description','exercise', 'dont_exercise', 'diet', 'recommended_days', 'action_when_pain_increase')
+            ];
+
+            $disease_treatment_list=array_values($disease_treatment_list);
+
+
+        }
+
+        return [
+
+            'status'=>'success',
+            'data'=>compact('disease_treatment_list')
+
+        ];
+    }
+
+
+    public function chooseTreatments(Request $request, $id){
+        $user=$request->user;
+
+        $request->validate([
+            'treatments'=>'required|array',
+            'treatments.*'=>'required|integer'
+        ]);
+
+        $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
+            ->where('status', '!=', 'completed')
+            ->find($id);
+
+        $home_booking_slot->treatmentsGiven()->detach();
+
+        $home_booking_slot->treatmentsGiven()->attach($request->treatments);
+
+        return [
+            'status'=>'success',
+            'message'=>'Treatments Have Been Updated'
+        ];
+
+    }
+
+
 
 
     public function diseasepoint(Request $request){

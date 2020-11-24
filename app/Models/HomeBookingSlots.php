@@ -100,5 +100,9 @@ class HomeBookingSlots extends Model
         return $this->morphToMany('App\Models\DiagnosePoint', 'entity', 'customer_diagnose_points', 'entity_id', 'diagnose_point_id')->withPivot(['before_value', 'after_value']);
     }
 
+    public function treatmentsGiven(){
+        return $this->morphToMany('App\Models\MainDisease', 'entity', 'selected_treatments', 'entity_id', 'treatment_id');
+    }
+
 
 }
