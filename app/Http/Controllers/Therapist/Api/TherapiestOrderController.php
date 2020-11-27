@@ -527,7 +527,8 @@ class TherapiestOrderController extends Controller
                 'treatment'=>$dt->only('id','description','exercise', 'dont_exercise', 'diet', 'recommended_days', 'action_when_pain_increase')
             ];
 
-            $disease_treatment_list=array_values($disease_treatment_list);
+            foreach($disease_treatment_list as $key=>$val)
+                $treatment_list[]=$val;
 
 
         }
@@ -535,7 +536,7 @@ class TherapiestOrderController extends Controller
         return [
 
             'status'=>'success',
-            'data'=>compact('disease_treatment_list')
+            'data'=>compact('treatment_list')
 
         ];
     }
