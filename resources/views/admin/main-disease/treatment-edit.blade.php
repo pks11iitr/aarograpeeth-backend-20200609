@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Add Treatment for {{$disease->name}}</h1>
+                        <h1>Edit Treatment for {{$disease->name}}</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -32,7 +32,7 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form role="form" method="post" enctype="multipart/form-data" action="{{route('main-disease.treatment-add', ['id'=>$disease->id])}}">
+                            <form role="form" method="post" enctype="multipart/form-data" action="{{route('main-disease.treatment-edit', ['id'=>$disease->id, 'treatment_id'=>$treatment->id])}}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="row">
@@ -41,7 +41,8 @@
                                                 <label>Other Diseases</label>
                                                 <select class="form-control" name="reason_diseases[]" multiple>
                                                     @foreach($reason_diseases as $d)
-                                                    <option value="{{$d->id}}">{{$d->name}}</option>
+                                                    <option value="{{$d->id}}" @foreach($treatment->reasonDiseases as $rd) @if($rd->id==$d->id){{'selected'}} @endif @endforeach>{{$d->name}}
+                                                    </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -51,7 +52,7 @@
                                                 <label>Pain Points</label>
                                                 <select class="form-control" name="pain_points[]" multiple>
                                                     @foreach($pain_points as $p)
-                                                        <option value="{{$p->id}}">{{$p->name}}</option>
+                                                        <option value="{{$p->id}}" @foreach($treatment->painPoints as $pp) @if($pp->id==$p->id){{'selected'}} @endif @endforeach>{{$p->name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -61,7 +62,7 @@
                                                 <label>Avoid Treatment with disease</label>
                                                 <select class="form-control" name="ignore_diseases[]" multiple>
                                                     @foreach($ignore_diseases as $d)
-                                                        <option value="{{$d->id}}">{{$d->name}}</option>
+                                                        <option value="{{$d->id}}" @foreach($treatment->ignoreWhenDiseases as $id) @if($id->id==$p->id){{'selected'}} @endif @endforeach>{{$d->name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -69,45 +70,45 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Formulae</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="description" placeholder="" required rows="5"></textarea>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="description" placeholder="" required rows="5">{{$treatment->description}}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Exercise</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="exercise" placeholder="" required rows="5"></textarea>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="exercise" placeholder="" required rows="5">{{$treatment->exercise}}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Dont Exercise</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="dont_exercise" placeholder="" required rows="5"></textarea>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="dont_exercise" placeholder="" required rows="5">{{$treatment->dont_exercise}}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Diet</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="diet" placeholder="" required rows="5"></textarea>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="diet" placeholder="" required rows="5">{{$treatment->diet}}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Recommended Days</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="recommended_days" placeholder="" required rows="5"></textarea>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="recommended_days" placeholder="" required rows="5">{{$treatment->recommended_days}}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">What to do if pain increases?</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="action_when_pain_increase" placeholder="" required rows="5"></textarea>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="action_when_pain_increase" placeholder="" required rows="5">{{$treatment->action_when_pain_increase}}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Is Active</label>
                                                 <select class="form-control" name="isactive" required>
-                                                    <option value="1">Yes</option>
-                                                    <option value="0">No</option>
+                                                    <option value="1" @if($treatment->isactive==1){{'selected'}}@endif>Yes</option>
+                                                    <option value="0" @if($treatment->isactive==0){{'selected'}}@endif>No</option>
                                                 </select>
                                             </div>
                                         </div>

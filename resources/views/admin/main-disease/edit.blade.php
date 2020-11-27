@@ -102,7 +102,7 @@
                                                 <h3 class="card-title">
                                                     <b>{{$loop->iteration}}.</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                     {{$t->description}}
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                              <a href="" class="btn btn-primary">Edit</a>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                              <a href="{{route('main-disease.treatment-edit',['id'=>$disease->id, 'treatment_id'=>$t->id])}}" class="btn btn-primary">Edit</a>
                                                 </h3>
                                             </div>
                                             <!-- /.card-header -->

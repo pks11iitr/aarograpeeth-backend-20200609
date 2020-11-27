@@ -78,19 +78,37 @@ class MainDiseaseController extends Controller
     }
 
     public function storeTreatment(Request $request, $disease_id){
+
+        //var_dump($request->all());die;
         $disease=MainDisease::find($disease_id);
-        $treatment=DiseasewiseTreatment::create(array_merge(['main_disease_id'=>$disease_id], $request->only('description','exercise','dont_exercise','diet', 'recommended_days','action_when_pain_increase')));
-        return redirect()->route('main-disease.treatment-edit',['id'=>$disease->id, 'treatment_id'=>$treatment->id])->with('success', 'Treatment has been added');
+        $treatment=DiseasewiseTreatment::create(array_merge(['main_disease_id'=>$disease_id], $request->only('description','exercise','dont_exercise','diet', 'recommended_days','action_when_pain_increase', 'isactive')));
+
+        $treatment->reasonDiseases()->sync($request->reason_diseases);
+        $treatment->painPoints()->sync($request->pain_points);
+        $treatment->ignoreWhenDiseases()->sync($request->ignore_diseases);
+
+        return redirect()->route('main-disease.edit',['id'=>$disease->id, 'treatment_id'=>$treatment->id])->with('success', 'Treatment has been added');
     }
 
     public function editTreatment(Request $request, $disease_id, $treatment_id){
         $disease=MainDisease::find($disease_id);
         $treatment=DiseasewiseTreatment::find($treatment_id);
-        return redirect()->route('main-disease.treatment-edit',['id'=>$disease->id, 'treatment_id'=>$treatment->id])->with('success', 'Treatment has been added');
+        $reason_diseases=ReasonDisease::get();
+        $ignore_diseases=Disease::get();
+        $pain_points=PainPoint::get();
+        return view('admin.main-disease.treatment-edit', compact('disease','reason_diseases','ignore_diseases','pain_points', 'treatment'));
     }
 
     public function updateTreatment(Request $request, $disease_id, $treatment_id){
+        //var_dump($request->all());die;
+        $disease=MainDisease::find($disease_id);
+        $treatment=DiseasewiseTreatment::find($treatment_id);
+        $treatment->update($request->only('description','exercise','dont_exercise','diet', 'recommended_days','action_when_pain_increase', 'isactive'));
+        $treatment->reasonDiseases()->sync($request->reason_diseases);
+        $treatment->painPoints()->sync($request->pain_points);
+        $treatment->ignoreWhenDiseases()->sync($request->ignore_diseases);
 
+        return redirect()->route('main-disease.treatment-edit',['id'=>$disease->id, 'treatment_id'=>$treatment->id])->with('success', 'Treatment has been updated');
     }
 
 }
