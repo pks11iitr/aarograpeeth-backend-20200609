@@ -527,11 +527,13 @@ class TherapiestOrderController extends Controller
                 'treatment'=>$dt->only('id','description','exercise', 'dont_exercise', 'diet', 'recommended_days', 'action_when_pain_increase')
             ];
 
-            foreach($disease_treatment_list as $key=>$val)
-                $treatment_list[]=$val;
+
 
 
         }
+
+        foreach($disease_treatment_list as $key=>$val)
+            $treatment_list[]=$val;
 
         return [
 
