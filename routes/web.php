@@ -56,6 +56,10 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::get('edit/{id}','SuperAdmin\MainDiseaseController@edit')->name('main-disease.edit');
         Route::post('update/{id}','SuperAdmin\MainDiseaseController@update')->name('main-disease.update');
         Route::get('delete/{id}','SuperAdmin\MainDiseaseController@delete')->name('main-disease.delete');
+        Route::get('treatment-add/{id}','SuperAdmin\MainDiseaseController@addTreatment')->name('main-disease.treatment-add');
+        Route::post('treatment-add/{id}','SuperAdmin\MainDiseaseController@storeTreatment');
+        Route::get('treatment-edit/{id}/{treatment_id}','SuperAdmin\MainDiseaseController@editTreatment')->name('main-disease.treatment-edit');
+        Route::get('treatment-edit/{id}/{treatment_id}','SuperAdmin\MainDiseaseController@updateTreatment');
     });
 
     Route::group(['prefix'=>'painpoint'], function(){

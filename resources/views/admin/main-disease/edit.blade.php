@@ -67,6 +67,105 @@
             </div><!-- /.container-fluid -->
         </section>
         <!-- /.content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card-body">
+                            <div class="row">
+                    <a href="{{route('main-disease.treatment-add', ['id'=>$disease->id])}}" class="btn btn-primary">+ Add New Treatment</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <br>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- left column -->
+                    <div class="col-md-12">
+                        <!-- general form elements -->
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Treatments List</h3>
+                            </div>
+
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @foreach($treatments as $t)
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title">
+                                                    <b>{{$loop->iteration}}.</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    {{$t->description}}
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                              <a href="" class="btn btn-primary">Edit</a>
+                                                </h3>
+                                            </div>
+                                            <!-- /.card-header -->
+                                            <div class="card-body">
+                                                <dl>
+                                                    <dt>Other Diseases</dt>
+                                                    <dd>
+                                                        @foreach($t->reasonDiseases as $d) {{$d->name}},
+                                                        @endforeach
+                                                    </dd>
+                                                    <dt>Pain Points</dt>
+                                                    <dd>
+                                                        @foreach($t->painPoints as $p) {{$p->name}},
+                                                        @endforeach
+                                                    </dd>
+
+                                                    <dt>Avoid with below diseases</dt>
+                                                    <dd>
+                                                        @foreach($t->ignoreWhenDiseases as $d) {{$d->name}},
+                                                        @endforeach
+                                                    </dd>
+
+                                                    <dt>Exercise</dt>
+                                                    <dd>
+                                                        {{$t->exercise}}
+                                                    </dd>
+
+                                                    <dt>Dont Exercise</dt>
+                                                    <dd>
+                                                        {{$t->dont_exercise}}
+                                                    </dd>
+
+                                                    <dt>Diet</dt>
+                                                    <dd>
+                                                        {{$t->diet}}
+                                                    </dd>
+
+                                                    <dt>Recommended Days</dt>
+                                                    <dd>
+                                                        {{$t->recommended_days}}
+                                                    </dd>
+
+                                                    <dt>What to do if pain increase?</dt>
+                                                    <dd>
+                                                        {{$t->action_when_pain_increase}}
+                                                    </dd>
+                                                </dl>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        @endforeach
+                                        <!-- /.card -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!--/.col (right) -->
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
     </div>
     <!-- ./wrapper -->
 @endsection
