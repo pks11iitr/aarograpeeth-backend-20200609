@@ -352,7 +352,7 @@ class TherapiestOrderController extends Controller
 
         //add new data
         foreach($request->diseases as $disease=>$reason_diseases){
-            $home_booking_slot->mainDiseases()->sync($disease);
+            $home_booking_slot->mainDiseases()->attach($disease);
             if(!empty($reason_diseases)){
                 $reason_diseases=array_unique(explode(',',$reason_diseases));
                 if(!empty($reason_diseases))
