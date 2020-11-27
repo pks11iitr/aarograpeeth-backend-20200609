@@ -124,7 +124,10 @@
                                                         @foreach($t->ignoreWhenDiseases as $d) {{$d->name}},
                                                         @endforeach
                                                     </dd>
-
+                                                    <dt>Formulae</dt>
+                                                    <dd>
+                                                        {{$t->description}}
+                                                    </dd>
                                                     <dt>Exercise</dt>
                                                     <dd>
                                                         {{$t->exercise}}
