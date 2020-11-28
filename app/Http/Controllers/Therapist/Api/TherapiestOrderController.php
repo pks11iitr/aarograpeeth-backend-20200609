@@ -748,8 +748,8 @@ class TherapiestOrderController extends Controller
         $request->validate([
           'message'=>'required',
           //'end_time'=>'required',
-            'painpoints'=>'required|array',
-            'painpoints.*'=>'required|integer|min:1|max:5',
+            //'painpoints'=>'required|array',
+            //'painpoints.*'=>'required|integer|min:1|max:5',
             'result'=>'required|integer|in:1,2,3,4'
         ]);
 
@@ -765,15 +765,15 @@ class TherapiestOrderController extends Controller
                 'message' => 'No Record Found'
             ];
 
-        $painpoints=[];
-        foreach($request->painpoints as $key=>$val){
-            $painpoints[$key]=[
-                    'related_rating'=>$val,
-                    'type'=>'therapy'
-            ];
-        }
-
-        $therapiestwork->painpoints()->sync($painpoints);
+//        $painpoints=[];
+//        foreach($request->painpoints as $key=>$val){
+//            $painpoints[$key]=[
+//                    'related_rating'=>$val,
+//                    'type'=>'therapy'
+//            ];
+//        }
+//
+//        $therapiestwork->painpoints()->sync($painpoints);
 
 
        $therapiestwork->message=$request->message;
@@ -831,6 +831,74 @@ class TherapiestOrderController extends Controller
             'treatment'=>$openbookingdetails->treatment,
             'show_feedback_button'=>empty($openbookingdetails->feedback_from_therapist)?1:0,
             'feedback_from_therapist'=>$openbookingdetails->feedback_from_therapist??''
+            /*'data' =>$openbookingdetails,*/
+        ];
+
+    }
+
+
+    public function completedbookingdetails2(Request $request, $id){
+
+        $user=$request->user;
+
+        $openbookingdetails=HomeBookingSlots::with(['therapy','timeslot', 'order', 'diseases', 'painpoints', 'mainDiseases', 'reasonDiseases','diagnose', 'treatmentsGiven'])
+            ->where('status',  'completed')
+            ->where('assigned_therapist', $user->id)
+            ->find($id);
+
+        if(!$openbookingdetails)
+            return [
+                'status'=>'failed',
+                'message'=>'No Therapy Found'
+            ];
+
+        //instant timing
+        if($openbookingdetails->is_instant==0){
+            $timing=  ($openbookingdetails->timeslot->date??$openbookingdetails->date)." ".($openbookingdetails->timeslot->start_time??$openbookingdetails->time);
+        }else{
+            $timing=$openbookingdetails->date.' '.'Instant Booking';
+        }
+
+        $main_diseases=[];
+        foreach($openbookingdetails->mainDiseases as $md){
+            $main_diseases[$md->id]=[
+                'name'=>$md->name,
+                'reason_diseases'=>''
+            ];
+        }
+
+        foreach($openbookingdetails->reasonDiseases as $rd){
+            if(isset($main_diseases[$rd->pivot->main_disease_id])) {
+                $main_diseases[$rd->pivot->main_disease_id]['reason_diseases']=$main_diseases[$rd->pivot->main_disease_id]['reason_diseases'].$rd->name.', ';
+            }
+        }
+
+        $treatments=[];
+        foreach($openbookingdetails->treatmentsGiven as $t){
+            $treatments[]=$t->description;
+        }
+
+
+        return [
+            'status' => 'success',
+            'booking_status'=>$openbookingdetails->therapist_status,
+            'total_cost'=>$openbookingdetails->price,
+            //'schedule_type'=>$openbookingdetails->order->schedule_type,
+            'name'=>$openbookingdetails->order->name,
+            'mobile'=>$openbookingdetails->order->mobile,
+            'address'=>$openbookingdetails->order->address,
+            //'distance_away'=>$distance,
+            'timing'=>$timing,
+            'therapy_name'=>$openbookingdetails->therapy->name,
+            'image'=>$openbookingdetails->therapy->image,
+            'id'=>$id,
+            'comments'=>$openbookingdetails->message??'',
+            'diseases'=>$openbookingdetails->diseases,
+            'painpoints'=>$openbookingdetails->painpoints,
+            'treatment'=>$treatments,
+            'show_feedback_button'=>empty($openbookingdetails->feedback_from_therapist)?1:0,
+            'feedback_from_therapist'=>$openbookingdetails->feedback_from_therapist??'',
+            'main_diseases'=>$main_diseases
             /*'data' =>$openbookingdetails,*/
         ];
 

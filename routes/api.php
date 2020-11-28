@@ -166,7 +166,7 @@ $api->group(['prefix' => 'therapist'], function ($api) {
         $api->get('completed-booking', 'Therapist\Api\TherapiestOrderController@completedbookings');
 
         $api->get('open-booking-details/{id}', 'Therapist\Api\TherapiestOrderController@openbookingdetails');
-        $api->get('completed-booking-details/{id}', 'Therapist\Api\TherapiestOrderController@completedbookingdetails');
+        $api->get('completed-booking-details/{id}', 'Therapist\Api\TherapiestOrderController@completedbookingdetails2');
         $api->get('journey-started/{id}', 'Therapist\Api\TherapiestOrderController@journey_started');
         $api->get('disease-point', 'Therapist\Api\TherapiestOrderController@diseasepoint');
         $api->get('treatment-list', 'Therapist\Api\TherapiestOrderController@treatmentlist');
