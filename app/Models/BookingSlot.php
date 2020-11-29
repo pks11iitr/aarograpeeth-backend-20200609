@@ -140,7 +140,7 @@ class BookingSlot extends Model
     }
 
     public function reasonDiseases(){
-        return $this->morphToMany('App\Models\MainDisease', 'entity', 'customer_reason_diseases', 'entity_id', 'reason_disease_id')->withPivot(['disease_id']);
+        return $this->morphToMany('App\Models\ReasonDisease', 'entity', 'customer_reason_diseases', 'entity_id', 'reason_disease_id')->withPivot(['disease_id']);
     }
 
 
