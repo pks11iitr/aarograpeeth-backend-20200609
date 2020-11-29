@@ -166,7 +166,6 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- /.card-body -->
-                            <?php print_r($session->treatmentsGiven->toArray());?>
                             @foreach($session->treatmentsGiven as $t)
                             <div class="card-body">
                                 <dl>
@@ -202,8 +201,26 @@
                             </div>
                             @endforeach
 
+                        </div>
 
-
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Treatment Result</h4>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- /.card-body -->
+                                <div class="card-body">
+                                    <dl>
+                                        <dt>Result</dt>
+                                        <dd>
+                                            {{$session->results()}}
+                                        </dd>
+                                        <dt>Therapist Comments</dt>
+                                        <dd>
+                                            {{$t->message}}
+                                        </dd>
+                                    </dl>
+                                </div>
 
                         </div>
 
