@@ -166,52 +166,37 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- /.card-body -->
-                            @foreach($session->mainDiseases as $d)
+                            <?php print_r($session->treatmentsGiven->toArray());?>
+                            @foreach($session->treatmentsGiven as $t)
                             <div class="card-body">
                                 <dl>
-                                    <dt>Other Disease</dt>
-                                    <dd>
-                                        @foreach($session->reasonDiseases as $d) {{$d->name}},
-                                        @endforeach
-                                    </dd>
-                                    <dt>Pain Points</dt>
-                                    <dd>
-                                        @foreach($session->painPoints as $p) {{$p->name}},
-                                        @endforeach
-                                    </dd>
-
-                                    <dt>Avoid with below diseases</dt>
-                                    <dd>
-                                        @foreach($session->diseases as $d) {{$d->name}},
-                                        @endforeach
-                                    </dd>
                                     <dt>Formulae</dt>
                                     <dd>
-                                        {{$session->description}}
+                                        {{$t->description}}
                                     </dd>
                                     <dt>Exercise</dt>
                                     <dd>
-                                        {{$session->exercise}}
+                                        {{$t->exercise}}
                                     </dd>
 
                                     <dt>Dont Exercise</dt>
                                     <dd>
-                                        {{$session->dont_exercise}}
+                                        {{$t->dont_exercise}}
                                     </dd>
 
                                     <dt>Diet</dt>
                                     <dd>
-                                        {{$session->diet}}
+                                        {{$t->diet}}
                                     </dd>
 
                                     <dt>Recommended Days</dt>
                                     <dd>
-                                        {{$session->recommended_days}}
+                                        {{$t->recommended_days}}
                                     </dd>
 
                                     <dt>What to do if pain increase?</dt>
                                     <dd>
-                                        {{$session->action_when_pain_increase}}
+                                        {{$t->action_when_pain_increase}}
                                     </dd>
                                 </dl>
                             </div>

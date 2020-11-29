@@ -101,7 +101,7 @@ class HomeBookingSlots extends Model
     }
 
     public function treatmentsGiven(){
-        return $this->morphToMany('App\Models\MainDisease', 'entity', 'selected_treatments', 'entity_id', 'treatment_id');
+        return $this->morphToMany('App\Models\DiseasewiseTreatment', 'entity', 'selected_treatments', 'entity_id', 'treatment_id');
     }
 
     public function results(){
