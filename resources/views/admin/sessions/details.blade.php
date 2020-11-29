@@ -168,7 +168,7 @@
                             <!-- /.card-body -->
                             @foreach($session->treatmentsGiven as $t)
                             <div class="card-body">
-                                <dl>
+                                <dl><h5><b>{{$loop->iteration}}. Treatment</b></h5>
                                     <dt>Formulae</dt>
                                     <dd>
                                         {{$t->description}}
