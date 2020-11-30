@@ -372,7 +372,13 @@
                                             </div>
                                         </div>
                                         @php
-
+                                            $diagnosed_values=[];
+                                            foreach($openbooking->diagnose as $d){
+                                                if(!isset($diagnosed_values[$d->id]))
+                                                $diagnosed_values[$d->id]=[];
+                                                $diagnosed_values[$d->id]['before_value']=$d->pivot->before_value;
+                                                $diagnosed_values[$d->id]['after_value']=$d->pivot->after_value;
+                                            }
                                         @endphp
                                         <div class="col-md-3">
                                             <div class="form-group">
@@ -380,12 +386,12 @@
                                                 @foreach($diagnose_points as $dp)
                                                     <div class="form-check">
                                                         @if($dp->type=='input')
-                                                            <input type="text" class="form-check-input" id="exampleCheck1" name="before_treatment[{{$dp->id}}]">
+                                                            <input type="text" class="form-check-input" id="exampleCheck1" name="before_treatment[{{$dp->id}}]" value="{{$diagnosed_values[$dp->id]['before_value']??''}}">
                                                         @else
                                                             <select name="before_treatment[{{$dp->id}}]" class="form-select-input">
                                                                 <option value="">Select</option>
-                                                                <option value="Ok">Ok</option>
-                                                                <option value="Not Ok">Not Ok</option>
+                                                                <option value="Ok" @if(($diagnosed_values[$dp->id]['before_value']??'')=='Ok'){{'selected'}}@endif>Ok</option>
+                                                                <option value="Not Ok" @if(($diagnosed_values[$dp->id]['before_value']??'')=='Not Ok'){{'selected'}}@endif>Not Ok</option>
                                                             </select>
                                                         @endif
                                                         <label class="form-check-label" for="exampleCheck1"></label>
@@ -400,12 +406,12 @@
                                                 @foreach($diagnose_points as $dp)
                                                     <div class="form-check">
                                                         @if($dp->type=='input')
-                                                        <input type="text" class="form-check-input" id="exampleCheck1" name="after_treatment[{{$dp->id}}]">
+                                                        <input type="text" class="form-check-input" id="exampleCheck1" name="after_treatment[{{$dp->id}}]" value="{{$diagnosed_values[$dp->id]['after_value']}}">
                                                         @else
                                                             <select name="after_treatment[{{$dp->id}}]" class="form-select-input">
                                                                 <option value="">Select</option>
-                                                                <option value="Ok">Ok</option>
-                                                                <option value="Not Ok">Not Ok</option>
+                                                                <option value="Ok" @if(($diagnosed_values[$dp->id]['after_value']??'')=='Ok'){{'selected'}}@endif>Ok</option>
+                                                                <option value="Not Ok" @if(($diagnosed_values[$dp->id]['after_value']??'')=='Not Ok'){{'selected'}}@endif>Not Ok</option>
                                                             </select>
                                                         @endif
                                                             <label class="form-check-label" for="exampleCheck1"></label>
@@ -424,7 +430,7 @@
 
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Complete Response</h3>
+                                <h3 class="card-title">Treatment Result</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                                 </div>
@@ -439,43 +445,64 @@
                                 <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                <h3>Pain Point:</h3>
-                                @foreach($painpoints as $painpoint)
-                                    <div class="form-check">
-                                        <label class="form-check-label" for="exampleCheck1">{{$painpoint->name}}</label>
-                                        <label>
-                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="1" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==1){{'checked'}} @endif @endforeach/>
-                                            <span class="icon">★</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="2" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==2){{'checked'}} @endif @endforeach/>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="3" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==3){{'checked'}} @endif @endforeach/>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="4" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==4){{'checked'}} @endif @endforeach/>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="5" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==5){{'checked'}} @endif @endforeach/>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                            <span class="icon">★</span>
-                                        </label>
+                                <h3>Select Any:</h3>
+                                        <div class="form-check">
+                                            <label>
+                                                <input type="radio" name="result" value="1" @if($openbooking->therapist_result==1){{'checked'}} @endif />
+                                            </label>                                                                         <label class="form-check-label" for="exampleCheck1">No Relief
+                                            </label>
+                                            <br>
+                                            <label>
+                                                <input type="radio" name="result" value="2" @if($openbooking->therapist_result==2){{'checked'}} @endif/>
+                                            </label>                                                                         <label class="form-check-label" for="exampleCheck1">Relief
+                                            </label>
+                                            <br>
+                                            <label>
+                                                <input type="radio" name="result" value="3" @if($openbooking->therapist_result==3){{'checked'}} @endif/>
+                                            </label>                                                                         <label class="form-check-label" for="exampleCheck1">Cured
+                                            </label>
+                                            <br>
+                                            <label>
+                                                <input type="radio" name="result" value="4" @if($openbooking->therapist_result==4){{'checked'}} @endif/>
+                                            </label>                                                                         <label class="form-check-label" for="exampleCheck1">Problem Increased
+                                            </label>
+                                        </div>
+{{--                                @foreach($painpoints as $painpoint)--}}
+{{--                                    <div class="form-check">--}}
+{{--                                        <label class="form-check-label" for="exampleCheck1">{{$painpoint->name}}</label>--}}
+{{--                                        <label>--}}
+{{--                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="1" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==1){{'checked'}} @endif @endforeach/>--}}
+{{--                                            <span class="icon">★</span>--}}
+{{--                                        </label>--}}
+{{--                                        <label>--}}
+{{--                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="2" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==2){{'checked'}} @endif @endforeach/>--}}
+{{--                                            <span class="icon">★</span>--}}
+{{--                                            <span class="icon">★</span>--}}
+{{--                                        </label>--}}
+{{--                                        <label>--}}
+{{--                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="3" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==3){{'checked'}} @endif @endforeach/>--}}
+{{--                                            <span class="icon">★</span>--}}
+{{--                                            <span class="icon">★</span>--}}
+{{--                                            <span class="icon">★</span>--}}
+{{--                                        </label>--}}
+{{--                                        <label>--}}
+{{--                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="4" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==4){{'checked'}} @endif @endforeach/>--}}
+{{--                                            <span class="icon">★</span>--}}
+{{--                                            <span class="icon">★</span>--}}
+{{--                                            <span class="icon">★</span>--}}
+{{--                                            <span class="icon">★</span>--}}
+{{--                                        </label>--}}
+{{--                                        <label>--}}
+{{--                                            <input type="radio" name="rating[{{$painpoint->id}}]" value="5" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id && $s->related_rating==5){{'checked'}} @endif @endforeach/>--}}
+{{--                                            <span class="icon">★</span>--}}
+{{--                                            <span class="icon">★</span>--}}
+{{--                                            <span class="icon">★</span>--}}
+{{--                                            <span class="icon">★</span>--}}
+{{--                                            <span class="icon">★</span>--}}
+{{--                                        </label>--}}
 
-                                    </div>
-                                @endforeach
+{{--                                    </div>--}}
+{{--                                @endforeach--}}
                                     </div>
                                 </div>
                                     <div class="col-md-6">

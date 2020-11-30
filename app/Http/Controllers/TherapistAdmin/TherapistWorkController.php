@@ -336,8 +336,9 @@ class TherapistWorkController extends Controller
     public function completeTherapy(Request $request, $id){
         $request->validate([
             'comments'=>'required',
-            'rating'=>'required|array',
-            'rating.*'=>'required|integer|min:1|max:5'
+            //'rating'=>'required|array',
+            //'rating.*'=>'required|integer|min:1|max:5',
+            'result'=>'required|in:1,2,3,4'
         ]);
 
         $user=auth()->user();
@@ -349,15 +350,16 @@ class TherapistWorkController extends Controller
             return redirect()->back()->with('error', 'Completed Therapy Cannot Be updated');
 
 
-        foreach($request->rating as $key=>$value){
-            CustomerPainpoint::updateOrCreate([
-                'therapiest_work_id'=>$id,
-                'pain_point_id'=>$key
-            ],['related_rating'=>$value]);
-        }
+//        foreach($request->rating as $key=>$value){
+//            CustomerPainpoint::updateOrCreate([
+//                'therapiest_work_id'=>$id,
+//                'pain_point_id'=>$key
+//            ],['related_rating'=>$value]);
+//        }
 
         $session->end_time=date('Y-m-d H:i:s');
         $session->message=$request->comments;
+        $session->therapist_result=$request->result;
         $session->status='completed';
         $session->save();
 
