@@ -357,37 +357,38 @@
                             <!-- form start -->
 
                             <div class="card-body">
-                                <form action="{{route('therapistwork.diagnose', ['id'=>$openbooking->id])}}" method="post">
+                                <form action="{{route('therapistwork.other.diagnose', ['id'=>$openbooking->id])}}" method="post">
                                     @csrf
                                     <div class="row">
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <h3>Main Diseases:</h3>
-                                                @foreach($main_diseases as $md)
+                                                <h3>Diagnose Points:</h3>
+                                                @foreach($diagnose_points as $dp)
                                                     <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="main_diseases[]" value="{{$md->id}}" @foreach($openbooking->mainDiseases as $smd) @if($smd->id==$md->id){{'checked'}} @endif @endforeach>
-                                                        <label class="form-check-label" for="exampleCheck1">{{$md->name}}</label>
+                                                        <label class="form-check-label" for="exampleCheck1">{{$dp->name}}</label>
                                                     </div>
-                                                    @foreach($reason_diseases as $rd)
-
-                                                        <div class="form-check">
-                                                            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="reason_diseases[{{$md->id}}][]" value="{{$rd->id}}" @foreach($openbooking->reasonDiseases as $srd) @if($srd->id==$rd->id && $srd->pivot->disease_id==$md->id){{'checked'}} @endif @endforeach>
-                                                            <label class="form-check-label" for="exampleCheck1">{{$rd->name}}</label>
-                                                        </div>
-
-                                                    @endforeach
                                                 @endforeach
                                             </div>
                                         </div>
+                                        @php
 
+                                        @endphp
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <h3>Pain Point:</h3>
-                                                @foreach($painpoints as $painpoint)
+                                                <h3>Before Treatment</h3>
+                                                @foreach($diagnose_points as $dp)
                                                     <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="pain_points[]" value="{{$painpoint->id}}" @foreach($openbooking->painpoints as $sp) @if($sp->id==$painpoint->id){{'checked'}} @endif @endforeach>
-                                                        <label class="form-check-label" for="exampleCheck1">{{$painpoint->name}}</label>
+                                                        @if($dp->type=='input')
+                                                            <input type="text" class="form-check-input" id="exampleCheck1" name="before_treatment[{{$dp->id}}]">
+                                                        @else
+                                                            <select name="before_treatment[{{$dp->id}}]" class="form-select-input">
+                                                                <option value="">Select</option>
+                                                                <option value="Ok">Ok</option>
+                                                                <option value="Not Ok">Not Ok</option>
+                                                            </select>
+                                                        @endif
+                                                        <label class="form-check-label" for="exampleCheck1"></label>
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -395,11 +396,20 @@
                                         <div class="col-md-3">
                                             <div class="form-group">
                                                 <!-- One "tab" for each step in the form: -->
-                                                <h3>Disease if Any:</h3>
-                                                @foreach($diseases as $disease)
+                                                <h3>After Treatment</h3>
+                                                @foreach($diagnose_points as $dp)
                                                     <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" id="exampleCheck2" name="ignore_diseases[]" value="{{$disease->id}}"  @foreach($openbooking->diseases as $sd) @if($sd->id==$disease->id){{'checked'}} @endif @endforeach >
-                                                        <label class="form-check-label" for="exampleCheck2">{{$disease->name}}</label>
+                                                        @if($dp->type=='input')
+                                                        <input type="text" class="form-check-input" id="exampleCheck1" name="after_treatment[{{$dp->id}}]">
+                                                        @else
+                                                            <select name="after_treatment[{{$dp->id}}]" class="form-select-input">
+                                                                <option value="">Select</option>
+                                                                <option value="Ok">Ok</option>
+                                                                <option value="Not Ok">Not Ok</option>
+                                                            </select>
+                                                        @endif
+                                                            <label class="form-check-label" for="exampleCheck1"></label>
+
                                                     </div>
                                                 @endforeach
                                             </div>

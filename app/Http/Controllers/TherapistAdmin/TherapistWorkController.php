@@ -5,6 +5,7 @@ namespace App\Http\Controllers\TherapistAdmin;
 use App\Models\BookingSlot;
 use App\Models\CustomerDisease;
 use App\Models\CustomerPainpoint;
+use App\Models\DiagnosePoint;
 use App\Models\Disease;
 use App\Models\DiseasewiseTreatment;
 use App\Models\HomeBookingSlots;
@@ -55,6 +56,7 @@ class TherapistWorkController extends Controller
         $reason_diseases=ReasonDisease::active()->get();
         $ignore_diseases=Disease::active()->get();
         $all_pain_points = PainPoint::active()->get();
+        $dianose_points=DiagnosePoint::active()->get();
 
 
         //get suggested treatments
@@ -189,6 +191,7 @@ class TherapistWorkController extends Controller
             'treatments'=>$treatment_list,
             'main_diseases'=>$main_diseases,
             'reason_diseases'=>$reason_diseases,
+            'diagnose_points'=>$dianose_points
             //'suggested_treatments'=>$treatment_list,
         ]);
     }
@@ -296,7 +299,8 @@ class TherapistWorkController extends Controller
             'before_treatment'=>'required|array',
             'after_treatment'=>'required|array'
         ]);
-
+        //echo '<pre>';
+        //print_r($request->all());die;
         $user=auth()->user();
 
         $session=BookingSlot::where('assigned_therapist', $user->id)
@@ -325,7 +329,6 @@ class TherapistWorkController extends Controller
         $session->diagnose()->attach($diagnose);
 
         return redirect()->back()->with('success', 'Patient Diagnose Has Been Updated');
-
 
 
     }
