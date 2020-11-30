@@ -205,6 +205,70 @@
 
                         <div class="card">
                             <div class="card-header">
+                                <h3 class="card-title">Other Diagnose</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- /.card-header -->
+                            <!-- form start -->
+
+                            <div class="card-body">
+
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <h6>Diagnose Points:</h6>
+                                                @foreach($session->diagnose as $dp)
+                                                    <div class="form-check">
+                                                        <label class="form-check-label" for="exampleCheck1">{{$dp->name}}</label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        @php
+                                            $diagnosed_values=[];
+                                            foreach($session->diagnose as $d){
+                                                if(!isset($diagnosed_values[$d->id]))
+                                                $diagnosed_values[$d->id]=[];
+                                                $diagnosed_values[$d->id]['before_value']=$d->pivot->before_value;
+                                                $diagnosed_values[$d->id]['after_value']=$d->pivot->after_value;
+                                            }
+                                        @endphp
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <h6>Before Treatment</h6>
+                                                @foreach($session->diagnose as $dp)
+                                                    <div class="form-check">
+                                                            {{$dp->pivot->before_value??'--'}}
+                                                        <label class="form-check-label" for="exampleCheck1"></label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <!-- One "tab" for each step in the form: -->
+                                                <h6>After Treatment</h6>
+                                                @foreach($session->diagnose as $dp)
+                                                    <div class="form-check">
+                                                        {{$dp->pivot->after_value??'--'}}
+                                                        <label class="form-check-label" for="exampleCheck1"></label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
                                 <h4>Treatment Result</h4>
                             </div>
                             <!-- /.card-header -->
