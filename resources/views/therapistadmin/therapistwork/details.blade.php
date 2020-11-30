@@ -406,7 +406,7 @@
                                                 @foreach($diagnose_points as $dp)
                                                     <div class="form-check">
                                                         @if($dp->type=='input')
-                                                        <input type="text" class="form-check-input" id="exampleCheck1" name="after_treatment[{{$dp->id}}]" value="{{$diagnosed_values[$dp->id]['after_value']}}">
+                                                        <input type="text" class="form-check-input" id="exampleCheck1" name="after_treatment[{{$dp->id}}]" value="{{$diagnosed_values[$dp->id]['after_value']??''}}">
                                                         @else
                                                             <select name="after_treatment[{{$dp->id}}]" class="form-select-input">
                                                                 <option value="">Select</option>
