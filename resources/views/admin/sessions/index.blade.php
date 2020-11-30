@@ -110,7 +110,11 @@
                                     <tbody>
                                     @foreach($sessions as $session)
                                         <tr>
-                                            <td><a href="{{route('session.details', ['type'=>'therapist-session', 'id'=>$session->id])}}">SESSION{{$session->id??''}}</td>
+                                            @if($type=='clinic')
+                                            <td><a href="{{route('session.details', ['type'=>'clinic-session', 'id'=>$session->id])}}">SESSION{{$session->id??''}}</td>
+                                            @else
+                                                <td><a href="{{route('session.details', ['type'=>'therapist-session', 'id'=>$session->id])}}">SESSION{{$session->id??''}}</td>
+                                            @endif
                                             <td>{{$session->therapy->name??''}}</td>
                                             <td>{{$session->clinic->name??''}}</td>
                                             <td>{{$session->assignedTo->name??''}}</td>
