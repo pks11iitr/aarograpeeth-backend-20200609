@@ -77,12 +77,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Therapist Work</h1>
+                        <h1>Therapy Sessions Details</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active"><a href="{{route('therapistwork.list')}}">Therapist Work</a></li>
+                            <li class="breadcrumb-item active"><a href="{{route('therapistwork.list')}}">Back</a></li>
                         </ol>
                     </div>
                 </div>
@@ -104,6 +104,10 @@
                                     <thead>
                                     </thead>
                                     <tbody>
+                                    <tr>
+                                        <td>Patient Name</td>
+                                        <td>{{$openbooking->order->name??''}}</td>
+                                    </tr>
                                     <tr>
                                         <td>Order ID</td>
                                         <td>{{$openbooking->order->refid??''}}</td>
@@ -141,9 +145,55 @@
                         </div>
 
 
+{{--                        <div class="card">--}}
+{{--                            <div class="card-header">--}}
+{{--                                <h3 class="card-title">Diagnose</h3>--}}
+{{--                                <div class="card-tools">--}}
+{{--                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+
+{{--                            <!-- /.card-header -->--}}
+{{--                            <!-- form start -->--}}
+
+{{--                            <div class="card-body">--}}
+{{--                                <form action="{{route('therapistwork.diagnose', ['id'=>$openbooking->id])}}" method="post">--}}
+{{--                                    @csrf--}}
+{{--                                <div class="row">--}}
+{{--                                <div class="col-md-6">--}}
+{{--                                    <div class="form-group">--}}
+{{--                                <h3>Pain Point:</h3>--}}
+{{--                                @foreach($painpoints as $painpoint)--}}
+{{--                                    <div class="form-check">--}}
+{{--                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="pain_point_ids[]" value="{{$painpoint->id}}" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id){{'checked'}} @endif @endforeach>--}}
+{{--                                        <label class="form-check-label" for="exampleCheck1">{{$painpoint->name}}</label>--}}
+{{--                                    </div>--}}
+{{--                                @endforeach--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                                    <div class="col-md-6">--}}
+{{--                                        <div class="form-group">--}}
+{{--                                <!-- One "tab" for each step in the form: -->--}}
+{{--                                <h3>Disease it Any:</h3>--}}
+{{--                                @foreach($diseases as $disease)--}}
+{{--                                    <div class="form-check">--}}
+{{--                                        <input type="checkbox" class="form-check-input" id="exampleCheck2" name="disease_ids[]" value="{{$disease->id}}"  @foreach($selected_diseases as $s) @if($s->disease_id==$disease->id){{'checked'}} @endif @endforeach >--}}
+{{--                                        <label class="form-check-label" for="exampleCheck2">{{$disease->name}}</label>--}}
+{{--                                    </div>--}}
+{{--                                @endforeach--}}
+{{--                                        </div>--}}
+{{--                                        <button type="submit" class="btn btn-primary">Submit</button>--}}
+{{--                                    </div>--}}
+
+{{--                                </div>--}}
+{{--                                </form>--}}
+{{--                            </div>--}}
+
+{{--                        </div>--}}
+
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Diagnose</h3>
+                                <h3 class="card-title">Customer Diseases</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                                 </div>
@@ -155,33 +205,54 @@
                             <div class="card-body">
                                 <form action="{{route('therapistwork.diagnose', ['id'=>$openbooking->id])}}" method="post">
                                     @csrf
-                                <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                <h3>Pain Point:</h3>
-                                @foreach($painpoints as $painpoint)
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="pain_point_ids[]" value="{{$painpoint->id}}" @foreach($selected_pain_points as $s) @if($s->pain_point_id==$painpoint->id){{'checked'}} @endif @endforeach>
-                                        <label class="form-check-label" for="exampleCheck1">{{$painpoint->name}}</label>
-                                    </div>
-                                @endforeach
-                                    </div>
-                                </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                <!-- One "tab" for each step in the form: -->
-                                <h3>Disease it Any:</h3>
-                                @foreach($diseases as $disease)
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck2" name="disease_ids[]" value="{{$disease->id}}"  @foreach($selected_diseases as $s) @if($s->disease_id==$disease->id){{'checked'}} @endif @endforeach >
-                                        <label class="form-check-label" for="exampleCheck2">{{$disease->name}}</label>
-                                    </div>
-                                @endforeach
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </div>
+                                    <div class="row">
 
-                                </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <h3>Main Diseases:</h3>
+                                                @foreach($main_diseases as $md)
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="main_diseases[]" value="{{$md->id}}" @foreach($openbooking->mainDiseases as $smd) @if($smd->id==$md->id){{'checked'}} @endif @endforeach>
+                                                        <label class="form-check-label" for="exampleCheck1">{{$md->name}}</label>
+                                                    </div>
+                                                    @foreach($reason_diseases as $rd)
+
+                                                        <div class="form-check">
+                                                            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="reason_diseases[{{$md->id}}][]" value="{{$rd->id}}" @foreach($openbooking->reasonDiseases as $srd) @if($srd->id==$rd->id && $srd->pivot->disease_id==$md->id){{'checked'}} @endif @endforeach>
+                                                            <label class="form-check-label" for="exampleCheck1">{{$rd->name}}</label>
+                                                        </div>
+
+                                                    @endforeach
+                                                @endforeach
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <h3>Pain Point:</h3>
+                                                @foreach($painpoints as $painpoint)
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="pain_points[]" value="{{$painpoint->id}}" @foreach($openbooking->painpoints as $sp) @if($sp->id==$painpoint->id){{'checked'}} @endif @endforeach>
+                                                        <label class="form-check-label" for="exampleCheck1">{{$painpoint->name}}</label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <!-- One "tab" for each step in the form: -->
+                                                <h3>Disease if Any:</h3>
+                                                @foreach($diseases as $disease)
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" id="exampleCheck2" name="ignore_diseases[]" value="{{$disease->id}}"  @foreach($openbooking->diseases as $sd) @if($sd->id==$disease->id){{'checked'}} @endif @endforeach >
+                                                        <label class="form-check-label" for="exampleCheck2">{{$disease->name}}</label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+
+                                    </div>
                                 </form>
                             </div>
 
@@ -202,14 +273,67 @@
                                 <form action="{{route('therapistwork.start', ['id'=>$openbooking->id])}}" method="post">
                                     @csrf
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="form-group">
-                                                <h3>Treatments</h3>
                                                 @foreach($treatments as $treatment)
-                                                    <div class="form-check">
-                                                        <input type="radio" class="form-check-input" id="exampleCheck1" name="treatment_id" value="{{$treatment->id}}" @if($treatment->id==$openbooking->treatment_id){{'checked'}}@endif>
-                                                        <label class="form-check-label" for="exampleCheck1">{{$treatment->name}}</label>
+                                                    @foreach($treatment['treatments'] as $t)
+
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">
+                                                                <b>{{$loop->iteration}}.</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                              <input type="checkbox" class="form-check-input" id="exampleCheck1" name="treatments[]" value="{{$t['treatment']['id']}}" @foreach($openbooking->treatmentsGiven as $tg) @if($t['treatment']['id']==$tg->id){{'checked'}}@endif @endforeach>
+                                                                {{$t['treatment']['description']}}
+                                                            </h3>
+                                                        </div>
+                                                        <!-- /.card-header -->
+                                                        <div class="card-body">
+                                                            <dl>
+                                                                <dt>Main Diseases</dt>
+                                                                <dd>
+                                                                    {{$treatment['main_disease']}},
+                                                                </dd>
+                                                                <dt>Other Diseases</dt>
+                                                                <dd>
+                                                                    {{$t['reason_disease']}},
+                                                                </dd>
+                                                                <dt>Pain Points</dt>
+                                                                <dd>
+                                                                    {{$t['painpoint']}}
+                                                                </dd>
+
+                                                                <dt>Formulae</dt>
+                                                                <dd>
+                                                                    {{$t['treatment']['description']}}
+                                                                </dd>
+                                                                <dt>Exercise</dt>
+                                                                <dd>
+                                                                    {{$t['treatment']['exercise']}}
+                                                                </dd>
+
+                                                                <dt>Dont Exercise</dt>
+                                                                <dd>
+                                                                    {{$t['treatment']['dont_exercise']}}
+                                                                </dd>
+
+                                                                <dt>Diet</dt>
+                                                                <dd>
+                                                                    {{$t['treatment']['diet']}}
+                                                                </dd>
+
+                                                                <dt>Recommended Days</dt>
+                                                                <dd>
+                                                                    {{$t['treatment']['recommended_days']}}
+                                                                </dd>
+
+                                                                <dt>What to do if pain increase?</dt>
+                                                                <dd>
+                                                                    {{$t['treatment']['action_when_pain_increase']}}
+                                                                </dd>
+                                                            </dl>
+                                                        </div>
+                                                        <!-- /.card-body -->
                                                     </div>
+                                                    @endforeach
                                                 @endforeach
                                             </div>
                                             <button type="submit" class="btn btn-primary">Start Therapy</button>
@@ -221,6 +345,72 @@
 
                         </div>
 
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Other Diagnose</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                                </div>
+                            </div>
+
+                            <!-- /.card-header -->
+                            <!-- form start -->
+
+                            <div class="card-body">
+                                <form action="{{route('therapistwork.diagnose', ['id'=>$openbooking->id])}}" method="post">
+                                    @csrf
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <h3>Main Diseases:</h3>
+                                                @foreach($main_diseases as $md)
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="main_diseases[]" value="{{$md->id}}" @foreach($openbooking->mainDiseases as $smd) @if($smd->id==$md->id){{'checked'}} @endif @endforeach>
+                                                        <label class="form-check-label" for="exampleCheck1">{{$md->name}}</label>
+                                                    </div>
+                                                    @foreach($reason_diseases as $rd)
+
+                                                        <div class="form-check">
+                                                            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="reason_diseases[{{$md->id}}][]" value="{{$rd->id}}" @foreach($openbooking->reasonDiseases as $srd) @if($srd->id==$rd->id && $srd->pivot->disease_id==$md->id){{'checked'}} @endif @endforeach>
+                                                            <label class="form-check-label" for="exampleCheck1">{{$rd->name}}</label>
+                                                        </div>
+
+                                                    @endforeach
+                                                @endforeach
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <h3>Pain Point:</h3>
+                                                @foreach($painpoints as $painpoint)
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="pain_points[]" value="{{$painpoint->id}}" @foreach($openbooking->painpoints as $sp) @if($sp->id==$painpoint->id){{'checked'}} @endif @endforeach>
+                                                        <label class="form-check-label" for="exampleCheck1">{{$painpoint->name}}</label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <!-- One "tab" for each step in the form: -->
+                                                <h3>Disease if Any:</h3>
+                                                @foreach($diseases as $disease)
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" id="exampleCheck2" name="ignore_diseases[]" value="{{$disease->id}}"  @foreach($openbooking->diseases as $sd) @if($sd->id==$disease->id){{'checked'}} @endif @endforeach >
+                                                        <label class="form-check-label" for="exampleCheck2">{{$disease->name}}</label>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
 
                         <div class="card">
                             <div class="card-header">

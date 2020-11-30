@@ -424,7 +424,7 @@ class TherapiestOrderController extends Controller
 
     public function suggestedTreatments(Request $request, $id){
         $user=$request->user;
-
+        $treatment_list=[];
         $home_booking_slot=HomeBookingSlots::with(['mainDiseases','reasonDiseases', 'painpoints', 'diseases'])
             ->where('assigned_therapist', $user->id)
             ->where('status', '!=', 'completed')
