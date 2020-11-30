@@ -110,10 +110,10 @@
 
 
                         </div>
-                        <!-- /.card -->
+
                         <div class="card">
                             <div class="card-header">
-                                <h4>Treatment Details</h4>
+                                <h4>Customer Diseases</h4>
                             </div>
                             <!-- /.card-header -->
                             <!-- /.card-body -->
@@ -121,22 +121,29 @@
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
+                                        <th>Main Diseases</th>
                                         <th>Pain Points</th>
                                         <th>Disease</th>
-                                        <th>Treatment</th>
-                                        <th>Relief Ratings</th>
-                                        <th>Feedback</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-
-
                                     <tr>
-                                        <td>@foreach($session->painpoints as $p){{$p->name??''}}<br>@endforeach</td>
-                                        <td>@foreach($session->diseases as $p){{$p->name??''}}<br>@endforeach</td>
-                                        <td>{{$session->treatment->name??''}}</td>
-                                        <td>@foreach($session->painpoints as $p){{$p->name??''}}:&nbsp{{$p->pivot->related_rating??''}}<br>@endforeach</td>
-                                        <td>{{$session->comments??''}}<br></td>
+                                        <td>
+                                            @foreach($session->mainDiseases as $md)
+                                                {{$loop->iteration}}. {{$md->name??''}}--
+                                                @foreach($session->reasonDiseases as $rd)
+                                                    @if($rd->pivot->disease_id==$md->id)
+                                                        {{$rd->name}},
+                                                    @endif
+                                                @endforeach
+                                                <br>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @foreach($session->painpoints as $p){{$p->name??''}}:&nbsp<br>
+                                            @endforeach
+                                        </td>
+                                        <td>@foreach($session->diseases as $d){{$d->name??''}}<br>@endforeach</td>
                                     </tr>
 
 
@@ -148,6 +155,71 @@
                             </div>
 
 
+
+                        </div>
+                        <!-- /.card -->
+                        <!-- /.card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Treatment Details</h4>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- /.card-body -->
+                            @foreach($session->treatmentsGiven as $t)
+                                <div class="card-body">
+                                    <dl><h5><b>{{$loop->iteration}}. Treatment</b></h5>
+                                        <dt>Formulae</dt>
+                                        <dd>
+                                            {{$t->description}}
+                                        </dd>
+                                        <dt>Exercise</dt>
+                                        <dd>
+                                            {{$t->exercise}}
+                                        </dd>
+
+                                        <dt>Dont Exercise</dt>
+                                        <dd>
+                                            {{$t->dont_exercise}}
+                                        </dd>
+
+                                        <dt>Diet</dt>
+                                        <dd>
+                                            {{$t->diet}}
+                                        </dd>
+
+                                        <dt>Recommended Days</dt>
+                                        <dd>
+                                            {{$t->recommended_days}}
+                                        </dd>
+
+                                        <dt>What to do if pain increase?</dt>
+                                        <dd>
+                                            {{$t->action_when_pain_increase}}
+                                        </dd>
+                                    </dl>
+                                </div>
+                            @endforeach
+
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Treatment Result</h4>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- /.card-body -->
+                            <div class="card-body">
+                                <dl>
+                                    <dt>Result</dt>
+                                    <dd>
+                                        {{$session->results()}}
+                                    </dd>
+                                    <dt>Therapist Comments</dt>
+                                    <dd>
+                                        {{$session->message}}
+                                    </dd>
+                                </dl>
+                            </div>
 
                         </div>
 

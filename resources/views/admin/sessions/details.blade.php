@@ -217,7 +217,7 @@
                                         </dd>
                                         <dt>Therapist Comments</dt>
                                         <dd>
-                                            {{$t->message}}
+                                            {{$session->message}}
                                         </dd>
                                     </dl>
                                 </div>
