@@ -610,17 +610,18 @@ class TherapiestOrderController extends Controller
 
         $arrpainpoint_id = explode(",", $request->painpoint_id);
 
-        CustomerPainpoint::where('therapiest_work_id', $id)->delete();
+        CustomerPainpoint::where('therapiest_work_id', $id)->where('type', 'therapy')->delete();
 
        foreach($arrpainpoint_id as $key=>$painpoint_id) {
            CustomerPainpoint::create([
                'therapiest_work_id' => $id,
-               'pain_point_id' => $painpoint_id
+               'pain_point_id' => $painpoint_id,
+               'type'=>'therapy'
            ]);
 
        }
 
-        CustomerDisease::where('therapiest_work_id', $id)->delete();
+        CustomerDisease::where('therapiest_work_id', $id)->where('type', 'therapy')->delete();
 
        if(!empty($request->disease_id)){
            $arrdisease_id= explode(",", $request->disease_id);
@@ -632,7 +633,8 @@ class TherapiestOrderController extends Controller
                    if(is_numeric($disease_id)){
                        CustomerDisease::create([
                            'therapiest_work_id' => $id,
-                           'disease_id' => trim($disease_id)
+                           'disease_id' => trim($disease_id),
+                           'type'=>'therapy'
                        ]);
                    }
                }

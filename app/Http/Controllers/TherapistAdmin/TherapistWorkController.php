@@ -238,7 +238,7 @@ class TherapistWorkController extends Controller
         if($mids)
             $session->mainDiseases()->attach($mids);
 
-       CustomerPainpoint::where('therapiest_work_id', $id)->delete();
+       CustomerPainpoint::where('therapiest_work_id', $id)->where('type', 'clinic')->delete();
 
        foreach($request->pain_points as $point){
            CustomerPainpoint::create([
@@ -248,7 +248,7 @@ class TherapistWorkController extends Controller
            ]);
        }
 
-        CustomerDisease::where('therapiest_work_id', $id)->delete();
+        CustomerDisease::where('therapiest_work_id', $id)->where('type', 'clinic')->delete();
         if(!empty($request->ignore_diseases)){
             foreach($request->ignore_diseases as $igd){
                 CustomerDisease::create([

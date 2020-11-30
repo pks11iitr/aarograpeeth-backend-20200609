@@ -12,7 +12,7 @@ class CustomerPainpoint extends Model
 {
     protected $table = 'Customer_point_pain';
 
-    protected $fillable = ['therapiest_work_id', 'pain_point_id', 'related_rating'];
+    protected $fillable = ['therapiest_work_id', 'pain_point_id', 'related_rating','type'];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
 
