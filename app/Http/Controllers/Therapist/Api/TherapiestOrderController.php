@@ -317,6 +317,11 @@ class TherapiestOrderController extends Controller
         $main_diseases=MainDisease::active()->select('name', 'id')->orderBY('name', 'asc')->get();
         $reason_diseases=ReasonDisease::active()->select('name', 'id')->orderBY('name', 'asc')->get();
 
+        foreach($main_diseases as $m){
+            $m->reason_disease=$reason_diseases;
+        }
+
+
         $customer_diseases=$home_booking_slot->reasonDiseases;
 
         $selected_diseases=[];
