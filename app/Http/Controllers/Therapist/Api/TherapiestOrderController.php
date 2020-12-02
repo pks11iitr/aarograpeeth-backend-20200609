@@ -334,7 +334,7 @@ class TherapiestOrderController extends Controller
 
         return [
             'status'=>'success',
-            'data'=>compact('main_diseases', 'reason_diseases', 'selected_diseases')
+            'data'=>compact('main_diseases', 'reason_diseases')
         ];
     }
 
