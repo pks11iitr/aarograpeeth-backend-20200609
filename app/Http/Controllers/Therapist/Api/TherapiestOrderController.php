@@ -880,6 +880,12 @@ class TherapiestOrderController extends Controller
             }
         }
 
+        $main_diseases1=[];
+        foreach($main_diseases as $d){
+            $main_diseases1[]=$d;
+        }
+
+
         $treatments=[];
         foreach($openbookingdetails->treatmentsGiven as $t){
             $treatments[]=['name'=>$t->description];
@@ -913,7 +919,7 @@ class TherapiestOrderController extends Controller
             'treatment'=>$treatments,
             'show_feedback_button'=>empty($openbookingdetails->feedback_from_therapist)?1:0,
             'feedback_from_therapist'=>$openbookingdetails->feedback_from_therapist??'',
-            'main_diseases'=>$main_diseases,
+            'main_diseases'=>$main_diseases1,
             'diagnose'=>$diagnose,
             'therapy_result'=>$openbookingdetails->results()
             /*'data' =>$openbookingdetails,*/
