@@ -9,6 +9,7 @@ use App\Models\Therapy;
 use App\Models\TimeSlot;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class TherapyController extends Controller
 {
@@ -101,6 +102,14 @@ class TherapyController extends Controller
             'therapy_id'=>'required|integer',
         ]);
 
+        $haversine = "(6371 * acos(cos(radians($request->lat))
+                     * cos(radians(therapists.last_lat))
+                     * cos(radians(therapists.last_lang)
+                     - radians($request->lang))
+                     + sin(radians($request->lat))
+                     * sin(radians(therapists.last_lat))))";
+
+
         $therapist=Therapist::active()
             ->with([
                 'therapies'=>function($therapies)use($request){
@@ -117,6 +126,10 @@ class TherapyController extends Controller
                 $bookings->where('date', date('Y-m-d'))
                     ->where('home_booking_slots.status', 'pending');
             })
+            ->where(DB::raw("TRUNCATE($haversine,2)"), '<', env('THERAPIST_CIRCLE_LENGTH'))
+            ->whereNotNull('therapists.last_lat')
+            ->whereNotNull('therapists.last_lang')
+            ->orderBy('distance', 'asc')
             //->select('last_lat', 'last_lang')
             ->get();
 
