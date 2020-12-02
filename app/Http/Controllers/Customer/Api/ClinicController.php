@@ -21,11 +21,11 @@ class ClinicController extends Controller
         if(!empty($request->lat) && !empty($request->lang)){
 
             $haversine = "(6371 * acos(cos(radians($request->lat))
-                     * cos(radians(users.lat))
-                     * cos(radians(users.lang)
+                     * cos(radians(clinics.lat))
+                     * cos(radians(clinics.lang)
                      - radians($request->lang))
                      + sin(radians($request->lat))
-                     * sin(radians(users.lat))))";
+                     * sin(radians(clinics.lat))))";
 
             $clinics=Clinic::active()
                 ->with(['commentscount', 'avgreviews'])
