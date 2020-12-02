@@ -39,7 +39,8 @@ class AssignTherapistForHomeTherapy extends Command
      */
     public function handle()
     {
-        $homebookings=HomeBookingSlots::where('is_confirmed', true)
+        $homebookings=HomeBookingSlots::with('order')
+            ->where('is_confirmed', true)
             ->where('status', 'pending')
             ->where('date', date('Y-m-d'))
             ->get();
@@ -61,7 +62,7 @@ class AssignTherapistForHomeTherapy extends Command
              * No therapist has been assigned
              * Find available therapist and assign to booking
              */
-            $therapists=Therapist::getAvailableHomeTherapist($booking->therapy_id, null);
+            $therapists=Therapist::getAvailableHomeTherapist($booking->therapy_id, null, $booking->order->lat, $booking->order->lang);
 
             foreach($therapists as $therapist){
                 $booking->assigned_therapist=$therapist->id;
@@ -77,7 +78,7 @@ class AssignTherapistForHomeTherapy extends Command
              * in given time frame
              */
             if(strtotime('now') - strtotime($booking->assigned_at) >= 300){
-                $therapists=Therapist::getAvailableHomeTherapist($booking->therapy_id, null);
+                $therapists=Therapist::getAvailableHomeTherapist($booking->therapy_id, null, $booking->order->lat, $booking->order->lang);
                 $booking->refresh();
                 if($booking->status=='pending'){
                     foreach($therapists as $therapist){
@@ -98,7 +99,7 @@ class AssignTherapistForHomeTherapy extends Command
              * No therapist has been assigned
              * Find available therapist and assign to booking
              */
-            $therapists=Therapist::getAvailableHomeTherapist($booking->therapy_id, $booking->slot_id);
+            $therapists=Therapist::getAvailableHomeTherapist($booking->therapy_id, $booking->slot_id, $booking->order->lat, $booking->order->lang);
             if(strtotime($booking->date.' '.$booking->time)-strtotime('now') < 120){
                 foreach($therapists as $therapist){
                     $booking->assigned_therapist=$therapist->id;
@@ -114,7 +115,7 @@ class AssignTherapistForHomeTherapy extends Command
              * in given time frame
              */
             if(strtotime('now') - strtotime($booking->assigned_at) >= 300){
-                $therapists=Therapist::getAvailableHomeTherapist($booking->therapy_id, $booking->slot_id);
+                $therapists=Therapist::getAvailableHomeTherapist($booking->therapy_id, $booking->slot_id, $booking->order->lat, $booking->order->lang);
                 $booking->refresh();
                 if($booking->status=='pending') {
                     foreach ($therapists as $therapist) {

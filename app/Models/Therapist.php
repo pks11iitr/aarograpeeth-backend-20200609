@@ -7,6 +7,7 @@ use App\Models\Traits\Active;
 use App\Models\Traits\DocumentUploadTrait;
 use App\Models\Traits\ReviewTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -64,7 +65,7 @@ class Therapist extends Authenticatable implements JWTSubject
 
 
     // excludes therapist having pending bookings for the date
-    public static function getAvailableHomeTherapist($therapy_id,$slot_id){
+    public static function getAvailableHomeTherapist($therapy_id,$slot_id,$lat=null,$lang=null){
 
         if(!$slot_id)
             $date=date('Y-m-d');
@@ -72,6 +73,13 @@ class Therapist extends Authenticatable implements JWTSubject
             $daily_booking_slot=DailyBookingsSlots::find($slot_id);
             $date=$daily_booking_slot->date;
         }
+
+        $haversine = "(6371 * acos(cos(radians($lat))
+                     * cos(radians(therapists.last_lat))
+                     * cos(radians(therapists.last_lang)
+                     - radians($lang))
+                     + sin(radians($lat))
+                     * sin(radians(therapists.last_lat))))";
 
         $therapist=Therapist::active()
             ->whereHas('therapies', function($therapies) use($therapy_id){
@@ -84,6 +92,7 @@ class Therapist extends Authenticatable implements JWTSubject
                 $bookings->where('date', $date)
                     ->where('home_booking_slots.status', 'pending');
             })
+            ->where(DB::raw("TRUNCATE($haversine,2)"), '<', env('THERAPIST_CIRCLE_LENGTH'))
             ->select('id', 'name')
             ->get();//die;
 
