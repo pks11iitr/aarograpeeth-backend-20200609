@@ -39,7 +39,7 @@ class ClinicController extends Controller
         }
 
         return [
-            'status'=>'succecss',
+            'status'=>'success',
             'data'=>[
                 'clinics'=>$clinics
             ]
