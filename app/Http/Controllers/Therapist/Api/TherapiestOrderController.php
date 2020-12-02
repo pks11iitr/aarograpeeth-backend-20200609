@@ -875,8 +875,8 @@ class TherapiestOrderController extends Controller
         }
 
         foreach($openbookingdetails->reasonDiseases as $rd){
-            if(isset($main_diseases[$rd->pivot->main_disease_id])) {
-                $main_diseases[$rd->pivot->main_disease_id]['reason_diseases']=$main_diseases[$rd->pivot->main_disease_id]['reason_diseases'].$rd->name.', ';
+            if(isset($main_diseases[$rd->pivot->disease_id])) {
+                $main_diseases[$rd->pivot->disease_id]['reason_diseases']=$main_diseases[$rd->pivot->disease_id]['reason_diseases'].$rd->name.', ';
             }
         }
 
