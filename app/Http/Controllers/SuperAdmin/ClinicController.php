@@ -93,8 +93,8 @@ class ClinicController extends Controller
                       'city'=>$request->city,
                       'state'=>$request->state,
                       'contact'=>$request->contact,
-                      //'lat'=>$request->lat,
-                      //'lang'=>$request->lang,
+                      'lat'=>$request->lat,
+                      'lang'=>$request->lang,
                       'image'=>'a']);
              $clinic->saveImage($request->image, 'clinics');
         }else{
@@ -106,8 +106,8 @@ class ClinicController extends Controller
                       'city'=>$request->city,
                       'state'=>$request->state,
                       'contact'=>$request->contact,
-                      //'lat'=>$request->lat,
-                      //'lang'=>$request->lang
+                      'lat'=>$request->lat,
+                      'lang'=>$request->lang
              ]);
              }
           if($clinic)

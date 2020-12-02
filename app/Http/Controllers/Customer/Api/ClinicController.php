@@ -9,6 +9,7 @@ use App\Models\Traits\Active;
 use Cassandra\Time;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class ClinicController extends Controller
 {
@@ -16,10 +17,31 @@ class ClinicController extends Controller
     use Active;
 
     public function index(Request $request){
+
+        if(!empty($request->lat) && !empty($request->lang)){
+
+            $haversine = "(6371 * acos(cos(radians($request->lat))
+                     * cos(radians(users.lat))
+                     * cos(radians(users.lang)
+                     - radians($request->lang))
+                     + sin(radians($request->lat))
+                     * sin(radians(users.lat))))";
+
+            $clinics=Clinic::active()
+                ->with(['commentscount', 'avgreviews'])
+                ->select('clinics.*', DB::raw("$haversine as distance"))
+                ->orderBy('distance', 'asc')
+                ->get();
+        }else{
+            $clinics=Clinic::active()
+                ->with(['commentscount', 'avgreviews'])
+                ->get();
+        }
+
         return [
             'status'=>'succecss',
             'data'=>[
-                'clinics'=>Clinic::active()->with(['commentscount', 'avgreviews'])->get()
+                'clinics'=>$clinics
             ]
         ];
     }

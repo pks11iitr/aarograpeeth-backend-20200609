@@ -36,39 +36,52 @@
               <form role="form" method="post" enctype="multipart/form-data" action="{{route('clinic.update',['id'=>$clinic->id])}}">
                  @csrf
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Name</label>
                     <input type="text" name="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name" value="{{$clinic->name}}">
                   </div>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Description</label><br>
-                    <textarea id="w3review" name="description" rows="4" cols="120">{{$clinic->description}} </textarea>
-                   <!-- <input type="text" name="description" class="form-control" id="exampleInputEmail1" placeholder="Enter Description" value="{{$clinic->description}}"> -->
-                  </div>
+                        </div>
+
+                        <div class="col-md-6">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Address</label>
                     <input type="text" name="address" class="form-control" id="exampleInputEmail1" placeholder="Enter Address" value="{{$clinic->address}}">
                   </div>
+                        </div>
+                        <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Lat</label>
+                            <input type="text"name="lat" class="form-control" id="exampleInputEmail1" placeholder="Enter Lat" value="{{$clinic->lat}}">
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Lang</label>
+                            <input type="text"name="lang" class="form-control" id="exampleInputEmail1" placeholder="Enter Lang" value="{{$clinic->lang}}">
+                        </div>
+                        </div>
+
+                        <div class="col-md-6">
                   <div class="form-group">
                     <label for="exampleInputEmail1">City</label>
                     <input type="text" name="city" class="form-control" id="exampleInputEmail1" placeholder="Enter City" value="{{$clinic->city}}">
                   </div>
+                        </div>
+                        <div class="col-md-6">
                   <div class="form-group">
                     <label for="exampleInputEmail1">State</label>
                     <input type="text" name="state" class="form-control" id="exampleInputEmail1" placeholder="Enter State" value="{{$clinic->state}}">
                   </div>
+                        </div>
+                        <div class="col-md-6">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Contact</label>
                     <input type="text"name="contact" class="form-control" id="exampleInputEmail1" placeholder="Enter Contact" value="{{$clinic->contact}}">
                   </div>
-{{--                  <div class="form-group">--}}
-{{--                    <label for="exampleInputEmail1">Lat</label>--}}
-{{--                    <input type="text"name="lat" class="form-control" id="exampleInputEmail1" placeholder="Enter Lat" value="{{$clinic->lat}}">--}}
-{{--                  </div>--}}
-{{--                  <div class="form-group">--}}
-{{--                    <label for="exampleInputEmail1">Lang</label>--}}
-{{--                    <input type="text"name="lang" class="form-control" id="exampleInputEmail1" placeholder="Enter Lang" value="{{$clinic->lang}}">--}}
-{{--                  </div>--}}
+                        </div>
+                        <div class="col-md-6">
                     <div class="form-group">
                         <label>Is Active</label>
                         <select class="form-control" name="isactive" required>
@@ -76,7 +89,9 @@
                             <option value="0" {{$clinic->isactive==0?'selected':''}}>No</option>
                         </select>
                       </div>
-                  <div class="form-group">
+                        </div>
+                        <div class="col-md-6">
+                                <div class="form-group">
                     <label for="exampleInputFile">Thumbnail Image</label>
                     <div class="input-group">
                       <div class="custom-file">
@@ -91,8 +106,19 @@
 
                     </div>
                   </div>
-                  <image src="{{$clinic->image}}" height="100" width="200">
-                </div>
+                            <image src="{{$clinic->image}}" height="100" width="200">
+                        </div>
+
+
+                      <div class="col-md-6">
+                          <div class="form-group">
+                              <label for="exampleInputEmail1">Description</label><br>
+                              <textarea id="w3review" name="description" rows="4"  class="form-control">{{$clinic->description}}</textarea>
+                          <!-- <input type="text" name="description" class="form-control" id="exampleInputEmail1" placeholder="Enter Description" value="{{$clinic->description}}"> -->
+                          </div>
+                      </div>
+                    </div>
+
                 <!-- /.card-body -->
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">Submit</button>

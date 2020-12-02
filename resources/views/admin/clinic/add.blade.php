@@ -35,30 +35,50 @@
               <form role="form" method="post" enctype="multipart/form-data" action="{{route('clinic.store')}}">
                  @csrf
                 <div class="card-body">
+                    <div class="row">
+                    <div class="col-md-6">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Name</label>
                     <input type="text" name="name" class="form-control" id="exampleInputEmail1" placeholder="Enter Name">
                   </div>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Description</label>
-                    <input type="text" name="description" class="form-control" id="exampleInputEmail1" placeholder="Enter Description">
-                  </div>
+                    </div>
+                    <div class="col-md-6">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Address</label>
                     <input type="text" name="address" class="form-control" id="exampleInputEmail2" placeholder="Enter Address">
                   </div>
+                    </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Latitude</label>
+                                <input type="text" name="lat" class="form-control" id="exampleInputEmail2" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Longitude</label>
+                                <input type="text" name="lang" class="form-control" id="exampleInputEmail2" placeholder="">
+                            </div>
+                        </div>
+                    <div class="col-md-6">
                   <div class="form-group">
                     <label for="exampleInputEmail1">City</label>
                     <input type="text" name="city" class="form-control" id="exampleInputEmail3" placeholder="Enter City">
                   </div>
+                    </div>
+                    <div class="col-md-6">
                   <div class="form-group">
                     <label for="exampleInputEmail1">State</label>
                     <input type="text" name="state" class="form-control" id="exampleInputEmail1" placeholder="Enter State">
                   </div>
+                    </div>
+                    <div class="col-md-6">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Contact</label>
                     <input type="text"name="contact" class="form-control" id="exampleInputEmail1" placeholder="Enter contact">
                   </div>
+                    </div>
+                    <div class="col-md-6">
 {{--                  <div class="form-group">--}}
 {{--                    <label for="exampleInputEmail1">Lat</label>--}}
 {{--                    <input type="text"name="lat" class="form-control" id="exampleInputEmail1" placeholder="Enter Lat">--}}
@@ -74,6 +94,8 @@
                            <option value="0">No</option>
                         </select>
                     </div>
+                    </div>
+                    <div class="col-md-6">
                   <div class="form-group">
                     <label for="exampleInputFile">Thumbnail Image</label>
                     <div class="input-group">
@@ -86,6 +108,14 @@
                       </div>
                     </div>
                   </div>
+                    </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Description</label>
+                                <textarea type="text" name="description" class="form-control" id="exampleInputEmail1" placeholder="Enter Description" rows="6"></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
