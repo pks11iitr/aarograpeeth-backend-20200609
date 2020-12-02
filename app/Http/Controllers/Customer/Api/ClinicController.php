@@ -29,7 +29,7 @@ class ClinicController extends Controller
 
             $clinics=Clinic::active()
                 ->with(['commentscount', 'avgreviews'])
-                ->select('clinics.*', DB::raw("FORMAT($haversine,2) as distance"))
+                ->select('clinics.*', DB::raw("TRUNCATE($haversine,2) as distance"))
                 ->orderBy('distance', 'asc')
                 ->get();
         }else{
