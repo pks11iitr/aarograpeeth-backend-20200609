@@ -882,7 +882,7 @@ class TherapiestOrderController extends Controller
 
         $treatments=[];
         foreach($openbookingdetails->treatmentsGiven as $t){
-            $treatments[]=$t->description;
+            $treatments[]=['name'=>$t->description];
         }
 
         $diagnose=[];
