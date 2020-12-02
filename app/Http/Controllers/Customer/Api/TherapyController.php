@@ -129,7 +129,6 @@ class TherapyController extends Controller
             ->where(DB::raw("TRUNCATE($haversine,2)"), '<', env('THERAPIST_CIRCLE_LENGTH'))
             ->whereNotNull('therapists.last_lat')
             ->whereNotNull('therapists.last_lang')
-            ->orderBy('distance', 'asc')
             //->select('last_lat', 'last_lang')
             ->get();
 
