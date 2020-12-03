@@ -31,6 +31,8 @@ class ClinicController extends Controller
                 ->with(['commentscount', 'avgreviews'])
                 ->select('clinics.*', DB::raw("TRUNCATE($haversine,2) as distance"))
                 ->orderBy('distance', 'asc')
+                ->whereNotNull('lat')
+                ->whereNotNull('lang')
                 ->get();
         }else{
             $clinics=Clinic::active()
