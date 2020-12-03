@@ -37,6 +37,7 @@ class ClinicController extends Controller
         }else{
             $clinics=Clinic::active()
                 ->with(['commentscount', 'avgreviews'])
+                ->select('clinics.*', DB::raw("null as distance"))
                 ->get();
         }
 
