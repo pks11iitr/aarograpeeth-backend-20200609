@@ -88,7 +88,9 @@ class TherapiestOrderController extends Controller
                     'therapy_name'=>$item->therapy->name??'',
                     'image'=>$item->therapy->image??'',
                     'id'=>$item->id,
-                    'open_screen'=>$open_screen
+                    'open_screen'=>$open_screen,
+                    'lat'=>$item->order->lat??'',
+                    'lang'=>$item->order->lang??''
                 );
             }
             $user=$user->only('name', 'image');
