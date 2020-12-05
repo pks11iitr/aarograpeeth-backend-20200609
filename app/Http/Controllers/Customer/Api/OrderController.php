@@ -701,7 +701,7 @@ $refid=env('MACHINE_ID').time();
             ->whereIn('status', ['pending'])
             ->find($order_id);
 
-        if(!$order || $order->detail[0]->entity_type!='App\Models\Therapy')
+        if(!$order || $order->details[0]->entity_type!='App\Models\Therapy')
             return [
                 'status'=>'failed',
                 'message'=>'Invalid Request'
