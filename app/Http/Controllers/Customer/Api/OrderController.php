@@ -696,7 +696,7 @@ $refid=env('MACHINE_ID').time();
                 'message'=>'Please login to continue'
             ];
 
-        $order=Order::with('order.details')
+        $order=Order::with('details')
             ->where('user_id', $user->id)
             ->whereIn('status', ['pending'])
             ->find($order_id);
