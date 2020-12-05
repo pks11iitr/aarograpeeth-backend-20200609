@@ -390,8 +390,8 @@ $refid=env('MACHINE_ID').time();
                 ];
             }
 
-            //$cost=$cost*$request->num_sessions;
-            //$order->total_cost=$cost;
+            $cost=$cost*$request->num_sessions;
+            $order->total_cost=$cost;
             $order->order_place_state='stage_2';
             $order->save();
 
@@ -449,6 +449,10 @@ $refid=env('MACHINE_ID').time();
 
             }
 
+            $count=BookingSlot::where('order_id', $order->id)->count();
+
+            $full_cost=$cost*$count;
+            $order->total_cost=$full_cost;
             $order->order_place_state='stage_2';
             $order->save();
 
