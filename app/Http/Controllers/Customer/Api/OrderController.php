@@ -817,7 +817,7 @@ $refid=env('MACHINE_ID').time();
         $order=Order::with(['details.entity', 'details.clinic'])->where('user_id', $user->id)->find($id);
 
 
-        if($order->details->clinic_id){
+        if($order->details[0]->clinic_id??null){
             //clinic therapy
             $session=BookingSlot::where('order_id', $id)->first();
             $count=BookingSlot::where('order_id', $id)->count();
