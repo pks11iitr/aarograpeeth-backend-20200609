@@ -1619,6 +1619,9 @@ $refid=env('MACHINE_ID').time();
 
         $order->status='cancelled';
         $order->save();
+
+        Wallet::updatewallet($order->user_id, 'Refund for Cancellation of Order ID: '.$order->refid, 'Credit', $order->total_cost, 'CASH', $order->refid);
+
         return [
             'status'=>'success',
             'message'=>'Order has been cancelled. Refund process will be initiated shortly'
@@ -1636,6 +1639,8 @@ $refid=env('MACHINE_ID').time();
         /*
          * Put Deduction Calculation Here
          */
+        Wallet::updatewallet($order->user_id, 'Refund for Cancellation of Order ID: '.$order->refid, 'Credit', $booking->price, 'CASH', $order->refid);
+
 
         return [
             'status'=>'success',
@@ -1645,15 +1650,46 @@ $refid=env('MACHINE_ID').time();
 
     private function cancelAllClinicTherapy($order){
         $bookings=$order->bookingSlots;
+
+        $refund=0;
+
+        foreach($bookings as $booking){
+            if($booking->status=='pending'){
+                if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) < 60*60*6){
+                    return [
+                        'status'=>'failed',
+                        'message'=>'Few booking from this order cannot be cancelled now. Please cancel bookings individually'
+                    ];
+                }
+            }
+        }
+
+
         foreach($bookings as $booking){
             if($booking->status=='pending'){
                 $booking->status='cancelled';
                 $booking->save();
+
+                if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) > 60*60*24){
+                    // before 24 hours full refund
+                    $refund=$refund+$booking->price;
+                }else if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) > 60*60*12){
+                    //before 12 hours
+                    $refund=$refund+round($booking->price*90/100);
+                }else if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) > 60*60*6){
+                    //before 6 hours
+                    $refund=$refund+round($booking->price*80/100);
+                }else{
+                    $refund=0;
+                }
+
             }
         }
 
         $order->status='cancelled';
         $order->save();
+
+        Wallet::updatewallet($order->user_id, 'Booking Cancellation For Order ID: '.$order->refid, 'Credit', $refund, 'CASH', $order->refid);
 
         return [
             'status'=>'success',
@@ -1664,15 +1700,53 @@ $refid=env('MACHINE_ID').time();
 
     private function cancelAllHomeTherapy($order){
         $bookings=$order->homebookingslots;
+
+        $refund=0;
+
+        foreach($bookings as $booking){
+            if($booking->status=='pending'){
+                if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) < 60*60*6){
+                    return [
+                        'status'=>'failed',
+                        'message'=>'Few booking from this order cannot be cancelled now. Please cancel bookings individually'
+                    ];
+                }
+            }
+        }
+
+
         foreach($bookings as $booking){
             if($booking->status=='pending'){
                 $booking->status='cancelled';
                 $booking->save();
+
+                if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) > 60*60*24){
+                    // before 24 hours full refund
+                    $refund=$refund+$booking->price;
+                }else if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) > 60*60*12){
+                    //before 12 hours
+                    $refund=$refund+round($booking->price*90/100);
+                }else if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) > 60*60*6){
+                    //before 6 hours
+                    $refund=$refund+round($booking->price*80/100);
+                }else{
+                    $refund=0;
+                }
             }
         }
 
+
+//        foreach($bookings as $booking){
+//            if($booking->status=='pending'){
+//                $booking->status='cancelled';
+//                $booking->save();
+//            }
+//        }
+
         $order->status='cancelled';
         $order->save();
+
+        Wallet::updatewallet($order->user_id, 'Booking Cancellation For Order ID: '.$order->refid, 'Credit', $refund, 'CASH', $order->refid);
 
         return [
             'status'=>'success',
