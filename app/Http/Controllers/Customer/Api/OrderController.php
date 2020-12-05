@@ -817,6 +817,16 @@ $refid=env('MACHINE_ID').time();
         $order=Order::with(['details.entity', 'details.clinic'])->where('user_id', $user->id)->find($id);
 
 
+        if($order->details->clinic_id){
+            //clinic therapy
+            $session=BookingSlot::where('order_id', $id)->first();
+            $count=BookingSlot::where('order_id', $id)->count();
+        }else{
+            //home therapy
+            $session=HomeBookingSlots::where('order_id', $id)->first();
+            $count=HomeBookingSlots::where('order_id', $id)->count();
+        }
+
         if(!$order)
             return [
                 'status'=>'failed',
@@ -855,8 +865,8 @@ $refid=env('MACHINE_ID').time();
 
                 $itemdetails[]=[
                     'name'=>($detail->entity->name??'')." ( Grade $detail->grade )",
-                    'small'=>$detail->quantity.(!empty($detail->clinic->name)?' sesions at '.$detail->clinic->name:' sessions'),
-                    'price'=>$detail->cost,
+                    'small'=>$count.(!empty($detail->clinic->name)?' sesions at '.$detail->clinic->name:' sessions'),
+                    'price'=>$session->price??0,
                     'quantity'=>$detail->quantity,
                     'image'=>$detail->entity->image??'',
                     'booking_date'=>($order->is_instant==1)?date('d/m/Y', strtotime($order->created_at)):null,
