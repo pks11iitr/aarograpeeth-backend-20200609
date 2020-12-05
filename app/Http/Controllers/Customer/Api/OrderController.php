@@ -716,20 +716,20 @@ $refid=env('MACHINE_ID').time();
                 ];
             }
 
-            $clinic=Clinic::active()->with(['therapies'=>function($therapies)use($order){
-                $therapies->where('therapies.id', $order->details[0]->entity_id);
-            }])->find($order->details[0]->clinic_id);
-
-            switch($booking->grade){
-                case 1:$cost=($clinic->therapies[0]->pivot->grade1_price??0);
-                    break;
-                case 2:$cost=($clinic->therapies[0]->pivot->grade2_price??0);
-                    break;
-                case 3:$cost=($clinic->therapies[0]->pivot->grade3_price??0);
-                    break;
-                case 4:$cost=($clinic->therapies[0]->pivot->grade4_price??0);
-                    break;
-            }
+//            $clinic=Clinic::active()->with(['therapies'=>function($therapies)use($order){
+//                $therapies->where('therapies.id', $order->details[0]->entity_id);
+//            }])->find($order->details[0]->clinic_id);
+//
+//            switch($booking->grade){
+//                case 1:$cost=($clinic->therapies[0]->pivot->grade1_price??0);
+//                    break;
+//                case 2:$cost=($clinic->therapies[0]->pivot->grade2_price??0);
+//                    break;
+//                case 3:$cost=($clinic->therapies[0]->pivot->grade3_price??0);
+//                    break;
+//                case 4:$cost=($clinic->therapies[0]->pivot->grade4_price??0);
+//                    break;
+//            }
         }else{
             $booking=HomeBookingSlots::find($booking_id);
             if(!in_array($booking->status, ['pending'])){
@@ -739,21 +739,21 @@ $refid=env('MACHINE_ID').time();
                 ];
             }
 
-            $therapy=Therapy::find($order->details[0]->entity_id);
-
-            switch($booking->grade){
-                case 1:$cost=($therapy->grade1_price??0);
-                    break;
-                case 2:$cost=($therapy->grade2_price??0);
-                    break;
-                case 3:$cost=($therapy->grade3_price??0);
-                    break;
-                case 4:$cost=($therapy->grade4_price??0);
-                    break;
-            }
+//            $therapy=Therapy::find($order->details[0]->entity_id);
+//
+//            switch($booking->grade){
+//                case 1:$cost=($therapy->grade1_price??0);
+//                    break;
+//                case 2:$cost=($therapy->grade2_price??0);
+//                    break;
+//                case 3:$cost=($therapy->grade3_price??0);
+//                    break;
+//                case 4:$cost=($therapy->grade4_price??0);
+//                    break;
+//            }
         }
 
-        $order->total_cost=$order->total_cost-$cost;
+        $order->total_cost=$order->total_cost-$booking->price;
         $order->save();
         $booking->delete();
 
