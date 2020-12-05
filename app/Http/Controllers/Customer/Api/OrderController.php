@@ -1039,7 +1039,8 @@ $refid=env('MACHINE_ID').time();
                 'message'=>'Please login to continue'
             ];
 
-        $order=Order::with(['details'])->where('user_id', $user->id)->find($id);
+        $order=Order::with(['details'])
+            ->where('user_id', $user->id)->find($id);
 
         if(!$order)
             return [
@@ -1086,9 +1087,12 @@ $refid=env('MACHINE_ID').time();
         $order->status='cancelled';
         $order->save();
 
+
+        Wallet::updatewallet($order->user_id, 'Booking Cancellation For Order ID: '.$order->refid, 'Credit', $booking->price, 'CASH', $order->refid);
+
         return [
             'status'=>'success',
-            'message'=>'Your booking has been cancelled. Refund process will be initiated shortly'
+            'message'=>'Your booking has been cancelled. Refund amount has been credited to wallet.'
         ];
     }
 
@@ -1107,9 +1111,31 @@ $refid=env('MACHINE_ID').time();
         $booking->status='cancelled';
         $booking->save();
 
+        $count=BookingSlot::where('status', '!=', 'cancelled')->count();
+        if($count==0){
+            $order->status='cancelled';
+            $order->save();
+        }
+
+        if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) > 60*60*24){
+            // before 24 hours full refund
+            Wallet::updatewallet($order->user_id, 'Booking Cancellation For Order ID: '.$order->refid, 'Credit', $booking->price, 'CASH', $order->refid);
+        }else if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) > 60*60*12){
+            //before 12 hours
+            Wallet::updatewallet($order->user_id, 'Booking Cancellation For Order ID: '.$order->refid, 'Credit', round($booking->price*90/100), 'CASH', $order->refid);
+        }else if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) > 60*60*6){
+            //before 12 hours
+            Wallet::updatewallet($order->user_id, 'Booking Cancellation For Order ID: '.$order->refid, 'Credit', round($booking->price*80/100), 'CASH', $order->refid);
+        }else{
+            return [
+                'status'=>'failed',
+                'message'=>'This booking cannot be cancelled now'
+            ];
+        }
+
         return [
             'status'=>'success',
-            'message'=>'Your booking has been cancelled. Refund process will be initiated shortly'
+            'message'=>'Your booking has been cancelled. Refund amount has been credited to wallet.'
         ];
     }
 
@@ -1127,6 +1153,28 @@ $refid=env('MACHINE_ID').time();
 
         $booking->status='cancelled';
         $booking->save();
+
+        $count=HomeBookingSlots::where('status', '!=', 'cancelled')->count();
+        if($count==0){
+            $order->status='cancelled';
+            $order->save();
+        }
+
+        if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) > 60*60*24){
+            // before 24 hours full refund
+            Wallet::updatewallet($order->user_id, 'Booking Cancellation For Order ID: '.$order->refid, 'Credit', $booking->price, 'CASH', $order->refid);
+        }else if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) > 60*60*12){
+            //before 12 hours
+            Wallet::updatewallet($order->user_id, 'Booking Cancellation For Order ID: '.$order->refid, 'Credit', round($booking->price*90/100), 'CASH', $order->refid);
+        }else if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) > 60*60*6){
+            //before 12 hours
+            Wallet::updatewallet($order->user_id, 'Booking Cancellation For Order ID: '.$order->refid, 'Credit', round($booking->price*80/100), 'CASH', $order->refid);
+        }else{
+            return [
+                'status'=>'failed',
+                'message'=>'This booking cannot be cancelled now'
+            ];
+        }
 
         return [
             'status'=>'success',
