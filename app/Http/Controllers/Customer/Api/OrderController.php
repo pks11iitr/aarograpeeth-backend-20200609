@@ -659,7 +659,7 @@ $refid=env('MACHINE_ID').time();
 
             //die('dd');
             $schedules[]=[
-                'show_delete'=>1,
+                'show_delete'=> in_array($order->status, ['pending'] )?1:0,
                 'date'=>$schedule->timeslot->date??$schedule->date,
                 'time'=>'1 Session at '.($schedule->timeslot->start_time??'Instant Booking'),
                 'grade'=>$grade,
