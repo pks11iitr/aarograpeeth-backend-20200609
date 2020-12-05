@@ -664,8 +664,8 @@ $refid=env('MACHINE_ID').time();
                 'time'=>'1 Session at '.($schedule->timeslot->start_time??'Instant Booking'),
                 'grade'=>$grade,
                 'id'=>$schedule->id,
-                'show_cancel'=>in_array($schedule->status,['pending'])?1:0,
-                'show_reschedule'=>in_array($schedule->status,['pending'])?1:0,
+                'show_cancel'=>(in_array($schedule->status,['pending']) && in_array($order->status, ['confirmed']) )  ?1:0,
+                'show_reschedule'=>(in_array($schedule->status,['pending']) && in_array($order->status, ['confirmed']) )?1:0,
                 'show_review'=>($schedule->status=='completed')?(!empty($schedule->review)?0:1):0,
                 'verification_code'=>$schedule->verification_code
             ];

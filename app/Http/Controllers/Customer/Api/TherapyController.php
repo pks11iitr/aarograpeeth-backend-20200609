@@ -130,6 +130,11 @@ class TherapyController extends Controller
             ->whereNotNull('therapists.last_lat')
             ->whereNotNull('therapists.last_lang')
             //->select('last_lat', 'last_lang')
+            ->where(function($therapist){
+                $therapist->whereNull('therapists.from_date')
+                    ->orWhere('therapists.from_date','>', date('Y-m-d H:i:s'))
+                    ->orWhere('therapists.to_date','<', date('Y-m-d H:i:s'));
+            })
             ->get();
 
         $nearby=[];

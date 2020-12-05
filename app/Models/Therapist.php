@@ -93,6 +93,16 @@ class Therapist extends Authenticatable implements JWTSubject
                     ->where('home_booking_slots.status', 'pending');
             })
             ->where(DB::raw("TRUNCATE($haversine,2)"), '<', env('THERAPIST_CIRCLE_LENGTH'))
+            ->where(function($therapist){
+                $therapist->whereNull('from_date')
+                    ->orWhere('from_date','>', date('Y-m-d H:i:s'));
+            })
+            ->where(function($therapist) use($daily_booking_slot){
+                $therapist->whereNull('therapists.from_date')
+                    ->orWhere('therapists.from_date','>', isset($daily_booking_slot)?($daily_booking_slot->date.' '.$daily_booking_slot->internal_start_time):date('Y-m-d').'23:59:59')
+                    ->orWhere('therapists.to_date','<',
+                        isset($daily_booking_slot)?($daily_booking_slot->date.' '.$daily_booking_slot->internal_start_time):date('Y-m-d').'00:00:00');
+            })
             ->select('id', 'name')
             ->get();//die;
 
