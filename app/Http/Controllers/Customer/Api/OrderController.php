@@ -97,12 +97,12 @@ class OrderController extends Controller
                 'message'=>'Cart is empty'
             ];
 
-        $refid=env('MACHINE_ID').time();
+        ///$refid=env('MACHINE_ID').time();
         $total_cost=0;
         foreach($cartitems as $item) {
             $total_cost=$total_cost+($item->product->price??0)*$item->quantity;
         }
-$refid=env('MACHINE_ID').time();
+        $refid=env('MACHINE_ID').time();
         $order=Order::create([
             'user_id'=>auth()->guard('customerapi')->user()->id,
             'refid'=>$refid,
@@ -409,7 +409,9 @@ $refid=env('MACHINE_ID').time();
                     'message'=>'No Time Slot Selected'
                 ];
 
-            $alldateslots=TimeSlot::where('date', $slots[0]->date)->select('id')->get();
+            $alldateslots=TimeSlot::where('date', $slots[0]->date)
+                ->select('id')
+                ->get();
 
             $slotsarr=[];
             foreach($alldateslots as $s)
@@ -449,9 +451,17 @@ $refid=env('MACHINE_ID').time();
 
             }
 
-            $count=BookingSlot::where('order_id', $order->id)->count();
 
-            $full_cost=$cost*$count;
+            $sessions=BookingSlot::where('order_id', $order->id)
+                ->where('status', 'pending')
+                ->get();
+
+            $full_cost=0;
+            foreach($sessions as $s)
+                $full_cost=$full_cost+$s->price;
+
+
+            //$full_cost=$cost*$count;
             $order->total_cost=$full_cost;
             $order->order_place_state='stage_2';
             $order->save();
@@ -584,7 +594,17 @@ $refid=env('MACHINE_ID').time();
 
             }
 
+
+            $sessions=HomeBookingSlots::where('order_id', $order->id)
+                ->where('status', 'pending')
+                ->get();
+
+            $full_cost=0;
+            foreach($sessions as $s)
+                $full_cost=$full_cost+$s->price;
+
             //$order->total_cost=$order->total_cost+$cost;
+            $order->total_cost=$full_cost;
             $order->order_place_state='stage_2';
             $order->save();
 
