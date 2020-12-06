@@ -663,13 +663,13 @@ $refid=env('MACHINE_ID').time();
 
             //die('dd');
             $schedules[]=[
-                'show_delete'=> in_array($order->status, ['pending'] )?1:0,
+                'show_delete'=> (in_array($order->status, ['pending'] ) && $schedule->is_instant==0)?1:0,
                 'date'=>$schedule->timeslot->date??$schedule->date,
                 'time'=>'1 Session at '.($schedule->timeslot->start_time??'Instant Booking'),
                 'grade'=>$grade,
                 'id'=>$schedule->id,
-                'show_cancel'=>(in_array($schedule->status,['pending']) && in_array($order->status, ['confirmed']) )  ?1:0,
-                'show_reschedule'=>(in_array($schedule->status,['pending']) && in_array($order->status, ['confirmed']) )?1:0,
+                'show_cancel'=>(in_array($schedule->status,['pending']) && in_array($order->status, ['confirmed']) && $schedule->is_instant==0)  ?1:0,
+                'show_reschedule'=>(in_array($schedule->status,['pending']) && in_array($order->status, ['confirmed']) && $schedule->is_instant==0 )?1:0,
                 'show_review'=>($schedule->status=='completed')?(!empty($schedule->review)?0:1):0,
                 'verification_code'=>$schedule->verification_code
             ];
@@ -869,8 +869,10 @@ $refid=env('MACHINE_ID').time();
                     'price'=>$session->price??0,
                     'quantity'=>$detail->quantity,
                     'image'=>$detail->entity->image??'',
-                    'booking_date'=>($order->is_instant==1)?date('d/m/Y', strtotime($order->created_at)):null,
-                    'booking_time'=>($order->is_instant==1)?'Instant Booking':null,
+//                    'booking_date'=>($order->is_instant==1)?date('d/m/Y', strtotime($order->created_at)):null,
+//                    'booking_time'=>($order->is_instant==1)?'Instant Booking':null,
+                    'booking_date'=>null,
+                    'booking_time'=>null,
                     'item_id'=>$detail->entity_id,
                     'show_review'=>in_array($order->status,['completed'])?(empty($order->details[0]->clinic_id)?(isset($reviews[$detail->entity_id])?0:1):0):0,
                     'show_clinic_review'=>in_array($order->status,['completed'])?(!empty($order->details[0]->clinic_id)?(isset($reviews[$detail->entity_id])?0:1):0):0,
@@ -906,8 +908,20 @@ $refid=env('MACHINE_ID').time();
 
         }
 
-        if($order->details[0]->entity instanceof Therapy  && ( $order->details[0]->clinic_id!=null || $order->is_instant==0))
-            $show_time_slots_button=1;
+        if($order->details[0]->entity instanceof Therapy){
+            if($order->details[0]->clinic_id!=null){
+                $show_time_slots_button=1;
+            }else{
+                if($order->is_instant==0){
+                    $show_time_slots_button=1;
+                }else{
+                    if($order->status!='pending'){
+                        $show_time_slots_button=1;
+                    }
+                }
+            }
+        }
+
 
 
         $date=date('Y-m-d');
