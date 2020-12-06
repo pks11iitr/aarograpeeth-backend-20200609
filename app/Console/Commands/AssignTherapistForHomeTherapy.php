@@ -40,6 +40,9 @@ class AssignTherapistForHomeTherapy extends Command
     public function handle()
     {
         $homebookings=HomeBookingSlots::with('order')
+            ->whereHas('order', function($order){
+                $order->where('orders.status', 'confirmed');
+            })
             ->where('is_confirmed', true)
             ->where('status', 'pending')
             ->where('date', date('Y-m-d'))

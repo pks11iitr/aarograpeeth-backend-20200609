@@ -41,6 +41,9 @@ class AssignTherapistForClinicTherapy extends Command
     {
         // assign therapist for todays bookings
         $bookings=BookingSlot::where('is_confirmed', true)
+            ->whereHas('order', function($order){
+                $order->where('orders.status', 'confirmed');
+            })
             ->where('status', 'pending')
             ->where('assigned_therapist', null)
             ->where('date', date('Y-m-d'))
