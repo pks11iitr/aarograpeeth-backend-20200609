@@ -853,10 +853,10 @@ class OrderController extends Controller
                 'message'=>'Invalid Operation Performed'
             ];
 
-        if($order->status=='pending') {
-            $order->total_cost = Order::getTotal($order);
-            $order->save();
-        }
+//        if($order->status=='pending') {
+//            $order->total_cost = Order::getTotal($order);
+//            $order->save();
+//        }
 
 
         //get reviews information
