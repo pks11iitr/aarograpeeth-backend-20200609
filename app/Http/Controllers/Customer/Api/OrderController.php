@@ -1429,7 +1429,8 @@ class OrderController extends Controller
                 'message'=>'Invalid Request'
             ];
 
-        $booking=HomeBookingSlots::with('timeslot')->where('status', 'confirmed')
+        $booking=HomeBookingSlots::with('timeslot')
+                ->where('status', 'pending')
                ->where('order_id', $order->id)
                ->find($booking_id);
            if(!$booking)
@@ -1439,6 +1440,12 @@ class OrderController extends Controller
                ];
 
            if($booking->is_instant){
+
+               return [
+                   'status'=>'failed',
+                   'message'=>'Instant Booking Cannot Be Rescheduled.'
+               ];
+
                if($booking->date > date('Y-m-d')){
 
                    RescheduleRequest::where('order_id', $order->id)
@@ -1486,35 +1493,50 @@ class OrderController extends Controller
                    ];
                }
            }else{
-               if(date('Y-m-d H:i:s', strtotime('+2 hours')) > $booking->timeslot->date.' '.$booking->internal_start_time){
-
-                   RescheduleRequest::where('order_id', $order->id)
-                       ->where('is_paid', 0)->delete();
-
-                   RescheduleRequest::create([
-                       'refid'=>env('MACHINE_ID').time(),
-                       'order_id'=>$order->id,
-                       'booking_id'=>$booking_id,
-                       'old_slot_id'=>$booking->slot_id,
-                       'new_slot_id'=>$request->slot_id,
-                       'new_slot_time'=>$slot->internal_start_time,
-                       'new_slot_date'=>$slot->date,
-                       'total_cost'=>200
-                   ]);
-
-                   return [
-                       'status'=>'success',
-                       'data'=>[
-                           'payment_status'=>'no',
-                           'header'=>'Payment For Booking Reschedule',
-                           'old_time'=>$booking->timeslot->date.' '.$booking->timeslot->start_time,
-                           'new_time'=>$slot->date.' '.$slot->start_time,
-                           'amount'=>'20% deduction',
-                           'wallet_balance'=>Wallet::balance($user->id)
-                       ]
-                   ];
-               }else{
-
+//               if(date('Y-m-d H:i:s', strtotime('+2 hours')) > $booking->timeslot->date.' '.$booking->internal_start_time){
+//
+//                   RescheduleRequest::where('order_id', $order->id)
+//                       ->where('is_paid', 0)->delete();
+//
+//                   RescheduleRequest::create([
+//                       'refid'=>env('MACHINE_ID').time(),
+//                       'order_id'=>$order->id,
+//                       'booking_id'=>$booking_id,
+//                       'old_slot_id'=>$booking->slot_id,
+//                       'new_slot_id'=>$request->slot_id,
+//                       'new_slot_time'=>$slot->internal_start_time,
+//                       'new_slot_date'=>$slot->date,
+//                       'total_cost'=>200
+//                   ]);
+//
+//                   return [
+//                       'status'=>'success',
+//                       'data'=>[
+//                           'payment_status'=>'no',
+//                           'header'=>'Payment For Booking Reschedule',
+//                           'old_time'=>$booking->timeslot->date.' '.$booking->timeslot->start_time,
+//                           'new_time'=>$slot->date.' '.$slot->start_time,
+//                           'amount'=>'20% deduction',
+//                           'wallet_balance'=>Wallet::balance($user->id)
+//                       ]
+//                   ];
+//               }else{
+//
+//                   $booking->slot_id=$slot->id;
+//                   $booking->save();
+//
+//                   return [
+//                       'status'=>'success',
+//                       'date'=>[
+//                           'payment_status'=>'yes',
+//                           'header'=>'Booking Reschedule Successfull',
+//                           'old_time'=>'',
+//                           'new_time'=>'',
+//                           'amount'=>''
+//                       ]
+//                   ];
+//               }
+               if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) > 60*60*24){
                    $booking->slot_id=$slot->id;
                    $booking->save();
 
@@ -1528,7 +1550,14 @@ class OrderController extends Controller
                            'amount'=>''
                        ]
                    ];
+
                }
+
+               return [
+                   'status'=>'failed',
+                   'message'=>'Bookings can be rescheduled before 24 hours only.'
+               ];
+
            }
 
     }
@@ -1541,7 +1570,8 @@ class OrderController extends Controller
                 'message'=>'Invalid Request'
             ];
 
-        $booking=BookingSlot::with('timeslot')->where('status', 'confirmed')
+        $booking=BookingSlot::with('timeslot')
+            ->where('status', 'pending')
             ->where('order_id', $order->id)
             ->find($booking_id);
 
@@ -1551,51 +1581,73 @@ class OrderController extends Controller
                 'message'=>'Booking Cannot Be Rescheduled'
             ];
 
-        if(date('Y-m-d H:i:s', strtotime('+2 hours')) > $booking->timeslot->date.' '.$booking->internal_start_time){
+//        if(date('Y-m-d H:i:s', strtotime('+2 hours')) > $booking->timeslot->date.' '.$booking->internal_start_time){
+//
+//            RescheduleRequest::where('order_id', $order->id)
+//                ->where('is_paid', 0)->delete();
+//
+//            RescheduleRequest::create([
+//                'refid'=>env('MACHINE_ID').time(),
+//                'order_id'=>$order->id,
+//                'booking_id'=>$booking_id,
+//                'old_slot_id'=>$booking->slot_id,
+//                'new_slot_id'=>$request->slot_id,
+//                'new_slot_time'=>$slot->internal_start_time,
+//                'new_slot_date'=>$slot->date,
+//                'total_cost'=>200
+//            ]);
+//
+//            return [
+//                'status'=>'success',
+//                'data'=>[
+//                    'payment_status'=>'no',
+//                    'header'=>'Payment For Booking Reschedule',
+//                    'old_time'=>$booking->timeslot->date.' '.$booking->timeslot->start_time,
+//                    'new_time'=>$slot->date.' '.$slot->start_time,
+//                    'amount'=>'20% deduction',
+//                    'wallet_balance'=>Wallet::balance($user->id)
+//                ]
+//            ];
+//        }else{
+//
+//            $booking->slot_id=$slot->id;
+//            $booking->save();
+//
+//            return [
+//                'status'=>'success',
+//                'date'=>[
+//                    'date'=>[
+//                        'payment_status'=>'yes',
+//                        'header'=>'Booking Reschedule Successfull',
+//                        'old_time'=>'',
+//                        'new_time'=>'',
+//                        'amount'=>''
+//                    ]
+//                ]
+//            ];
+//        }
 
-            RescheduleRequest::where('order_id', $order->id)
-                ->where('is_paid', 0)->delete();
-
-            RescheduleRequest::create([
-                'refid'=>env('MACHINE_ID').time(),
-                'order_id'=>$order->id,
-                'booking_id'=>$booking_id,
-                'old_slot_id'=>$booking->slot_id,
-                'new_slot_id'=>$request->slot_id,
-                'new_slot_time'=>$slot->internal_start_time,
-                'new_slot_date'=>$slot->date,
-                'total_cost'=>200
-            ]);
-
-            return [
-                'status'=>'success',
-                'data'=>[
-                    'payment_status'=>'no',
-                    'header'=>'Payment For Booking Reschedule',
-                    'old_time'=>$booking->timeslot->date.' '.$booking->timeslot->start_time,
-                    'new_time'=>$slot->date.' '.$slot->start_time,
-                    'amount'=>'20% deduction',
-                    'wallet_balance'=>Wallet::balance($user->id)
-                ]
-            ];
-        }else{
-
+        if((strtotime($booking->date.' '.$booking->time) - strtotime('now')) > 60*60*24){
             $booking->slot_id=$slot->id;
             $booking->save();
 
             return [
                 'status'=>'success',
                 'date'=>[
-                    'date'=>[
-                        'payment_status'=>'yes',
-                        'header'=>'Booking Reschedule Successfull',
-                        'old_time'=>'',
-                        'new_time'=>'',
-                        'amount'=>''
-                    ]
+                    'payment_status'=>'yes',
+                    'header'=>'Booking Reschedule Successfull',
+                    'old_time'=>'',
+                    'new_time'=>'',
+                    'amount'=>''
                 ]
             ];
+
         }
+
+        return [
+            'status'=>'failed',
+            'message'=>'Bookings can be rescheduled before 24 hours only.'
+        ];
 
     }
 
