@@ -22,7 +22,11 @@ class TimeSlot extends Model
         $tsids = [];
         $booking_data = [];
         $total_used=[];
-        $timeslots = TimeSlot::where('clinic_id', $clinic->id)->where('date', $date)->orderBy('internal_start_time', 'asc')->get();
+        $timeslots = TimeSlot::where('clinic_id', $clinic->id)
+            ->where('date', $date)
+            ->where(DB::raw('concat(date, " ", time)'), '>', date('Y-m-d H:i:s'))
+            ->orderBy('internal_start_time', 'asc')
+            ->get();
 
         //return $timeslots;
 
