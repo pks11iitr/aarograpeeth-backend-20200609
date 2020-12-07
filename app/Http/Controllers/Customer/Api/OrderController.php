@@ -984,15 +984,8 @@ class OrderController extends Controller
 
 
     public function downloadInvoice(Request $request, $refid){
-        $order = Order::with(['details.entity', 'details.clinic', 'bookingSlots'=>function($slots){
+        $order = Order::where('refid', $refid)->first();
 
-            $slots->whereNotIn('bookings_slots.status', ['cancelled']);
-
-        }, 'homebookingslots'=>function($slots){
-
-            $slots->whereNotIn('home_booking_slots.status', ['cancelled']);
-
-        }, 'customer'])->where('refid', $refid)->first();
         if(!$order)
             return [
                 'status'=>'failed',
@@ -1000,8 +993,8 @@ class OrderController extends Controller
             ];
 
         // var_dump($orders);die();
-        $pdf = PDF::loadView('invoice', compact('order'))
-            ->setPaper('a4', 'portrait');
+        $pdf = Order::generateInvoicePdfRaw($order->refid);
+
         return $pdf->download('invoice.pdf');
     }
 

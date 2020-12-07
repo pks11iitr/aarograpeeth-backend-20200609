@@ -32,7 +32,7 @@ class SendMail extends Mailable
      * @param array $reply_to
      * @return void
      */
-    public function __construct($from_user, $to_user, $email_subject, $email_view, $data = [], $attach = null, $reply_to = [], $queue=null)
+    public function __construct($from_user, $to_user, $email_subject, $email_view, $data = [], $attach = null, $raw_attach=null, $reply_to = [])
     {
         $this->subject = $email_subject;
         $this->from_user = $from_user;
@@ -40,8 +40,9 @@ class SendMail extends Mailable
         $this->view = $email_view;
         $this->data = $data;
         $this->attach = $attach;
+        $this->raw_attach = $raw_attach;
         $this->reply_to = $reply_to;
-        $this->onqueue=$queue;
+        //$this->onqueue=$queue;
     }
 
     /**
@@ -53,9 +54,12 @@ class SendMail extends Mailable
     {
         $mail = $this->view($this->view)
             ->with(['data' => $this->data])
-            ->from($this->from_user)
             ->subject($this->subject)
             ->to($this->to_user);
+
+        if($this->from_user)
+            $mail=$mail->from($this->from_user);
+
 
         if (!empty($this->attach)) {
             if (is_array($this->attach)) {
@@ -67,12 +71,22 @@ class SendMail extends Mailable
             }
         }
 
+        if (!empty($this->raw_attach)) {
+            if (is_array($this->raw_attach)) {
+                foreach ($this->raw_attach as $attach) {
+                    $mail = $mail->attach($attach);
+                }
+            } else {
+                $mail = $mail->attach($this->raw_attach);
+            }
+        }
+
         if (!empty($this->reply_to)){
             $mail = $mail->replyTo($this->reply_to);
         }
 
-        if(!empty($this->onqueue))
-            $mail=$mail->onQueue($this->onqueue);
+//        if(!empty($this->onqueue))
+//            $mail=$mail->onQueue($this->onqueue);
 
         return $mail;
     }

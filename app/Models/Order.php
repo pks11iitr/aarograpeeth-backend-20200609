@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use PDF;
 
 class Order extends Model
 {
@@ -102,6 +103,33 @@ class Order extends Model
 
     public function reviews(){
         return $this->hasMany('App\Models\Review', 'order_id');
+    }
+
+
+    public static function generateInvoicePdfRaw($refid){
+        $order = Order::with(['details.entity', 'details.clinic', 'bookingSlots'=>function($slots){
+
+            $slots->whereNotIn('bookings_slots.status', ['cancelled']);
+
+        }, 'homebookingslots'=>function($slots){
+
+            $slots->whereNotIn('home_booking_slots.status', ['cancelled']);
+
+        }, 'customer'])
+            ->where('refid', $refid)
+            ->first();
+
+        if(!$order)
+            return [
+                'status'=>'failed',
+                'message'=>'No Invoice Found'
+            ];
+
+        // var_dump($orders);die();
+        $pdf = PDF::loadView('invoice', compact('order'))
+            ->setPaper('a4', 'portrait');
+
+        return $pdf;
     }
 
 

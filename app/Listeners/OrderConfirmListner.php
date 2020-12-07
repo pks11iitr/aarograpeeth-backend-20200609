@@ -3,10 +3,13 @@
 namespace App\Listeners;
 
 use App\Events\OrderConfirmed;
+use App\Mail\SendMail;
 use App\Models\Notification;
+use App\Models\Order;
 use App\Services\Notification\FCMNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Mail;
 
 class OrderConfirmListner
 {
@@ -56,5 +59,13 @@ class OrderConfirmListner
         ]);
 
         FCMNotification::sendNotification($user->notification_token, 'Order Confirmed', $message);
+
+        // send invoice email
+
+
+        $pdf=Order::generateInvoicePdfRaw($order->refid);
+
+        Mail::send(new SendMail(null, $order->email, "Order Confirmed at Arogyapeeth", 'mails.invoice-mail', ['order'=>$order], null, $pdf, []));
+
     }
 }
