@@ -534,8 +534,8 @@ class OrderController extends Controller
 //                    break;
 //            }
 
-            //$cost=$cost*$request->num_sessions;
-            //$order->total_cost=$cost;
+            $cost=$cost*$request->num_sessions;
+            $order->total_cost=$cost;
             $order->order_place_state='stage_2';
             $order->save();
 
