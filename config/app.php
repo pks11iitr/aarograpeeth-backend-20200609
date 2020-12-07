@@ -177,6 +177,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         LaravelFCM\FCMServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -231,6 +232,7 @@ return [
         'FCM'      => LaravelFCM\Facades\FCM::class,
         'FCMGroup' => LaravelFCM\Facades\FCMGroup::class, // Optional
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

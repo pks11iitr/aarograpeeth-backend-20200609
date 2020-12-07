@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\SuperAdmin;
 
+use App\Exports\CustomerExport;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CustomerController extends Controller
 {
@@ -31,14 +33,27 @@ class CustomerController extends Controller
             if($request->ordertype)
                 $customers=$customers->orderBy('created_at', $request->ordertype);
 
+            if($request->export)
+                return $this->export($customers);
+
             $customers=$customers->paginate(10);
             return view('admin.customer.view',['customers'=>$customers]);
      }
+
+    public function export($customers){
+        $customers=$customers->get();
+        return Excel::download(new CustomerExport($customers), 'customers.xlsx');
+        //return view('admin.customer.export',['customers'=>$customers]);
+    }
+
 
     public function edit(Request $request,$id){
              $customers = Customer::findOrFail($id);
              return view('admin.customer.edit',['customers'=>$customers]);
              }
+
+
+
 
     public function update(Request $request,$id){
              $request->validate([

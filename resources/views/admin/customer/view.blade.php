@@ -63,6 +63,9 @@
                      </div>
                   </div>
               </form>
+              <div class="col-4">
+                  <a class="btn btn-primary" href="{{route('customer.list')}}?{{Request::getQueryString()}}&export=1">Export</a>
+              </div>
          </div>
 
      </div>
