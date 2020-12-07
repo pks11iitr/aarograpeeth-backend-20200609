@@ -76,7 +76,7 @@
         <tbody>
         <tr class="border-bottom border-right grey">
             <td colspan="6"><strong>Sold to:</strong></td>
-            <td colspan="6"><strong>Ship to:</strong></td>
+            <td colspan="6"><strong>Billed to:</strong></td>
         </tr>
 
         <tr class="border-right">
@@ -85,7 +85,8 @@
                 <span>{{$order->mobile??''}}</span><br>
                 <span>{{$order->address??''}}</span>
             </td>
-            <td colspan="6">{{$order->name??''}}<br>
+            <td colspan="6">
+                {{$order->name??''}}<br>
                 <span>{{$order->email??''}},</span><br>
                 <span>{{$order->mobile??''}}</span><br>
                 <span>{{$order->address??''}}</span>
@@ -117,17 +118,17 @@
                     <tr class="border-right">
                         <td colspan="3">{{$detail->entity->name}} at {{$detail->entity->name}}</td>
                         <td colspan="3">{{count($order->bookingSlots)}} Sessions</td>
-                        <td colspan="1">Rs. {{$detail->bookingSlots[0]->price??0}}</td>
+                        <td colspan="1">Rs. {{$order->bookingSlots[0]->price??0}}</td>
                         <td colspan="1">Rs. 0.00</td>
-                        <td colspan="1">Rs. {{($detail->entity->price)*(count($order->bookingSlots))}}</td>
+                        <td colspan="1">Rs. {{($order->bookingSlots[0]->price??0)*(count($order->bookingSlots))}}</td>
                     </tr>
                 @else
                     <tr class="border-right">
                         <td colspan="3">{{$detail->entity->name}} at home</td>
                         <td colspan="3">{{count($order->homebookingslots)}} Sessions</td>
-                        <td colspan="1">Rs. {{$detail->homebookingslots[0]->price??0}}</td>
+                        <td colspan="1">Rs. {{$order->homebookingslots[0]->price??0}}</td>
                         <td colspan="1">Rs. 0.00</td>
-                        <td colspan="1">Rs. {{($detail->entity->price)*(count($order->homebookingslots))}}</td>
+                        <td colspan="1">Rs. {{($order->homebookingslots[0]->price??0)*(count($order->homebookingslots))}}</td>
                     </tr>
                 @endif
             @endif
