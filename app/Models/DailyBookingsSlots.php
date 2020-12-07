@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class DailyBookingsSlots extends Model
 {
@@ -14,6 +15,7 @@ class DailyBookingsSlots extends Model
 
         $timeslots=DailyBookingsSlots::orderBy('internal_start_time', 'asc')
             ->where('date',$date)
+            ->where(DB::raw('concat(date, " ", internal_start_time)'), '>', date('Y-m-d H:i:s'))
             ->get();
 
         $startdate=date('Y-m-d', strtotime($date));
@@ -139,6 +141,7 @@ class DailyBookingsSlots extends Model
     public static function getRescheduleTimeSlots($therapy,$date,$booking){
         $timeslots=DailyBookingsSlots::orderBy('internal_start_time', 'asc')
             ->where('date',$date)
+            ->where(DB::raw('concat(date, " ", internal_start_time)'), '>', date('Y-m-d H:i:s'))
             ->get();
 
         $startdate=date('Y-m-d', strtotime($date));
@@ -254,6 +257,7 @@ class DailyBookingsSlots extends Model
 
         $timeslots=DailyBookingsSlots::orderBy('internal_start_time', 'asc')
             ->where('date',$date)
+            ->where(DB::raw('concat(date, " ", internal_start_time)'), '>', date('Y-m-d H:i:s'))
             ->get();
 
         $slots=[];
