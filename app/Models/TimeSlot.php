@@ -24,7 +24,7 @@ class TimeSlot extends Model
         $total_used=[];
         $timeslots = TimeSlot::where('clinic_id', $clinic->id)
             ->where('date', $date)
-            ->where(DB::raw('concat(date, " ", time)'), '>', date('Y-m-d H:i:s'))
+            ->where(DB::raw('concat(date, " ", internal_start_time)'), '>', date('Y-m-d H:i:s'))
             ->orderBy('internal_start_time', 'asc')
             ->get();
 
