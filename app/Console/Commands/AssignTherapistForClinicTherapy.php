@@ -13,7 +13,7 @@ class AssignTherapistForClinicTherapy extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'clinicbooking:assigntherapist';
 
     /**
      * The console command description.
