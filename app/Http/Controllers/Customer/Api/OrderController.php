@@ -691,7 +691,9 @@ class OrderController extends Controller
                 'show_cancel'=>(in_array($schedule->status,['pending']) && in_array($order->status, ['confirmed']) && $schedule->is_instant==0)  ?1:0,
                 'show_reschedule'=>(in_array($schedule->status,['pending']) && in_array($order->status, ['confirmed']) && $schedule->is_instant==0 )?1:0,
                 'show_review'=>($schedule->status=='completed')?(!empty($schedule->review)?0:1):0,
-                'verification_code'=>$schedule->verification_code
+                'verification_code'=>$schedule->verification_code,
+                'show_details'=>($schedule->status=='completed')?1:0,
+                'show_therapist'=>($schedule instanceof HomeBookingSlots && $schedule->status=='confirmed')?1:0,
             ];
         }
 
@@ -699,6 +701,114 @@ class OrderController extends Controller
         return [
             'status'=>'success',
             'data'=>compact('schedules','clinic_id', 'therapy_id', 'order_id', 'show_add_more_slots','continue_text')
+        ];
+
+    }
+
+    public function bookingDetails(Request $request, $order_id, $booking_id){
+        $user=$request->user;
+
+        $order=Order::with('details')
+            ->where('user_id',$user->id)
+            ->find($order_id);
+
+        if(!$order)
+            return [
+                'status'=>'failed',
+                'message'=>'No such order found'
+            ];
+
+        if($order->details[0]->clinic_id){
+            $openbookingdetails=BookingSlot::with(['therapy','timeslot', 'diseases', 'painpoints', 'treatment'])
+                ->where('status',  'completed')
+                ->where('assigned_therapist', $user->id)
+                ->find($booking_id);
+        }else{
+            $openbookingdetails=HomeBookingSlots::with(['therapy','timeslot', 'diseases', 'painpoints', 'treatment'])
+                ->where('status',  'completed')
+                ->where('assigned_therapist', $user->id)
+                ->find($booking_id);
+        }
+
+        if(!$openbookingdetails)
+            return [
+                'status'=>'failed',
+                'message'=>'No Therapy Found'
+            ];
+
+        //instant timing
+        if($openbookingdetails->is_instant==0){
+            $timing=  ($openbookingdetails->timeslot->date??$openbookingdetails->date)." ".($openbookingdetails->timeslot->start_time??$openbookingdetails->time);
+        }else{
+            $timing=$openbookingdetails->date.' '.'Instant Booking';
+        }
+        // distance calculate
+
+        return [
+            'status' => 'success',
+            'booking_status'=>$openbookingdetails->therapist_status,
+            'total_cost'=>$openbookingdetails->price,
+            //'schedule_type'=>$openbookingdetails->order->schedule_type,
+            'name'=>$order->name,
+            'mobile'=>$order->mobile,
+            'address'=>$order->address,
+            //'distance_away'=>$distance,
+            'timing'=>$timing,
+            'therapy_name'=>$openbookingdetails->therapy->name,
+            'image'=>$openbookingdetails->therapy->image,
+            'id'=>$booking_id,
+            'order_id'=>$order_id,
+            'comments'=>$openbookingdetails->message??'',
+            'diseases'=>$openbookingdetails->diseases,
+            'painpoints'=>$openbookingdetails->painpoints,
+            'treatment'=>$openbookingdetails->treatment,
+            /*'data' =>$openbookingdetails,*/
+        ];
+    }
+
+    public function getTherapistLocation(Request $request, $order_id, $booking_id){
+        $user=$request->user;
+
+        $order=Order::with('details')
+            ->where('user_id',$user->id)
+            ->find($order_id);
+
+        if(!$order)
+            return [
+                'status'=>'failed',
+                'message'=>'No such order found'
+            ];
+
+        if($order->details[0]->clinic_id){
+            $openbookingdetails=BookingSlot::with(['assignedTo'])
+                ->where('status',  'completed')
+                ->where('assigned_therapist', $user->id)
+                ->find($booking_id);
+        }else{
+            $openbookingdetails=HomeBookingSlots::with(['assignedTo'])
+                ->where('status',  'completed')
+                ->where('assigned_therapist', $user->id)
+                ->find($booking_id);
+        }
+
+        if(!$openbookingdetails)
+            return [
+                'status'=>'failed',
+                'message'=>'No Therapy Found'
+            ];
+
+        return [
+            'status'=>'success',
+            'data'=>[
+                'order'=>[
+                    'lat'=>$order->lat,
+                    'lang'=>$order->lang
+                ],
+                'therapist'=>[
+                    'lat'=>$openbookingdetails->assignedTo->last_lat??null,
+                    'lang'=>$openbookingdetails->assignedTo->last_lang??null
+                ]
+            ]
         ];
 
     }

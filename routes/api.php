@@ -129,6 +129,9 @@ $api->group(['middleware' => ['customer-auth']], function ($api) {
 
     $api->post('review-session/{order_id}/{session_id}', ['as'=>'reviews.post.session', 'uses'=>'Customer\Api\ReviewController@postSessionReview']);
 
+    $api->get('booking-details/{order_id}/{session_id}', ['as'=>'booking.details', 'uses'=>'Customer\Api\OrderController@bookingDetails']);
+
+    $api->get('get-therapist-location/{order_id}/{session_id}', ['as'=>'booking.therapist.location', 'uses'=>'Customer\Api\OrderController@getTherapistLocation']);
 
 });
 
