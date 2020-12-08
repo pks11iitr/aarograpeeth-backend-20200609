@@ -117,5 +117,18 @@ class HomeBookingSlots extends Model
             return '';
     }
 
+    public function customerResults(){
+        if($this->customer_result==1)
+            return 'No Relief';
+        else if($this->customer_result==2)
+            return 'Relief';
+        else if($this->customer_result==3)
+            return 'Cured';
+        else if($this->customer_result==4)
+            return 'Problem Increased';
+        else
+            return '';
+    }
+
 
 }

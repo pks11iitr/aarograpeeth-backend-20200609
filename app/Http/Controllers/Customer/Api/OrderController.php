@@ -860,7 +860,7 @@ class OrderController extends Controller
             'feedback_from_therapist'=>$openbookingdetails->feedback_from_therapist??'',
             'main_diseases'=>$main_diseases1,
             'diagnose'=>$diagnose,
-            'therapy_result'=>$openbookingdetails->results()
+            'therapy_result'=>$openbookingdetails->customerResults()
             /*'data' =>$openbookingdetails,*/
         ];
     }
