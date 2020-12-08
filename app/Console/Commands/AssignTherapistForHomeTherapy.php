@@ -71,6 +71,7 @@ class AssignTherapistForHomeTherapy extends Command
                 $booking->assigned_therapist=$therapist->id;
                 $booking->assigned_at=date('Y-m-d H:i:s');
                 $booking->save();
+                echo 'therapist id'.$therapist->id.' assigned to '.$booking->id;
                 break;
             }
 
@@ -88,6 +89,7 @@ class AssignTherapistForHomeTherapy extends Command
                         $booking->assigned_therapist=$therapist->id;
                         $booking->assigned_at=date('Y-m-d H:i:s');
                         $booking->save();
+                        echo 'therapist id'.$therapist->id.' assigned to '.$booking;
                         break;
                     }
                 }
@@ -108,6 +110,7 @@ class AssignTherapistForHomeTherapy extends Command
                     $booking->assigned_therapist=$therapist->id;
                     $booking->assigned_at=date('Y-m-d H:i:s');
                     $booking->save();
+                    echo 'therapist id'.$therapist->id.' assigned to '.$booking;
                     break;
                 }
             }
@@ -125,6 +128,7 @@ class AssignTherapistForHomeTherapy extends Command
                         $booking->assigned_therapist = $therapist->id;
                         $booking->assigned_at = date('Y-m-d H:i:s');
                         $booking->save();
+                        echo 'therapist id'.$therapist->id.' assigned to '.$booking;
                         break;
                     }
                 }

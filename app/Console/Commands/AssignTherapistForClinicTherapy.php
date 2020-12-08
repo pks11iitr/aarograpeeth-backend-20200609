@@ -54,6 +54,7 @@ class AssignTherapistForClinicTherapy extends Command
             if(count($therapists)){
                 $booking->assigned_therapist=$therapists[0]->id;
                 $booking->save();
+                echo 'therapist id'.$therapists[0]->id.' assigned to '.$booking->id;
             }
         }
     }
