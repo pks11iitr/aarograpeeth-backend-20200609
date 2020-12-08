@@ -705,6 +705,67 @@ class OrderController extends Controller
 
     }
 
+//    public function bookingDetails(Request $request, $order_id, $booking_id){
+//        $user=$request->user;
+//
+//        $order=Order::with('details')
+//            ->where('user_id',$user->id)
+//            ->find($order_id);
+//
+//        if(!$order)
+//            return [
+//                'status'=>'failed',
+//                'message'=>'No such order found'
+//            ];
+//
+//        if($order->details[0]->clinic_id){
+//            $openbookingdetails=BookingSlot::with(['therapy','timeslot', 'diseases', 'painpoints', 'treatment'])
+//                ->where('status',  'completed')
+//                ->where('assigned_therapist', $user->id)
+//                ->find($booking_id);
+//        }else{
+//            $openbookingdetails=HomeBookingSlots::with(['therapy','timeslot', 'diseases', 'painpoints', 'treatment'])
+//                ->where('status',  'completed')
+//                ->where('assigned_therapist', $user->id)
+//                ->find($booking_id);
+//        }
+//
+//        if(!$openbookingdetails)
+//            return [
+//                'status'=>'failed',
+//                'message'=>'No Therapy Found'
+//            ];
+//
+//        //instant timing
+//        if($openbookingdetails->is_instant==0){
+//            $timing=  ($openbookingdetails->timeslot->date??$openbookingdetails->date)." ".($openbookingdetails->timeslot->start_time??$openbookingdetails->time);
+//        }else{
+//            $timing=$openbookingdetails->date.' '.'Instant Booking';
+//        }
+//        // distance calculate
+//
+//        return [
+//            'status' => 'success',
+//            'booking_status'=>$openbookingdetails->therapist_status,
+//            'total_cost'=>$openbookingdetails->price,
+//            //'schedule_type'=>$openbookingdetails->order->schedule_type,
+//            'name'=>$order->name,
+//            'mobile'=>$order->mobile,
+//            'address'=>$order->address,
+//            //'distance_away'=>$distance,
+//            'timing'=>$timing,
+//            'therapy_name'=>$openbookingdetails->therapy->name,
+//            'image'=>$openbookingdetails->therapy->image,
+//            'id'=>$booking_id,
+//            'order_id'=>$order_id,
+//            'comments'=>$openbookingdetails->message??'',
+//            'diseases'=>$openbookingdetails->diseases,
+//            'painpoints'=>$openbookingdetails->painpoints,
+//            'treatment'=>$openbookingdetails->treatment,
+//            /*'data' =>$openbookingdetails,*/
+//        ];
+//    }
+
     public function bookingDetails(Request $request, $order_id, $booking_id){
         $user=$request->user;
 
@@ -719,12 +780,12 @@ class OrderController extends Controller
             ];
 
         if($order->details[0]->clinic_id){
-            $openbookingdetails=BookingSlot::with(['therapy','timeslot', 'diseases', 'painpoints', 'treatment'])
+            $openbookingdetails=BookingSlot::with(['therapy','timeslot', 'diseases', 'painpoints', 'mainDiseases', 'reasonDiseases','diagnose', 'treatmentsGiven'])
                 ->where('status',  'completed')
                 ->where('assigned_therapist', $user->id)
                 ->find($booking_id);
         }else{
-            $openbookingdetails=HomeBookingSlots::with(['therapy','timeslot', 'diseases', 'painpoints', 'treatment'])
+            $openbookingdetails=HomeBookingSlots::with(['therapy','timeslot', 'diseases', 'painpoints', 'mainDiseases', 'reasonDiseases','diagnose', 'treatmentsGiven'])
                 ->where('status',  'completed')
                 ->where('assigned_therapist', $user->id)
                 ->find($booking_id);
@@ -742,7 +803,40 @@ class OrderController extends Controller
         }else{
             $timing=$openbookingdetails->date.' '.'Instant Booking';
         }
-        // distance calculate
+
+        $main_diseases=[];
+        foreach($openbookingdetails->mainDiseases as $md){
+            $main_diseases[$md->id]=[
+                'name'=>$md->name,
+                'reason_diseases'=>''
+            ];
+        }
+
+        foreach($openbookingdetails->reasonDiseases as $rd){
+            if(isset($main_diseases[$rd->pivot->disease_id])) {
+                $main_diseases[$rd->pivot->disease_id]['reason_diseases']=$main_diseases[$rd->pivot->disease_id]['reason_diseases'].$rd->name.', ';
+            }
+        }
+
+        $main_diseases1=[];
+        foreach($main_diseases as $d){
+            $main_diseases1[]=$d;
+        }
+
+
+        $treatments=[];
+        foreach($openbookingdetails->treatmentsGiven as $t){
+            $treatments[]=['name'=>$t->description];
+        }
+
+        $diagnose=[];
+        foreach($openbookingdetails->diagnose as $dg){
+            $diagnose[]=[
+                'name'=>$dg->name,
+                'before'=>$dg->pivot->before_value??'',
+                'after'=>$dg->pivot->after_value??''
+            ];
+        }
 
         return [
             'status' => 'success',
@@ -761,7 +855,12 @@ class OrderController extends Controller
             'comments'=>$openbookingdetails->message??'',
             'diseases'=>$openbookingdetails->diseases,
             'painpoints'=>$openbookingdetails->painpoints,
-            'treatment'=>$openbookingdetails->treatment,
+            'treatment'=>$treatments,
+            'show_feedback_button'=>empty($openbookingdetails->feedback_from_therapist)?1:0,
+            'feedback_from_therapist'=>$openbookingdetails->feedback_from_therapist??'',
+            'main_diseases'=>$main_diseases1,
+            'diagnose'=>$diagnose,
+            'therapy_result'=>$openbookingdetails->results()
             /*'data' =>$openbookingdetails,*/
         ];
     }
