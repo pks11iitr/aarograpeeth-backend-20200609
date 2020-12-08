@@ -67,8 +67,10 @@ class Therapist extends Authenticatable implements JWTSubject
     // excludes therapist having pending bookings for the date
     public static function getAvailableHomeTherapist($therapy_id,$slot_id,$lat=null,$lang=null){
 
-        if(!$slot_id)
+        if(!$slot_id){
             $date=date('Y-m-d');
+            $daily_booking_slot=null;
+        }
         else{
             $daily_booking_slot=DailyBookingsSlots::find($slot_id);
             $date=$daily_booking_slot->date;
