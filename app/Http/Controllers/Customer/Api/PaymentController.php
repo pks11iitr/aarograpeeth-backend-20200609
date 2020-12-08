@@ -128,6 +128,7 @@ class PaymentController extends Controller
             $order->order_id=$responsearr->id;
             $order->order_id_response=$response;
             $order->save();
+
             return [
                 'status'=>'success',
                 'message'=>'success',
@@ -175,10 +176,12 @@ class PaymentController extends Controller
                     'current_status'=>$order->status
                 ]);
 
-                if($order->details[0]->clinic_id){
-                    $order->bookingSlots()->where('status', 'pending')->update(['bookings_slots.status'=>'confirmed']);
-                }else{
-                    $order->homebookingslots()->where('status', 'pending')->update(['home_booking_slots.status'=>'confirmed']);
+                if ($order->details[0]->entity_type == 'App\Models\Therapy') {
+                    if ($order->details[0]->clinic_id) {
+                        BookingSlot::where('order_id', $order->id)->update(['is_confirmed' => 1, 'is_paid' => 1]);
+                    } else {
+                        HomeBookingSlots::where('order_id', $order->id)->update(['is_confirmed' => 1, 'is_paid' => 1]);
+                    }
                 }
 
                 Wallet::updatewallet($order->user_id, 'Paid For Order ID: '.$order->refid, 'DEBIT',$order->balance_used, 'CASH', $order->id);
@@ -219,6 +222,13 @@ class PaymentController extends Controller
                         'order_id'=>$order->id,
                         'current_status'=>$order->status
                     ]);
+                    if ($order->details[0]->entity_type == 'App\Models\Therapy') {
+                        if ($order->details[0]->clinic_id) {
+                            BookingSlot::where('order_id', $order->id)->update(['is_confirmed' => 1, 'is_paid' => 1]);
+                        } else {
+                            HomeBookingSlots::where('order_id', $order->id)->update(['is_confirmed' => 1, 'is_paid' => 1]);
+                        }
+                    }
 
                     Wallet::updatewallet($order->user_id, 'Paid For Order ID: '.$order->refid, 'DEBIT',$order->points_used, 'POINT', $order->id);
 
@@ -276,10 +286,10 @@ class PaymentController extends Controller
 
             // comfirm slots booking
             if ($order->details[0]->entity_type == 'App\Models\Therapy'){
-                if ($order->details[0]->clinic_id != null) {
-                    $order->schedule()->where('bookings_slots.status', 'pending')->update(['bookings_slots.is_confirmed' => true, 'bookings_slots.is_paid'=>true]);
-                }else if($order->is_instant==0){
-                    $order->homebookingslots()->where('home_booking_slots.status', 'pending')->update(['home_booking_slots.is_paid' => true,'home_booking_slots.is_confirmed' => true, ]);
+                if($order->details[0]->clinic_id){
+                    BookingSlot::where('order_id', $order->id)->update(['is_confirmed'=>1,'is_paid'=>1]);
+                }else{
+                    HomeBookingSlots::where('order_id', $order->id)->update(['is_confirmed'=>1,'is_paid'=>1]);
                 }
             }
 
