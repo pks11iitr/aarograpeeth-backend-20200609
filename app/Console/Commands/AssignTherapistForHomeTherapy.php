@@ -89,7 +89,7 @@ class AssignTherapistForHomeTherapy extends Command
                         $booking->assigned_therapist=$therapist->id;
                         $booking->assigned_at=date('Y-m-d H:i:s');
                         $booking->save();
-                        echo 'therapist id'.$therapist->id.' assigned to '.$booking;
+                        echo 'therapist id'.$therapist->id.' assigned to '.$booking->id;
                         break;
                     }
                 }
@@ -105,7 +105,7 @@ class AssignTherapistForHomeTherapy extends Command
              * Find available therapist and assign to booking
              */
             $therapists=Therapist::getAvailableHomeTherapist($booking->therapy_id, $booking->slot_id, $booking->order->lat, $booking->order->lang);
-            if(strtotime($booking->date.' '.$booking->time)-strtotime('now') < 120){
+            if(strtotime($booking->date.' '.$booking->time)-strtotime('now') < 120*60){
                 foreach($therapists as $therapist){
                     $booking->assigned_therapist=$therapist->id;
                     $booking->assigned_at=date('Y-m-d H:i:s');
