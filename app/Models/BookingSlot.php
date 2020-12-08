@@ -18,7 +18,7 @@ class BookingSlot extends Model
             ->whereHas('timeslot', function($timeslots) use($slot){
                     $timeslots->where('date', '>=', $slot->date);
              })
-            ->where('status','confirmed')
+            ->where('is_confirmed',true)
             ->where('grade', $grade)
             ->get();
         $bookings=[];
@@ -30,7 +30,7 @@ class BookingSlot extends Model
                     'g3'=>0,
                     'g4'=>0,
                 ];
-            $bookings[$bs->timeslot->date]['g'.$bs->grade]+=1;
+            $bookings[$bs->timeslot->date.$bs->timeslot->internal_start_time]['g'.$bs->grade]+=1;
         }
         //var_dump($bookings);
         $slots=TimeSlot::active()->
@@ -62,7 +62,7 @@ class BookingSlot extends Model
         $i=0;
         $alloted=0;
         while($i<$num_sessions && isset($slots[$i])){
-            if(!isset($bookings[$slots[$i]->date])){
+            if(!isset($bookings[$slots[$i]->date.$slots[$i]->internal_start_time])){
                 BookingSlot::create([
                     'order_id'=>$order->id,
                     'clinic_id'=>$order->details[0]->clinic_id,
@@ -79,7 +79,7 @@ class BookingSlot extends Model
             else{
                 $grade1='grade_'.$grade;
                 //var_dump($bookings[$slots[$i]->date]);die;
-                if($slots[$i]->$grade1 > $bookings[$slots[$i]->date]['g'.$grade]){
+                if($slots[$i]->$grade1 > $bookings[$slots[$i]->date.$slots[$i]->internal_start_time]['g'.$grade]){
                     BookingSlot::create([
                         'order_id'=>$order->id,
                         'clinic_id'=>$order->details[0]->clinic_id,
