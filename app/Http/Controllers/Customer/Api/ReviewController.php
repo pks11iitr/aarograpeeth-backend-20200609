@@ -132,7 +132,7 @@ class ReviewController extends Controller
 
                 $rating_for='App\Models\User';
 
-                $therapist=User::find($session->therapist_id);
+                $therapist=User::find($session->assigned_therapist);
 
             }else{
                 $session=HomeBookingSlots::where('order_id', $order_id)
@@ -141,7 +141,7 @@ class ReviewController extends Controller
 
                 $rating_for='App\Models\Therapist';
 
-                $therapist=Therapist::find($session->therapist_id);
+                $therapist=Therapist::find($session->assigned_therapist);
             }
         }
 
