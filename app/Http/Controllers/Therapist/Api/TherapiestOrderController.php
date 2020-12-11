@@ -777,7 +777,8 @@ class TherapiestOrderController extends Controller
 
         $user=$request->user;
 
-        $therapiestwork=HomeBookingSlots::where('assigned_therapist', $user->id)
+        $therapiestwork=HomeBookingSlots::with('order')
+        ->where('assigned_therapist', $user->id)
             ->where('status', '!=', 'completed')
             ->where('status','!=', 'cancelled')
             ->find($id);
@@ -806,7 +807,13 @@ class TherapiestOrderController extends Controller
        $therapiestwork->therapist_result=$request->result;
        $therapiestwork->save();
 
-
+        $count=HomeBookingSlots::where('status', ['pending', 'confirmed'])
+            ->where('order_id', $therapiestwork->order_id)
+            ->count();
+        if($count==0){
+            $therapiestwork->order->status='cancelled';
+            $therapiestwork->order->save();
+        }
 
         return [
             'status'=>'success',

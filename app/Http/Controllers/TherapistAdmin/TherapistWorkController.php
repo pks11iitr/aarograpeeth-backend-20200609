@@ -348,7 +348,8 @@ class TherapistWorkController extends Controller
 
         $user=auth()->user();
 
-        $session=BookingSlot::where('assigned_therapist', $user->id)
+        $session=BookingSlot::with(['order'])
+            ->where('assigned_therapist', $user->id)
             //->where('status', '!=', 'completed')
             ->where('status','!=', 'cancelled')
             ->findOrFail($id);
@@ -368,6 +369,14 @@ class TherapistWorkController extends Controller
         $session->therapist_result=$request->result;
         $session->status='completed';
         $session->save();
+
+        $count=BookingSlot::where('status', ['pending', 'confirmed'])
+            ->where('order_id', $session->order_id)
+            ->count();
+        if($count==0){
+            $session->order->status='cancelled';
+            $session->order->save();
+        }
 
         return redirect()->back()->with('success', 'Therapy Session Has Been Completed');
 

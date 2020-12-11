@@ -1345,7 +1345,9 @@ class OrderController extends Controller
         $booking->status='cancelled';
         $booking->save();
 
-        $count=BookingSlot::where('status', '!=', 'cancelled')->count();
+        $count=BookingSlot::where('status', '!=', 'cancelled')
+            ->where('order_id', $booking->order_id)
+            ->count();
         if($count==0){
             $order->status='cancelled';
             $order->save();
@@ -1388,7 +1390,9 @@ class OrderController extends Controller
         $booking->status='cancelled';
         $booking->save();
 
-        $count=HomeBookingSlots::where('status', '!=', 'cancelled')->count();
+        $count=HomeBookingSlots::where('status', '!=', 'cancelled')
+            ->where('order_id', $booking->order_id)
+            ->count();
         if($count==0){
             $order->status='cancelled';
             $order->save();
