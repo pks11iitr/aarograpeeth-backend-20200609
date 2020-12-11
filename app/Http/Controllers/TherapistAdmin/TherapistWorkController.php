@@ -370,11 +370,11 @@ class TherapistWorkController extends Controller
         $session->status='completed';
         $session->save();
 
-        $count=BookingSlot::where('status', ['pending', 'confirmed'])
+        $count=BookingSlot::whereIn('status', ['pending', 'confirmed'])
             ->where('order_id', $session->order_id)
             ->count();
         if($count==0){
-            $session->order->status='cancelled';
+            $session->order->status='completed';
             $session->order->save();
         }
 

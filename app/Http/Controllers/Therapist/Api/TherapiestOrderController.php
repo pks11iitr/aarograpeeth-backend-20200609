@@ -807,11 +807,11 @@ class TherapiestOrderController extends Controller
        $therapiestwork->therapist_result=$request->result;
        $therapiestwork->save();
 
-        $count=HomeBookingSlots::where('status', ['pending', 'confirmed'])
+        $count=HomeBookingSlots::whereIn('status', ['pending', 'confirmed'])
             ->where('order_id', $therapiestwork->order_id)
             ->count();
         if($count==0){
-            $therapiestwork->order->status='cancelled';
+            $therapiestwork->order->status='completed';
             $therapiestwork->order->save();
         }
 
