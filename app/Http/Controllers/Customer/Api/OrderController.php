@@ -878,13 +878,13 @@ class OrderController extends Controller
 
         if($order->details[0]->clinic_id){
             $openbookingdetails=BookingSlot::with(['assignedTo'])
-                ->where('status',  'completed')
-                ->where('assigned_therapist', $user->id)
+                ->where('status',  'confirmed')
+                ->where('assigned_therapist', '!=', null)
                 ->find($booking_id);
         }else{
             $openbookingdetails=HomeBookingSlots::with(['assignedTo'])
-                ->where('status',  'completed')
-                ->where('assigned_therapist', $user->id)
+                ->where('status',  'confirmed')
+                ->where('assigned_therapist', '!=', null)
                 ->find($booking_id);
         }
 
