@@ -64,6 +64,7 @@ class TherapiestOrderController extends Controller
         $openbooking=HomeBookingSlots::with(['therapy','timeslot', 'order'])
             ->where('assigned_therapist', $user->id)
             ->where('status','!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->get();
         if($openbooking) {
             foreach ($openbooking as $item) {
@@ -114,6 +115,7 @@ class TherapiestOrderController extends Controller
         $openbooking=HomeBookingSlots::with(['therapy','timeslot', 'order'])
             ->where('assigned_therapist', $user->id)
             ->where('status', 'completed')
+            ->where('status','!=', 'cancelled')
             ->get();
         if($openbooking) {
             foreach ($openbooking as $item) {
@@ -216,6 +218,7 @@ class TherapiestOrderController extends Controller
 
         $openbookingdetails=HomeBookingSlots::with(['therapy','timeslot', 'order'])
             ->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->where('assigned_therapist', $user->id)
             ->find($id);
 
@@ -277,6 +280,7 @@ class TherapiestOrderController extends Controller
         $user=$request->user;
         $updatejourney=HomeBookingSlots::where('assigned_therapist', $user->id)
             ->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->find($id);
 
         if(!$updatejourney)
@@ -314,6 +318,7 @@ class TherapiestOrderController extends Controller
 
         $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
             ->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->find($id);
 
         $main_diseases=MainDisease::active()->select('name', 'id')->orderBY('name', 'asc')->get();
@@ -351,6 +356,7 @@ class TherapiestOrderController extends Controller
 
         $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
             ->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->find($id);
 
         //remove old data
@@ -379,6 +385,7 @@ class TherapiestOrderController extends Controller
 
         $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
             ->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->find($id);
 
         $diagnose_points=DiagnosePoint::active()->select('id','name','type')->get();
@@ -401,6 +408,7 @@ class TherapiestOrderController extends Controller
 
         $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
             ->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->find($id);
 
         $home_booking_slot->diagnose()->detach();
@@ -435,6 +443,7 @@ class TherapiestOrderController extends Controller
         $home_booking_slot=HomeBookingSlots::with(['mainDiseases','reasonDiseases', 'painpoints', 'diseases'])
             ->where('assigned_therapist', $user->id)
             ->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->find($id);
 
         //main disease ids
@@ -561,6 +570,7 @@ class TherapiestOrderController extends Controller
 
         $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
             ->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->find($id);
 
         $home_booking_slot->treatmentsGiven()->detach();
@@ -606,6 +616,7 @@ class TherapiestOrderController extends Controller
         $user=$request->user;
 
         $updatejourney=HomeBookingSlots::where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->where('assigned_therapist', $user->id)
             ->find($id);
 
@@ -688,6 +699,7 @@ class TherapiestOrderController extends Controller
 
         $updatejourney=HomeBookingSlots::where('assigned_therapist', $user->id)
             ->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->find($id);
 
         if(!$updatejourney)
@@ -717,6 +729,7 @@ class TherapiestOrderController extends Controller
 
         $session=HomeBookingSlots::where('assigned_therapist', $user->id)
             ->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->find($id);
 
         if(!$session){
@@ -764,8 +777,10 @@ class TherapiestOrderController extends Controller
 
         $user=$request->user;
 
-        $therapiestwork=HomeBookingSlots::where('assigned_therapist', $user->id)
+        $therapiestwork=HomeBookingSlots::with('order')
+        ->where('assigned_therapist', $user->id)
             ->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->find($id);
 
         if(!$therapiestwork)
@@ -791,6 +806,15 @@ class TherapiestOrderController extends Controller
        $therapiestwork->status='completed';
        $therapiestwork->therapist_result=$request->result;
        $therapiestwork->save();
+
+        $count=HomeBookingSlots::whereIn('status', ['pending', 'confirmed'])
+            ->where('order_id', $therapiestwork->order_id)
+            ->count();
+        if($count==0){
+            $therapiestwork->order->status='completed';
+            $therapiestwork->order->save();
+        }
+
         return [
             'status'=>'success',
             'id'=>$therapiestwork->id
@@ -852,6 +876,7 @@ class TherapiestOrderController extends Controller
 
         $openbookingdetails=HomeBookingSlots::with(['therapy','timeslot', 'order', 'diseases', 'painpoints', 'mainDiseases', 'reasonDiseases','diagnose', 'treatmentsGiven'])
             ->where('status',  'completed')
+            ->where('status','!=', 'cancelled')
             ->where('assigned_therapist', $user->id)
             ->find($id);
 

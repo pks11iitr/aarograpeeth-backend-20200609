@@ -25,6 +25,7 @@ class TherapistWorkController extends Controller
             ->where('assigned_therapist', $user->id)
             ->orderBy('id', 'desc')
             ->whereIn('status', ['pending','confirmed'])
+            ->where('status','!=', 'cancelled')
             ->paginate(10);
         return view('therapistadmin.therapistwork.view',compact('sessions'));
     }
@@ -35,6 +36,7 @@ class TherapistWorkController extends Controller
             ->where('assigned_therapist', $user->id)
             ->orderBy('id', 'desc')
             ->where('status', 'completed')
+            ->where('status','!=', 'cancelled')
             ->paginate(10);
         return view('therapistadmin.therapistwork.view',compact('sessions'));
     }
@@ -214,6 +216,7 @@ class TherapistWorkController extends Controller
 
         $session=BookingSlot::where('assigned_therapist', $user->id)
             //->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->findOrFail($id);
         if($session->status=='completed')
             return redirect()->back()->with('error', 'Completed Therapy Cannot Be updated');
@@ -277,6 +280,7 @@ class TherapistWorkController extends Controller
 
         $session=BookingSlot::where('assigned_therapist', $user->id)
             //->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->findOrFail($id);
 
         if($session->status=='completed')
@@ -305,6 +309,7 @@ class TherapistWorkController extends Controller
 
         $session=BookingSlot::where('assigned_therapist', $user->id)
             //->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->findOrFail($id);
 
         if($session->status=='completed')
@@ -343,8 +348,10 @@ class TherapistWorkController extends Controller
 
         $user=auth()->user();
 
-        $session=BookingSlot::where('assigned_therapist', $user->id)
+        $session=BookingSlot::with(['order'])
+            ->where('assigned_therapist', $user->id)
             //->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
             ->findOrFail($id);
         if($session->status=='completed')
             return redirect()->back()->with('error', 'Completed Therapy Cannot Be updated');
@@ -362,6 +369,14 @@ class TherapistWorkController extends Controller
         $session->therapist_result=$request->result;
         $session->status='completed';
         $session->save();
+
+        $count=BookingSlot::whereIn('status', ['pending', 'confirmed'])
+            ->where('order_id', $session->order_id)
+            ->count();
+        if($count==0){
+            $session->order->status='completed';
+            $session->order->save();
+        }
 
         return redirect()->back()->with('success', 'Therapy Session Has Been Completed');
 

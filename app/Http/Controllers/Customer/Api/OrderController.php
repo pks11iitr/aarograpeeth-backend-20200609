@@ -878,13 +878,13 @@ class OrderController extends Controller
 
         if($order->details[0]->clinic_id){
             $openbookingdetails=BookingSlot::with(['assignedTo'])
-                ->where('status',  'completed')
-                ->where('assigned_therapist', $user->id)
+                ->where('status',  'confirmed')
+                ->where('assigned_therapist', '!=', null)
                 ->find($booking_id);
         }else{
             $openbookingdetails=HomeBookingSlots::with(['assignedTo'])
-                ->where('status',  'completed')
-                ->where('assigned_therapist', $user->id)
+                ->where('status',  'confirmed')
+                ->where('assigned_therapist', '!=', null)
                 ->find($booking_id);
         }
 
@@ -1345,7 +1345,9 @@ class OrderController extends Controller
         $booking->status='cancelled';
         $booking->save();
 
-        $count=BookingSlot::where('status', '!=', 'cancelled')->count();
+        $count=BookingSlot::where('status', '!=', 'cancelled')
+            ->where('order_id', $booking->order_id)
+            ->count();
         if($count==0){
             $order->status='cancelled';
             $order->save();
@@ -1361,10 +1363,7 @@ class OrderController extends Controller
             //before 12 hours
             Wallet::updatewallet($order->user_id, 'Booking Cancellation For Order ID: '.$order->refid, 'Credit', round($booking->price*80/100), 'CASH', $order->refid);
         }else{
-            return [
-                'status'=>'failed',
-                'message'=>'This booking cannot be cancelled now'
-            ];
+            Wallet::updatewallet($order->user_id, 'Booking Cancellation For Order ID: '.$order->refid, 'Credit', round($booking->price*70/100), 'CASH', $order->refid);
         }
 
         return [
@@ -1388,7 +1387,9 @@ class OrderController extends Controller
         $booking->status='cancelled';
         $booking->save();
 
-        $count=HomeBookingSlots::where('status', '!=', 'cancelled')->count();
+        $count=HomeBookingSlots::where('status', '!=', 'cancelled')
+            ->where('order_id', $booking->order_id)
+            ->count();
         if($count==0){
             $order->status='cancelled';
             $order->save();
@@ -1404,10 +1405,11 @@ class OrderController extends Controller
             //before 12 hours
             Wallet::updatewallet($order->user_id, 'Booking Cancellation For Order ID: '.$order->refid, 'Credit', round($booking->price*80/100), 'CASH', $order->refid);
         }else{
-            return [
-                'status'=>'failed',
-                'message'=>'This booking cannot be cancelled now'
-            ];
+//            return [
+//                'status'=>'failed',
+//                'message'=>'This booking cannot be cancelled now'
+//            ];
+            Wallet::updatewallet($order->user_id, 'Booking Cancellation For Order ID: '.$order->refid, 'Credit', round($booking->price*70/100), 'CASH', $order->refid);
         }
 
         return [
@@ -1966,7 +1968,7 @@ class OrderController extends Controller
                     //before 6 hours
                     $refund=$refund+round($booking->price*80/100);
                 }else{
-                    $refund=0;
+                    $refund=$refund+round($booking->price*70/100);;
                 }
 
             }
@@ -2016,7 +2018,7 @@ class OrderController extends Controller
                     //before 6 hours
                     $refund=$refund+round($booking->price*80/100);
                 }else{
-                    $refund=0;
+                    $refund=$refund+round($booking->price*80/100);
                 }
             }
         }

@@ -8,6 +8,7 @@ use App\Models\HomeBookingSlots;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Review;
+use App\Models\Therapist;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -132,7 +133,7 @@ class ReviewController extends Controller
 
                 $rating_for='App\Models\User';
 
-                $therapist=User::find($session->therapist_id);
+                $therapist=User::find($session->assigned_therapist);
 
             }else{
                 $session=HomeBookingSlots::where('order_id', $order_id)
@@ -141,7 +142,7 @@ class ReviewController extends Controller
 
                 $rating_for='App\Models\Therapist';
 
-                $therapist=Therapist::find($session->therapist_id);
+                $therapist=Therapist::find($session->assigned_therapist);
             }
         }
 
