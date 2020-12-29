@@ -91,7 +91,10 @@
                                <span style="color:red">No</span>
                              @endif
                         </td>
-                      <td><a href="{{route('clinic.edit',['id'=>$clinic->id])}}" class="btn btn-success">Edit</a></td>
+                      <td>
+                          <a href="{{route('clinic.edit',['id'=>$clinic->id])}}" class="btn btn-success">Edit</a><br><br>
+                          <a href="{{route('clinic.timeslots.list',['id'=>$clinic->id])}}" class="btn btn-primary">Time Slots</a>
+                      </td>
                  </tr>
                  @endforeach
                   </tbody>

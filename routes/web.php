@@ -110,6 +110,9 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
 
         Route::get('available-therapists','SuperAdmin\ClinicController@getAvailableTherapistInClinic')->name('clinic.available.therapist');
         Route::get('available-slots','SuperAdmin\ClinicController@getAvailableTimeSlots')->name('clinic.available.slots');
+        Route::get('time-slots/{id}','SuperAdmin\ClinicController@TimeSlotsIndex')->name('clinic.timeslots.list');
+        Route::get('time-slots-delete/{id}','SuperAdmin\ClinicController@TimeSlotsDelete')->name('clinic.timeslots.delete');
+        Route::post('import/{id}','SuperAdmin\ClinicController@import')->name('timeslots.import');
 
     });
 

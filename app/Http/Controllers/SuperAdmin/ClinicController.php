@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SuperAdmin;
 
 use App\Http\Controllers\Controller;
+use App\Imports\TimeSlotImport;
 use App\Models\Clinic;
 use App\Models\Document;
 use App\Models\Therapy;
@@ -10,6 +11,7 @@ use App\Models\ClinicTherapy;
 use App\Models\TimeSlot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Storage;
 
 class ClinicController extends Controller
@@ -249,6 +251,25 @@ class ClinicController extends Controller
             $slots=TimeSlot::getTimeSlotsForAdmin($clinic, $request->date, $request->grade);
             return $slots;
 
+        }
+
+        public function TimeSlotsIndex(Request $request,$id){
+         $timeslots =TimeSlot::where('clinic_id',$id)->paginate(10);
+         return view('admin.clinic.timeslots',['timeslots'=>$timeslots,'id'=>$id]);
+
+        }
+
+        public function TimeSlotsDelete(Request $request,$id){
+            TimeSlot::where('id',$id)->delete();
+            return redirect()->back()->with('success', 'Timeslot has been deleted');
+        }
+
+        public function import($clinic_id){
+
+            Excel::import(new TimeSlotImport($clinic_id), request()->file('select_file'));
+            return redirect()->back()->with('success', 'Your Data imported successfully.');
+
+            return redirect()->back()->with('error', 'Your Data import failed');
         }
 
 
