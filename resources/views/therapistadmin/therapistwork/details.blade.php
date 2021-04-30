@@ -218,7 +218,7 @@
                                                     @foreach($reason_diseases as $rd)
 
                                                         <div class="form-check">
-                                                            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="reason_diseases[{{$md->id}}][]" value="{{$rd->id}}" @foreach($openbooking->reasonDiseases as $srd) @if($srd->id==$rd->id && $srd->pivot->disease_id==$md->id){{'checked'}} @endif @endforeach>
+                                                            &nbsp;&nbsp;&nbsp;<input type="checkbox" class="form-check-input" id="exampleCheck1" name="reason_diseases[{{$md->id}}][]" value="{{$rd->id}}" @foreach($openbooking->reasonDiseases as $srd) @if($srd->id==$rd->id && $srd->pivot->disease_id==$md->id){{'checked'}} @endif @endforeach>
                                                             <label class="form-check-label" for="exampleCheck1">{{$rd->name}}</label>
                                                         </div>
 
