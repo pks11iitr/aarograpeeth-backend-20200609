@@ -23,8 +23,8 @@ class BookingSlot extends Model
             ->get();
         $bookings=[];
         foreach($booked_slots as $bs){
-            if(!isset($bookings[$bs->timeslot->date]))
-                $bookings[$bs->timeslot->date]=[
+            if(!isset($bookings[$bs->timeslot->date.$bs->timeslot->internal_start_time]))
+                $bookings[$bs->timeslot->date.$bs->timeslot->internal_start_time]=[
                     'g1'=>0,
                     'g2'=>0,
                     'g3'=>0,
