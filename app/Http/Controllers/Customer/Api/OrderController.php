@@ -998,8 +998,8 @@ class OrderController extends Controller
            'email'=>'email',
            'mobile'=>'required|digits:10',
             'address'=>'string|max:100|nullable',
-            'lat'=>'numeric',
-            'lang'=>'numeric'
+            'lat'=>'numeric|nullable',
+            'lang'=>'numeric|nullable'
         ]);
 
         $user=auth()->guard('customerapi')->user();
