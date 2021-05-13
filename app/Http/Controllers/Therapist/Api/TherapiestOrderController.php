@@ -386,7 +386,7 @@ class TherapiestOrderController extends Controller
         $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
             ->where('status', '!=', 'completed')
             ->where('status','!=', 'cancelled')
-            ->find($id);
+            ->findOrFail($id);
 
         $diagnose_points=DiagnosePoint::active()->select('id','name','type')->get();
 

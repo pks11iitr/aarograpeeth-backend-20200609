@@ -26,7 +26,10 @@ class SessionController extends Controller
 
     public function getClinicSessionList(Request $request, $therapist_id){
 
-        $sessions=BookingSlot::with(['clinic','assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order']);
+        $sessions=BookingSlot::with(['clinic','assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order'])
+        ->whereHas('order', function($order){
+            $order->where('status', 'confirmed');
+        });
 
         $clinics=Clinic::select('name', 'id')->get();
         $therapies=Therapy::select('name', 'id')->get();
@@ -75,7 +78,10 @@ class SessionController extends Controller
 
     public function getTherapySessionList(Request $request, $therapist_id){
 
-        $sessions=HomeBookingSlots::with(['assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order']);
+        $sessions=HomeBookingSlots::with(['assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order'])
+            ->whereHas('order', function($order){
+                $order->where('status', 'confirmed');
+            });
 
 //        if($request->clinic_id)
 //            $sessions=$sessions->where('clinic_id', $request->clinic_id);

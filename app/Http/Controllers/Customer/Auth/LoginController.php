@@ -125,7 +125,7 @@ class LoginController extends Controller
     {
         $request->validate([
             'mobile' => 'required|digits:10|string|exists:customers',
-        ]);
+        ],['mobile.exists'=>'This account is not registered with us. Please signup to continue']);
     }
 
 }
