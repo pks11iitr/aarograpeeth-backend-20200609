@@ -126,10 +126,14 @@ class TherapyController extends Controller
                 $bookings->where('date', date('Y-m-d'))
                     ->where('home_booking_slots.status', 'pending');
             })
+
+            /* Uncomment these lines for distance
             ->where(DB::raw("TRUNCATE($haversine,2)"), '<', env('THERAPIST_CIRCLE_LENGTH'))
             ->whereNotNull('therapists.last_lat')
             ->whereNotNull('therapists.last_lang')
-            //->select('last_lat', 'last_lang')
+            */
+
+
             ->where(function($therapist){
                 $therapist->whereNull('therapists.from_date')
                     ->orWhere('therapists.from_date','>', date('Y-m-d H:i:s'))
