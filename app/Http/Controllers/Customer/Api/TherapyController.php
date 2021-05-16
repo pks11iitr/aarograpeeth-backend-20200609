@@ -133,7 +133,9 @@ class TherapyController extends Controller
             ->whereNotNull('therapists.last_lang')
             */
 
-
+            /*
+             * Exclude therapists who are on holiday
+             */
             ->where(function($therapist){
                 $therapist->whereNull('therapists.from_date')
                     ->orWhere('therapists.from_date','>', date('Y-m-d H:i:s'))
