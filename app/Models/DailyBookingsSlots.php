@@ -122,83 +122,83 @@ class DailyBookingsSlots extends Model
         $grade_4_slots['name'] = 'Silver';
         $grade_4_slots['price'] = 'Rs. ' . $therapy->grade4_price ?? 0;
         $grade_4_slots['count'] = null;
-        $grade_4_slots['timeslots'] = [];
-        $grade_4_slots['timeslots'][]=[
-            'slot_group'=>'morning',
-            'available_slots'=>$grade_4_slots['morning']
-        ];
-        $grade_4_slots['timeslots'][]=[
-            'slot_group'=>'afternoon',
-            'available_slots'=>$grade_4_slots['afternoon']
-        ];
-        $grade_4_slots['timeslots'][]=[
-            'slot_group'=>'evening',
-            'available_slots'=>$grade_4_slots['evening']
-        ];
-        unset($grade_4_slots['morning']);
-        unset($grade_4_slots['afternoon']);
-        unset($grade_4_slots['evening']);
+//        $grade_4_slots['timeslots'] = [];
+//        $grade_4_slots['timeslots'][]=[
+//            'slot_group'=>'morning',
+//            'available_slots'=>$grade_4_slots['morning']
+//        ];
+//        $grade_4_slots['timeslots'][]=[
+//            'slot_group'=>'afternoon',
+//            'available_slots'=>$grade_4_slots['afternoon']
+//        ];
+//        $grade_4_slots['timeslots'][]=[
+//            'slot_group'=>'evening',
+//            'available_slots'=>$grade_4_slots['evening']
+//        ];
+//        unset($grade_4_slots['morning']);
+//        unset($grade_4_slots['afternoon']);
+//        unset($grade_4_slots['evening']);
 
         $grade_3_slots['name'] = 'Gold';
         $grade_3_slots['price'] = 'Rs. ' . $therapy->grade3_price ?? 0;
         $grade_3_slots['count'] = null;
-        $grade_3_slots['timeslots'] = [];
-        $grade_3_slots['timeslots'][]=[
-            'slot_group'=>'morning',
-            'available_slots'=>$grade_3_slots['morning']
-        ];
-        $grade_3_slots['timeslots'][]=[
-            'slot_group'=>'afternoon',
-            'available_slots'=>$grade_3_slots['afternoon']
-        ];
-        $grade_3_slots['timeslots'][]=[
-            'slot_group'=>'evening',
-            'available_slots'=>$grade_3_slots['evening']
-        ];
-        unset($grade_3_slots['morning']);
-        unset($grade_3_slots['afternoon']);
-        unset($grade_3_slots['evening']);
+//        $grade_3_slots['timeslots'] = [];
+//        $grade_3_slots['timeslots'][]=[
+//            'slot_group'=>'morning',
+//            'available_slots'=>$grade_3_slots['morning']
+//        ];
+//        $grade_3_slots['timeslots'][]=[
+//            'slot_group'=>'afternoon',
+//            'available_slots'=>$grade_3_slots['afternoon']
+//        ];
+//        $grade_3_slots['timeslots'][]=[
+//            'slot_group'=>'evening',
+//            'available_slots'=>$grade_3_slots['evening']
+//        ];
+//        unset($grade_3_slots['morning']);
+//        unset($grade_3_slots['afternoon']);
+//        unset($grade_3_slots['evening']);
 
 
         $grade_2_slots['name'] = 'Platinum';
         $grade_2_slots['price'] = 'Rs. ' . $therapy->grade2_price ?? 0;
         $grade_2_slots['count'] = null;
-        $grade_2_slots['timeslots'] = [];
-        $grade_2_slots['timeslots'][]=[
-            'slot_group'=>'morning',
-            'available_slots'=>$grade_2_slots['morning']
-        ];
-        $grade_2_slots['timeslots'][]=[
-            'slot_group'=>'afternoon',
-            'available_slots'=>$grade_2_slots['afternoon']
-        ];
-        $grade_2_slots['timeslots'][]=[
-            'slot_group'=>'evening',
-            'available_slots'=>$grade_2_slots['evening']
-        ];
-        unset($grade_2_slots['morning']);
-        unset($grade_2_slots['afternoon']);
-        unset($grade_2_slots['evening']);
+//        $grade_2_slots['timeslots'] = [];
+//        $grade_2_slots['timeslots'][]=[
+//            'slot_group'=>'morning',
+//            'available_slots'=>$grade_2_slots['morning']
+//        ];
+//        $grade_2_slots['timeslots'][]=[
+//            'slot_group'=>'afternoon',
+//            'available_slots'=>$grade_2_slots['afternoon']
+//        ];
+//        $grade_2_slots['timeslots'][]=[
+//            'slot_group'=>'evening',
+//            'available_slots'=>$grade_2_slots['evening']
+//        ];
+//        unset($grade_2_slots['morning']);
+//        unset($grade_2_slots['afternoon']);
+//        unset($grade_2_slots['evening']);
 
         $grade_1_slots['name'] = 'Diamond';
         $grade_1_slots['price'] = 'Rs. ' . $therapy->grade1_price ?? 0;
         $grade_1_slots['count'] = null;
-        $grade_1_slots['timeslots'] = [];
-        $grade_1_slots['timeslots'][]=[
-            'slot_group'=>'morning',
-            'available_slots'=>$grade_1_slots['morning']
-        ];
-        $grade_1_slots['timeslots'][]=[
-            'slot_group'=>'afternoon',
-            'available_slots'=>$grade_1_slots['afternoon']
-        ];
-        $grade_1_slots['timeslots'][]=[
-            'slot_group'=>'evening',
-            'available_slots'=>$grade_1_slots['evening']
-        ];
-        unset($grade_1_slots['morning']);
-        unset($grade_1_slots['afternoon']);
-        unset($grade_1_slots['evening']);
+//        $grade_1_slots['timeslots'] = [];
+//        $grade_1_slots['timeslots'][]=[
+//            'slot_group'=>'morning',
+//            'available_slots'=>$grade_1_slots['morning']
+//        ];
+//        $grade_1_slots['timeslots'][]=[
+//            'slot_group'=>'afternoon',
+//            'available_slots'=>$grade_1_slots['afternoon']
+//        ];
+//        $grade_1_slots['timeslots'][]=[
+//            'slot_group'=>'evening',
+//            'available_slots'=>$grade_1_slots['evening']
+//        ];
+//        unset($grade_1_slots['morning']);
+//        unset($grade_1_slots['afternoon']);
+//        unset($grade_1_slots['evening']);
 
         return compact('grade_1_slots', 'grade_2_slots', 'grade_3_slots', 'grade_4_slots');
 
