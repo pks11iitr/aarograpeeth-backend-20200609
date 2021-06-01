@@ -26,6 +26,8 @@ class SessionController extends Controller
                 ->paginate(10);
         }else{
             $sessions=BookingSlot::orderBy('id', 'desc')
+                ->where('is_confirmed', true)
+                ->where('is_paid', true)
                 ->paginate(10);
         }
 
