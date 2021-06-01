@@ -248,12 +248,12 @@
                                     <p>Therapy Bookings</p>
                                </a>
                            </li>
-                            <li class="nav-item">
-                                <a href="{{route('sessions.list',['type'=>'therapist-session'])}}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Therapy Session</p>
-                                </a>
-                            </li>
+{{--                            <li class="nav-item">--}}
+{{--                                <a href="{{route('sessions.list',['type'=>'therapist-session'])}}" class="nav-link">--}}
+{{--                                    <i class="far fa-circle nav-icon"></i>--}}
+{{--                                    <p>Therapy Session</p>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
                            <li class="nav-item">
                                 <a href="{{route('orders.product')}}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>

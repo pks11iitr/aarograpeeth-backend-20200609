@@ -131,14 +131,36 @@ class TherapistController extends Controller
 
 
     public function getAvailableHomeTherapist(Request $request){
-        $therapist=Therapist::active()->whereHas('therapies', function($therapies) use($request){
-            $therapies->where('therapies.id', $request->therapy_id);
-        })
-            ->whereDoesntHave('bookings', function($bookings) use($request){
-                $bookings->where('slot_id', $request->slot_id);
-            })
-            ->select('id', 'name')
-            ->get();//die;
+
+         if($request->slot_id){
+             $therapist=Therapist::active()->whereHas('therapies', function($therapies) use($request){
+                 $therapies->where('therapies.id', $request->therapy_id);
+             })
+                 ->whereDoesntHave('bookings', function($bookings) use($request){
+                     $bookings->where('slot_id', $request->slot_id);
+                 })
+                 ->select('id', 'name')
+                 ->get();//die;
+         }else if($request->slot_date==date('Y-m-d')){
+
+             $therapist=Therapist::active()->whereHas('therapies', function($therapies) use($request){
+                 $therapies->where('therapies.id', $request->therapy_id);
+             })
+                 ->whereDoesntHave('bookings', function($bookings) use($request){
+                     $bookings->whereDoesntHave('timeslot', function($timeslot) use($request){
+
+                         $time_start=date('H:i:s');
+                         $time_end=date('H:i:s', strtotime('+2 hours'));
+                         $timeslot->where('date', $request->slot_date)
+                             ->where('')
+                             ->where('internal_start_time', '>=', $time_start)
+                             ->where('internal_start_time', '<=', $time_end);
+                     });
+                 })
+                 ->select('id', 'name')
+                 ->get();//die;
+
+         }
 
         return $therapist;
     }

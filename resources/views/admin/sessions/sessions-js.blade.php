@@ -73,7 +73,11 @@
             url: '{{route('therapy.available.slots')}}',
             method: 'get',
             datatype:'json',
-            data:{therapy_id:$("#slot-therapy-id").val(), date:$("#slot-date").val(), grade:$("#booking-grade").val()},
+            data:{
+                therapy_id:$("#slot-therapy-id").val(),
+                date:$("#slot-date").val(),
+                grade:$("#booking-grade").val()
+            },
             success: function(data){
                 html='<option value="">Select Time</option>'
                 for(var i = 0; i < data.length; i++) {
@@ -99,7 +103,11 @@
             url: '{{route('therapy.available.therapist')}}',
             method: 'get',
             datatype:'json',
-            data:{therapy_id:$("#slot-therapy-id").val(), slot_id:$("#time-slots").val(), },
+            data:{
+                therapy_id:$("#slot-therapy-id").val(),
+                slot_id:$("#time-slots").val(),
+                slot_date:$("#slot-date").val()
+            },
             success: function(data){
                 html='<option value="">Select Therapist</option>'
                 for(var i = 0; i < data.length; i++) {

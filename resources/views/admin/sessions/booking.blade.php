@@ -41,7 +41,7 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Date</label>
-                        <input type="date" name="date" class="form-control" id="slot-date" placeholder="select Date" value="{{$booking->timeslot->date??''}}" onchange="getTimeSlotList()" required>
+                        <input type="date" name="date" class="form-control" id="slot-date" placeholder="select Date" value="{{$booking->date??''}}" onchange="getTimeSlotList()" required>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Therapist Name</label>
@@ -71,7 +71,7 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Date</label>
-                        <input type="date" name="date" class="form-control" id="slot-date" placeholder="select Date" value="{{$booking->timeslot->date??''}}" onchange="getTimeSlotList1()" required>
+                        <input type="date" name="date" class="form-control" id="slot-date" placeholder="select Date" value="{{$booking->date??''}}" onchange="getTimeSlotList1()" required>
                     </div>
 
                     <div class="form-group">
@@ -105,6 +105,7 @@
                         <select class="form-control" name="therapist_id" required id="therapist-list">
                             <option value="{{$booking->assignedTo->id??''}}">{{$booking->assignedTo->name??'Select Therapist'}}</option>
                         </select>
+                        <a href="javascript:void(0)" onclick="getAvailableTherapist1()">Refresh</a>
                     </div>
 
                 </div>
