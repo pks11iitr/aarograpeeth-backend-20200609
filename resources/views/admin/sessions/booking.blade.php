@@ -48,6 +48,7 @@
                         <select class="form-control" name="therapist_id" required id="therapist-list">
                             <option value="{{$booking->assignedTo->id??''}}">{{$booking->assignedTo->name??'Select Therapist'}}</option>
                         </select>
+                        <a href="javascript:void(0)" onclick="getAvailableTherapist()">Refresh</a>
                     </div>
 
                 </div>

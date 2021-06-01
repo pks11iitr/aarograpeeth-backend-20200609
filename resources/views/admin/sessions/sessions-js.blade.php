@@ -49,7 +49,10 @@
             url: '{{route('clinic.available.therapist')}}',
             method: 'get',
             datatype:'json',
-            data:{clinic_id:$("#slot-clinic-id").val(), slot_id:$("#time-slots").val(), },
+            data:{
+                clinic_id:$("#slot-clinic-id").val(),
+                slot_id:$("#time-slots").val(),
+            },
             success: function(data){
                 html='<option value="">Select Therapist</option>'
                 for(var i = 0; i < data.length; i++) {
