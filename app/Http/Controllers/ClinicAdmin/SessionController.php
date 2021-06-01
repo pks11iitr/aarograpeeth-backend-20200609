@@ -20,6 +20,8 @@ class SessionController extends Controller
     public function getClinicSessionList(Request $request, $therapist_id=null){
         if($therapist_id){
             $sessions=BookingSlot::with(['clinic','assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order'])->where('assigned_therapist', $therapist_id)
+                ->where('is_confirmed', true)
+                ->where('is_paid', true)
                 ->orderBy('id', 'desc')
                 ->paginate(10);
         }else{
