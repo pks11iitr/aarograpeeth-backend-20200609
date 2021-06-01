@@ -152,7 +152,6 @@ class TherapistController extends Controller
                          $time_start=date('H:i:s');
                          $time_end=date('H:i:s', strtotime('+2 hours'));
                          $timeslot->where('date', $request->slot_date)
-                             ->where('')
                              ->where('internal_start_time', '>=', $time_start)
                              ->where('internal_start_time', '<=', $time_end);
                      });
