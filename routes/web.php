@@ -222,6 +222,17 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin|clinic-admin'], functi
 });
 
 
+Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
+
+    Route::group(['prefix'=>'configuration'], function(){
+        Route::get('list','SuperAdmin\ConfigurationController@index')->name('config.list');
+        Route::get('edit/{id}','SuperAdmin\ConfigurationController@edit')->name('config.edit');
+        Route::post('edit/{id}','SuperAdmin\ConfigurationController@update');
+    });
+
+});
+
+
 
 Route::group(['prefix'=>'partners', 'middleware'=>['auth', 'acl'], 'is'=>'clinic-admin'], function() {
     Route::get('/dashboard', 'ClinicAdmin\DashboardController@index')->name('clinicadmin.home');

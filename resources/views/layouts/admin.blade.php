@@ -187,6 +187,13 @@
                                                         </a>
 
                                                     </li>
+                                                    <li class="nav-item">
+                                                        <a href="{{route('config.list')}}" class="nav-link">
+                                                            <i class="far fa-circle nav-icon"></i>
+                                                            <p>Other Settings</p>
+                                                        </a>
+
+                                                    </li>
                                                 </ul>
                     </li>
 

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class CustomerPainpoint extends Model
 {
-    protected $table = 'Customer_point_pain';
+    protected $table = 'customer_point_pain';
 
     protected $fillable = ['therapiest_work_id', 'pain_point_id', 'related_rating','type'];
 
