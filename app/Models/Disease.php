@@ -12,7 +12,7 @@ class Disease extends Model
 {
     protected $table = 'disease';
 
-    protected $fillable = ['name', 'isactive'];
+    protected $fillable = ['name', 'isactive', 'avoid_treatment'];
 
     protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
 

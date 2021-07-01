@@ -49,7 +49,7 @@
                                             </td>
                                             <td>
                                                 <a href="{{route('painpoint.edit',['id'=>$painpoint->id])}}" class="btn btn-success">Edit</a>
-                                                <a href="{{route('painpoint.delete',['id'=>$painpoint->id])}}" class="btn btn-danger">Delete</a>
+{{--                                                <a href="{{route('painpoint.delete',['id'=>$painpoint->id])}}" class="btn btn-danger">Delete</a>--}}
                                             </td>
                                         </tr>
                                     @endforeach

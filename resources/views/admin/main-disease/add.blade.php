@@ -44,6 +44,12 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label for="exampleInputEmail1">Recommended Days</label>
+                                                <input type="text" class="form-control" id="exampleInputEmail1" name="recommended_days" placeholder="e.g. 15-20 days" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                             <label>Is Active</label>
                                             <select class="form-control" name="isactive" required>
                                                 <option value="1">Yes</option>

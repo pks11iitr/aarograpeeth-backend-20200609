@@ -20,12 +20,14 @@ class DiseaseController extends Controller
     public function store(Request $request){
         $request->validate([
             'name'=>'required',
-            'isactive'=>'required'
+            'isactive'=>'required',
+            'avoid_treatment'=>'required'
         ]);
 
         if($disease=Disease::create([
             'name'=>$request->name,
             'isactive'=>$request->isactive,
+            'avoid_treatment'=>$request->avoid_treatment,
         ]))
         {
             return redirect()->route('disease.list')->with('success', 'Disease has been created');
@@ -41,7 +43,8 @@ class DiseaseController extends Controller
     public function update(Request $request,$id){
         $request->validate([
             'name'=>'required',
-            'isactive'=>'required'
+            'isactive'=>'required',
+            'avoid_treatment'=>'required'
         ]);
 
         $disease =Disease::findOrFail($id);
@@ -49,6 +52,7 @@ class DiseaseController extends Controller
         if($disease->update([
             'name'=>$request->name,
             'isactive'=>$request->isactive,
+            'avoid_treatment'=>$request->avoid_treatment,
         ]))
         {
             return redirect()->route('disease.list')->with('success', 'Disease has been updated');

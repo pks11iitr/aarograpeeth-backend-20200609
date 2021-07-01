@@ -153,26 +153,7 @@
                                                             <p>Banners</p>
                                                         </a>
                                                     </li>
-{{--                                                    <li class="nav-item">--}}
-{{--                                                        <a href="{{route('treatment.list')}}" class="nav-link">--}}
-{{--                                                            <i class="far fa-circle nav-icon"></i>--}}
-{{--                                                            <p>Treatment</p>--}}
-{{--                                                        </a>--}}
-{{--                                                    </li>--}}
-{{--                                                    <li class="nav-item">--}}
-{{--                                                        <a href="{{route('painpoint.list')}}" class="nav-link">--}}
-{{--                                                            <i class="far fa-circle nav-icon"></i>--}}
-{{--                                                            <p>Pain Points</p>--}}
-{{--                                                        </a>--}}
 
-{{--                                                    </li>--}}
-{{--                                                    <li class="nav-item">--}}
-{{--                                                        <a href="{{route('disease.list')}}" class="nav-link">--}}
-{{--                                                            <i class="far fa-circle nav-icon"></i>--}}
-{{--                                                            <p>Diseases</p>--}}
-{{--                                                        </a>--}}
-
-{{--                                                    </li>--}}
                                                     <li class="nav-item">
                                                         <a href="{{route('main-disease.list')}}" class="nav-link">
                                                             <i class="far fa-circle nav-icon"></i>
@@ -180,6 +161,26 @@
                                                         </a>
 
                                                     </li>
+{{--                                                                                                        <li class="nav-item">--}}
+{{--                                                                                                            <a href="{{route('treatment.list')}}" class="nav-link">--}}
+{{--                                                                                                                <i class="far fa-circle nav-icon"></i>--}}
+{{--                                                                                                                <p>Treatment</p>--}}
+{{--                                                                                                            </a>--}}
+{{--                                                                                                        </li>--}}
+                                                                                                        <li class="nav-item">
+                                                                                                            <a href="{{route('painpoint.list')}}" class="nav-link">
+                                                                                                                <i class="far fa-circle nav-icon"></i>
+                                                                                                                <p>Pain Points</p>
+                                                                                                            </a>
+
+                                                                                                        </li>
+                                                                                                        <li class="nav-item">
+                                                                                                            <a href="{{route('disease.list')}}" class="nav-link">
+                                                                                                                <i class="far fa-circle nav-icon"></i>
+                                                                                                                <p>Diseases</p>
+                                                                                                            </a>
+
+                                                                                                        </li>
                                                     <li class="nav-item">
                                                         <a href="{{route('video.list')}}" class="nav-link">
                                                             <i class="far fa-circle nav-icon"></i>

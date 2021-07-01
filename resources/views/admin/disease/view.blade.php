@@ -34,6 +34,7 @@
                                     <thead>
                                     <tr>
                                         <th>Name</th>
+                                        <th>Avoid Treatment</th>
                                         <th>Isactive</th>
                                         <th>Action</th>
                                     </tr>
@@ -42,22 +43,19 @@
                                     @foreach($diseases as $disease)
                                         <tr>
                                             <td>{{$disease->name}}</td>
+                                            <td>{{$disease->avoid_treatment}}</td>
                                             <td>
                                                 @if($disease->isactive==1){{'Yes'}}
                                                 @else{{'No'}}
                                                 @endif
                                             </td>
                                             <td><a href="{{route('disease.edit',['id'=>$disease->id])}}" class="btn btn-success">Edit</a>
-                                                <a href="{{route('disease.delete',['id'=>$disease->id])}}" class="btn btn-danger">Delete</a></td>
+{{--                                                <a href="{{route('disease.delete',['id'=>$disease->id])}}" class="btn btn-danger">Delete</a></td>--}}
                                         </tr>
                                     @endforeach
                                     </tbody>
                                     <tfoot>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Isactive</th>
-                                        <th>Action</th>
-                                    </tr>
+
                                     </tfoot>
                                 </table>
                             </div>

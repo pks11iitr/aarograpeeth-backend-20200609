@@ -10,5 +10,5 @@ class MainDisease extends Model
     use Active;
     protected $table='main_diseases';
 
-    protected $fillable = ['name','isactive'];
+    protected $fillable = ['name','isactive', 'recommended_days'];
 }

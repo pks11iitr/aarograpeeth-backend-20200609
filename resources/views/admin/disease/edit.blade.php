@@ -44,6 +44,12 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label for="exampleInputEmail1">Avoid Treatments</label>
+                                                <textarea type="text" class="form-control" id="exampleInputEmail1" name="avoid_treatment" placeholder="enter treatments to be avoided" required rows="3">{{$disease->avoid_treatment}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label>Is Active</label>
                                                 <select class="form-control" name="isactive">
                                                     <option value="1" {{$disease->isactive==1?'selected':''}}>Yes</option>

@@ -25,12 +25,14 @@ class MainDiseaseController extends Controller
     public function store(Request $request){
         $request->validate([
             'name'=>'required',
-            'isactive'=>'required'
+            'isactive'=>'required',
+            'recommended_days'=>'required'
         ]);
 
         if($disease=MainDisease::create([
             'name'=>$request->name,
             'isactive'=>$request->isactive,
+            'recommended_days'=>$request->recommended_days
         ]))
         {
             return redirect()->route('main-disease.list')->with('success', 'Disease has been created');
@@ -48,7 +50,8 @@ class MainDiseaseController extends Controller
     public function update(Request $request,$id){
         $request->validate([
             'name'=>'required',
-            'isactive'=>'required'
+            'isactive'=>'required',
+            'recommended_days'=>'required'
         ]);
 
         $disease =MainDisease::findOrFail($id);
@@ -56,6 +59,7 @@ class MainDiseaseController extends Controller
         if($disease->update([
             'name'=>$request->name,
             'isactive'=>$request->isactive,
+            'recommended_days'=>$request->recommended_days
         ]))
         {
             return redirect()->back()->with('success', 'Disease has been updated');
