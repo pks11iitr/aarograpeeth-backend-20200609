@@ -177,7 +177,7 @@
                                                                                                         <li class="nav-item">
                                                                                                             <a href="{{route('disease.list')}}" class="nav-link">
                                                                                                                 <i class="far fa-circle nav-icon"></i>
-                                                                                                                <p>Diseases</p>
+                                                                                                                <p>Ignore Treatment Diseases</p>
                                                                                                             </a>
 
                                                                                                         </li>
