@@ -1,1 +1,1 @@
-{{$configuration->value}}
+{!! $configuration->value !!}}
