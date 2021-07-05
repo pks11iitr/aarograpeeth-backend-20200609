@@ -80,6 +80,7 @@
                         <div class="card-body">
                             <div class="row">
                     <a href="{{route('main-disease.treatment-add', ['id'=>$disease->id])}}" class="btn btn-primary">+ Add New Treatment</a>
+                                <a href="{{route('main-disease.reason-add', ['id'=>$disease->id])}}" class="btn btn-primary">+ Add New Reason</a>
                             </div>
                         </div>
                     </div>

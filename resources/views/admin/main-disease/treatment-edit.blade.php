@@ -91,18 +91,18 @@
                                                 <textarea class="form-control" id="exampleInputEmail1" name="diet" placeholder="" required rows="5">{{$treatment->diet}}</textarea>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Recommended Days</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="recommended_days" placeholder="" required rows="5">{{$treatment->recommended_days}}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">What to do if pain increases?</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="action_when_pain_increase" placeholder="" required rows="5">{{$treatment->action_when_pain_increase}}</textarea>
-                                            </div>
-                                        </div>
+{{--                                        <div class="col-md-6">--}}
+{{--                                            <div class="form-group">--}}
+{{--                                                <label for="exampleInputEmail1">Recommended Days</label>--}}
+{{--                                                <textarea class="form-control" id="exampleInputEmail1" name="recommended_days" placeholder="" required rows="5">{{$treatment->recommended_days}}</textarea>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
+{{--                                        <div class="col-md-6">--}}
+{{--                                            <div class="form-group">--}}
+{{--                                                <label for="exampleInputEmail1">What to do if pain increases?</label>--}}
+{{--                                                <textarea class="form-control" id="exampleInputEmail1" name="action_when_pain_increase" placeholder="" required rows="5">{{$treatment->action_when_pain_increase}}</textarea>--}}
+{{--                                            </div>--}}
+{{--                                        </div>--}}
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Is Active</label>

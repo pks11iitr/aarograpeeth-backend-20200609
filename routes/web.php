@@ -60,6 +60,14 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::post('treatment-add/{id}','SuperAdmin\MainDiseaseController@storeTreatment');
         Route::get('treatment-edit/{id}/{treatment_id}','SuperAdmin\MainDiseaseController@editTreatment')->name('main-disease.treatment-edit');
         Route::post('treatment-edit/{id}/{treatment_id}','SuperAdmin\MainDiseaseController@updateTreatment');
+
+
+        Route::get('reason-add/{id}','SuperAdmin\MainDiseaseController@addReason')->name('main-disease.reason-add');
+        Route::post('reason-add/{id}','SuperAdmin\MainDiseaseController@storeReason');
+        Route::get('reason-edit/{id}/{reason_id}','SuperAdmin\MainDiseaseController@editReason')->name('main-disease.reason-edit');
+        Route::post('reason-edit/{id}/{reason_id}','SuperAdmin\MainDiseaseController@updateReason');
+
+
     });
 
     Route::group(['prefix'=>'painpoint'], function(){
@@ -71,14 +79,14 @@ Route::group(['middleware'=>['auth', 'acl'], 'is'=>'admin'], function(){
         Route::get('delete/{id}','SuperAdmin\PainPointController@delete')->name('painpoint.delete');
     });
 
-    Route::group(['prefix'=>'treatment'], function(){
-        Route::get('/','SuperAdmin\TreatmentController@index')->name('treatment.list');
-        Route::get('create','SuperAdmin\TreatmentController@create')->name('treatment.create');
-        Route::post('store','SuperAdmin\TreatmentController@store')->name('treatment.store');
-        Route::get('edit/{id}','SuperAdmin\TreatmentController@edit')->name('treatment.edit');
-        Route::post('update/{id}','SuperAdmin\TreatmentController@update')->name('treatment.update');
-        Route::get('delete/{id}','SuperAdmin\TreatmentController@delete')->name('treatment.delete');
-    });
+//    Route::group(['prefix'=>'treatment'], function(){
+//        Route::get('/','SuperAdmin\TreatmentController@index')->name('treatment.list');
+//        Route::get('create','SuperAdmin\TreatmentController@create')->name('treatment.create');
+//        Route::post('store','SuperAdmin\TreatmentController@store')->name('treatment.store');
+//        Route::get('edit/{id}','SuperAdmin\TreatmentController@edit')->name('treatment.edit');
+//        Route::post('update/{id}','SuperAdmin\TreatmentController@update')->name('treatment.update');
+//        Route::get('delete/{id}','SuperAdmin\TreatmentController@delete')->name('treatment.delete');
+//    });
 
     Route::group(['prefix'=>'therapy'], function(){
         Route::get('/','SuperAdmin\TherapistController@index')->name('therapy.list');

@@ -115,4 +115,56 @@ class MainDiseaseController extends Controller
         return redirect()->route('main-disease.treatment-edit',['id'=>$disease->id, 'treatment_id'=>$treatment->id])->with('success', 'Treatment has been updated');
     }
 
+    public function addReason(Request $request, $main_disease_id){
+        $main_disease=MainDisease::findOrFail($main_disease_id);
+
+        return view('admin.main-disease.add-reason', compact('main_disease'));
+    }
+
+    public function storeReason(Request $request, $main_disease_id){
+
+        $request->validate([
+            'name'=>'required',
+            'isactive'=>'required:in:0,1'
+        ]);
+
+        $main_disease=MainDisease::findOrFail($main_disease_id);
+
+        ReasonDisease::create([
+            'main_disease_id'=>$main_disease_id,
+            'name'=>$request->name,
+            'isactive'=>$request->isactive
+        ]);
+
+        return redirect()->back()->with('success', 'Reason has been added');
+    }
+
+
+    public function editReason(Request $request, $main_disease_id, $reason_id){
+        $main_disease=MainDisease::findOrFail($main_disease_id);
+
+        $reason=ReasonDisease::findOrFail($reason_id);
+
+        return view('admin.main-disease.add-reason', compact('main_disease', 'reason'));
+    }
+
+    public function updateReason(Request $request, $main_disease_id, $reason_id){
+
+        $request->validate([
+            'name'=>'required',
+            'isactive'=>'required:in:0,1'
+        ]);
+
+        $main_disease=MainDisease::findOrFail($main_disease_id);
+
+        $reason=ReasonDisease::findOrFail($reason_id);
+
+        $reason->update([
+            'name'=>$request->name,
+            'isactive'=>$request->isactive
+        ]);
+
+        return redirect()->back()->with('success', 'Reason has been updated');
+    }
+
 }
