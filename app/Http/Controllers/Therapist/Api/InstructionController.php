@@ -10,6 +10,6 @@ class InstructionController extends Controller
 {
     public function instructions(Request $request){
         $configuration=Configuration::whereIn('param', ['therapist_does_dont', 'what_to_do_if_pain_increase'])->get();
-        return view('customer-instructions', compact('configuration'));
+        return view('therapist-instructions', compact('configuration'));
     }
 }
