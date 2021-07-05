@@ -321,7 +321,9 @@ class TherapiestOrderController extends Controller
             ->where('status','!=', 'cancelled')
             ->find($id);
 
-        $main_diseases=MainDisease::active()->select('name', 'id')->orderBY('name', 'asc')->get();
+        $main_diseases=MainDisease::active()
+            ->with('reasons')
+            ->select('name', 'id')->orderBY('name', 'asc')->get();
         $reason_diseases=ReasonDisease::active()->select('name', 'id')->orderBY('name', 'asc')->get();
 
         foreach($main_diseases as $m){
