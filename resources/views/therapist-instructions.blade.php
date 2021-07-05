@@ -1,3 +1,3 @@
-@foreach($configuration as $congfig)
+@foreach($configuration as $config)
 {!! $config->value !!}
 @endforeach
