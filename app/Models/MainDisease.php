@@ -11,4 +11,9 @@ class MainDisease extends Model
     protected $table='main_diseases';
 
     protected $fillable = ['name','isactive', 'recommended_days'];
+
+
+    public function reasons(){
+        return $this->hasMany('App\Models\ReasonDisease', 'main_disease_id');
+    }
 }

@@ -41,7 +41,7 @@ class MainDiseaseController extends Controller
     }
 
     public function edit(Request $request,$id){
-        $disease =MainDisease::findOrFail($id);
+        $disease =MainDisease::with('reasons')->findOrFail($id);
         $treatments=DiseasewiseTreatment::with(['mainDisease', 'reasonDiseases','painPoints', 'ignoreWhenDiseases'])
             ->where('main_disease_id', $id)->get();
         return view('admin.main-disease.edit',['disease'=>$disease, 'treatments'=>$treatments]);
@@ -116,8 +116,9 @@ class MainDiseaseController extends Controller
     }
 
     public function addReason(Request $request, $main_disease_id){
+        //die();
         $main_disease=MainDisease::findOrFail($main_disease_id);
-
+        //die('h');
         return view('admin.main-disease.add-reason', compact('main_disease'));
     }
 
@@ -145,7 +146,7 @@ class MainDiseaseController extends Controller
 
         $reason=ReasonDisease::findOrFail($reason_id);
 
-        return view('admin.main-disease.add-reason', compact('main_disease', 'reason'));
+        return view('admin.main-disease.edit-reason', compact('main_disease', 'reason'));
     }
 
     public function updateReason(Request $request, $main_disease_id, $reason_id){

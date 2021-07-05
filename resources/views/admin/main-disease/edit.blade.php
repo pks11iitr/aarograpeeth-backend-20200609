@@ -80,12 +80,63 @@
                         <div class="card-body">
                             <div class="row">
                     <a href="{{route('main-disease.treatment-add', ['id'=>$disease->id])}}" class="btn btn-primary">+ Add New Treatment</a>
+                                &nbsp;&nbsp;&nbsp;
                                 <a href="{{route('main-disease.reason-add', ['id'=>$disease->id])}}" class="btn btn-primary">+ Add New Reason</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
+        <br>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Reasons List</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Isactive</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($disease->reasons as $reason)
+                                        <tr>
+                                            <td>{{$reason->name}}</td>
+                                            <td>
+                                                @if($reason->isactive==1)
+                                                    <span style="color:green">Yes</span>
+                                                @else
+                                                    <span style="color:red">No</span>
+                                                @endif
+                                            </td>
+                                            <td><a href="{{route('main-disease.reason-edit',['id'=>$disease->id, 'reason_id'=>$reason->id])}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                    <tfoot>
+
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
         </section>
         <br>
         <section class="content">

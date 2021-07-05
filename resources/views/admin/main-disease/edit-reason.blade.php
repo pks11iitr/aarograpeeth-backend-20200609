@@ -28,18 +28,18 @@
                         <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Add Reason For {{$main_disease->name}}</h3>
+                                <h3 class="card-title">Edit Reason For {{$main_disease->name}}</h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form role="form" method="post" enctype="multipart/form-data" action="{{route('main-disease.reason-add', ['id'=>$main_disease->id])}}">
+                            <form role="form" method="post" enctype="multipart/form-data" action="{{route('main-disease.reason-edit', ['id'=>$main_disease->id, 'reason_id'=>$reason->id])}}">
                                 @csrf
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                             <label for="exampleInputEmail1">Reason Disease Name</label>
-                                            <input type="text" class="form-control" id="exampleInputEmail1" name="name" placeholder="Enter Name" required>
+                                            <input type="text" class="form-control" id="exampleInputEmail1" name="name" placeholder="Enter Name" required value="{{$reason->name}}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
