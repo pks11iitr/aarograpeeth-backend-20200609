@@ -43,6 +43,30 @@
                                                 <textarea class="form-control" id="exampleInputEmail1" name="title" placeholder="" required rows="2">{{$treatment->title}}</textarea>
                                             </div>
                                         </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Formulae</label>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="description" placeholder="" required rows="4">{{$treatment->description}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Precautions</label>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="precautions" placeholder="" rows="4">{{$treatment->precautions}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Exercise</label>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="exercise" placeholder="" rows="2">{{$treatment->exercise}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Diet</label>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="diet" placeholder="" rows="2">{{$treatment->diet}}</textarea>
+                                            </div>
+                                        </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Pain Points</label>
@@ -51,30 +75,6 @@
                                                         <option value="{{$p->id}}" @foreach($treatment->painPoints as $pp) @if($pp->id==$p->id){{'selected'}} @endif @endforeach>{{$p->name}}</option>
                                                     @endforeach
                                                 </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Formulae</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="description" placeholder="" required rows="5">{{$treatment->description}}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Precautions</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="precautions" placeholder="" rows="5">{{$treatment->precautions}}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Exercise</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="exercise" placeholder="" rows="5">{{$treatment->exercise}}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Diet</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="diet" placeholder="" rows="5">{{$treatment->diet}}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-6">

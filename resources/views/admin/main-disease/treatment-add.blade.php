@@ -42,6 +42,32 @@
                                                 <textarea class="form-control" id="exampleInputEmail1" name="title" placeholder="" required rows="2"></textarea>
                                             </div>
                                         </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Formulae</label>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="description" placeholder="" required rows="5"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Precautions</label>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="precautions" placeholder="" required rows="5"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Exercise</label>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="exercise" placeholder=""  rows="5"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Diet</label>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="diet" placeholder=""  rows="5"></textarea>
+                                            </div>
+                                        </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Pain Points</label>
@@ -50,31 +76,6 @@
                                                         <option value="{{$p->id}}">{{$p->name}}</option>
                                                     @endforeach
                                                 </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Formulae</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="description" placeholder="" required rows="5"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Precautions</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="precautions" placeholder="" required rows="5"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Exercise</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="exercise" placeholder=""  rows="5"></textarea>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Diet</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="diet" placeholder=""  rows="5"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
