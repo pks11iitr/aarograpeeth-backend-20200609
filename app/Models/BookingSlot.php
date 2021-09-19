@@ -128,7 +128,7 @@ class BookingSlot extends Model
     }
 
     public function painpoints(){
-        return $this->belongsToMany('App\Models\PainPoint', 'Customer_point_pain','therapiest_work_id', 'pain_point_id')->where('type', 'clinic');
+        return $this->belongsToMany('App\Models\PainPoint', 'customer_point_pain','therapiest_work_id', 'pain_point_id')->where('type', 'clinic');
     }
 
     public function treatment(){

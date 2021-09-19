@@ -79,7 +79,7 @@ class HomeBookingSlots extends Model
     }
 
     public function painpoints(){
-        return $this->belongsToMany('App\Models\PainPoint', 'Customer_point_pain','therapiest_work_id', 'pain_point_id')
+        return $this->belongsToMany('App\Models\PainPoint', 'customer_point_pain','therapiest_work_id', 'pain_point_id')
             ->withPivot(['related_rating', 'type'])
             ->where('type', 'therapy');
     }
