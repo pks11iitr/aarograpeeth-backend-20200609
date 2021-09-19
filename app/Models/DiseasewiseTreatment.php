@@ -11,7 +11,7 @@ class DiseasewiseTreatment extends Model
     protected $table = 'diseasewise_treatments';
 
 
-    protected $fillable=['main_disease_id', 'description', 'exercise', 'dont_exercise', 'diet','recommended_days', 'action_when_pain_increase', 'isactive'];
+    protected $fillable=['main_disease_id', 'description', 'title', 'precautions', 'exercise', 'dont_exercise', 'diet','recommended_days', 'action_when_pain_increase', 'isactive'];
 
     public function mainDisease(){
         return $this->belongsTo('App\Models\MainDisease',  'main_disease_id');

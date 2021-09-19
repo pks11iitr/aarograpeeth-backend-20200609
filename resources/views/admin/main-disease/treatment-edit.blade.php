@@ -12,6 +12,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('main-disease.edit', ['id'=>$disease->id])}}">{{$disease->name}}</a></li>
                             <li class="breadcrumb-item active"><a href="{{route('main-disease.edit', ['id'=>$disease->id])}}">Disease</a></li>
                         </ol>
                     </div>
@@ -36,15 +37,10 @@
                                 @csrf
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="form-group">
-                                                <label>Other Diseases</label>
-                                                <select class="form-control" name="reason_diseases[]" multiple>
-                                                    @foreach($reason_diseases as $d)
-                                                    <option value="{{$d->id}}" @foreach($treatment->reasonDiseases as $rd) @if($rd->id==$d->id){{'selected'}} @endif @endforeach>{{$d->name}}
-                                                    </option>
-                                                    @endforeach
-                                                </select>
+                                                <label for="exampleInputEmail1">Title</label>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="title" placeholder="" required rows="2">{{$treatment->title}}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -59,50 +55,28 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Avoid Treatment with disease</label>
-                                                <select class="form-control" name="ignore_diseases[]" multiple>
-                                                    @foreach($ignore_diseases as $d)
-                                                        <option value="{{$d->id}}" @foreach($treatment->ignoreWhenDiseases as $id) @if($id->id==$p->id){{'selected'}} @endif @endforeach>{{$d->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
                                                 <label for="exampleInputEmail1">Formulae</label>
                                                 <textarea class="form-control" id="exampleInputEmail1" name="description" placeholder="" required rows="5">{{$treatment->description}}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Exercise</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="exercise" placeholder="" required rows="5">{{$treatment->exercise}}</textarea>
+                                                <label for="exampleInputEmail1">Precautions</label>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="precautions" placeholder="" rows="5">{{$treatment->precautions}}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Dont Exercise</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="dont_exercise" placeholder="" required rows="5">{{$treatment->dont_exercise}}</textarea>
+                                                <label for="exampleInputEmail1">Exercise</label>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="exercise" placeholder="" rows="5">{{$treatment->exercise}}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Diet</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="diet" placeholder="" required rows="5">{{$treatment->diet}}</textarea>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="diet" placeholder="" rows="5">{{$treatment->diet}}</textarea>
                                             </div>
                                         </div>
-{{--                                        <div class="col-md-6">--}}
-{{--                                            <div class="form-group">--}}
-{{--                                                <label for="exampleInputEmail1">Recommended Days</label>--}}
-{{--                                                <textarea class="form-control" id="exampleInputEmail1" name="recommended_days" placeholder="" required rows="5">{{$treatment->recommended_days}}</textarea>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="col-md-6">--}}
-{{--                                            <div class="form-group">--}}
-{{--                                                <label for="exampleInputEmail1">What to do if pain increases?</label>--}}
-{{--                                                <textarea class="form-control" id="exampleInputEmail1" name="action_when_pain_increase" placeholder="" required rows="5">{{$treatment->action_when_pain_increase}}</textarea>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Is Active</label>

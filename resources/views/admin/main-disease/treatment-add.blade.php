@@ -36,14 +36,10 @@
                                 @csrf
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="form-group">
-                                                <label>Other Diseases</label>
-                                                <select class="form-control" name="reason_diseases[]" multiple>
-                                                    @foreach($reason_diseases as $d)
-                                                    <option value="{{$d->id}}">{{$d->name}}</option>
-                                                    @endforeach
-                                                </select>
+                                                <label for="exampleInputEmail1">Title</label>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="title" placeholder="" required rows="2"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -58,50 +54,29 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Avoid Treatment with disease</label>
-                                                <select class="form-control" name="ignore_diseases[]" multiple>
-                                                    @foreach($ignore_diseases as $d)
-                                                        <option value="{{$d->id}}">{{$d->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
                                                 <label for="exampleInputEmail1">Formulae</label>
                                                 <textarea class="form-control" id="exampleInputEmail1" name="description" placeholder="" required rows="5"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Exercise</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="exercise" placeholder="" required rows="5"></textarea>
+                                                <label for="exampleInputEmail1">Precautions</label>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="precautions" placeholder="" required rows="5"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Dont Exercise</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="dont_exercise" placeholder="" required rows="5"></textarea>
+                                                <label for="exampleInputEmail1">Exercise</label>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="exercise" placeholder=""  rows="5"></textarea>
                                             </div>
                                         </div>
+
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Diet</label>
-                                                <textarea class="form-control" id="exampleInputEmail1" name="diet" placeholder="" required rows="5"></textarea>
+                                                <textarea class="form-control" id="exampleInputEmail1" name="diet" placeholder=""  rows="5"></textarea>
                                             </div>
                                         </div>
-{{--                                        <div class="col-md-6">--}}
-{{--                                            <div class="form-group">--}}
-{{--                                                <label for="exampleInputEmail1">Recommended Days</label>--}}
-{{--                                                <textarea class="form-control" id="exampleInputEmail1" name="recommended_days" placeholder="" required rows="5"></textarea>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
-{{--                                        <div class="col-md-6">--}}
-{{--                                            <div class="form-group">--}}
-{{--                                                <label for="exampleInputEmail1">What to do if pain increases?</label>--}}
-{{--                                                <textarea class="form-control" id="exampleInputEmail1" name="action_when_pain_increase" placeholder="" required rows="5"></textarea>--}}
-{{--                                            </div>--}}
-{{--                                        </div>--}}
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Is Active</label>

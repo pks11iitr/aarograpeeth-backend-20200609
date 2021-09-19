@@ -13,7 +13,7 @@ class MainDisease extends Model
     protected $fillable = ['name','isactive', 'recommended_days'];
 
 
-    public function reasons(){
-        return $this->hasMany('App\Models\ReasonDisease', 'main_disease_id');
-    }
+//    public function reasons(){
+//        return $this->hasMany('App\Models\ReasonDisease', 'main_disease_id');
+//    }
 }
