@@ -322,24 +322,26 @@ class TherapiestOrderController extends Controller
             ->find($id);
 
         $main_diseases=MainDisease::active()
-            ->with('reasons')
+            //->with('reasons')
             ->select('name', 'id')->orderBY('name', 'asc')->get();
         $reason_diseases=ReasonDisease::active()->select('name', 'id')->orderBY('name', 'asc')->get();
 
         foreach($main_diseases as $m){
-            $m->reason_disease=$reason_diseases;
+            //$m->reason_disease=$reason_diseases;
+            $m->reason_disease=[];
         }
 
 
-        $customer_diseases=$home_booking_slot->reasonDiseases;
+        //$customer_diseases=$home_booking_slot->reasonDiseases;
+        $customer_diseases=[];
 
         $selected_diseases=[];
 
-        foreach($customer_diseases as $sds){
-            if(!isset($selected_diseases[$sds->pivot->disease_id]))
-                $selected_diseases[$sds->pivot->disease_id]=[];
-            $selected_diseases[$sds->pivot->disease_id][]=$sds->id;
-        }
+//        foreach($customer_diseases as $sds){
+//            if(!isset($selected_diseases[$sds->pivot->disease_id]))
+//                $selected_diseases[$sds->pivot->disease_id]=[];
+//            $selected_diseases[$sds->pivot->disease_id][]=$sds->id;
+//        }
 
         return [
             'status'=>'success',
