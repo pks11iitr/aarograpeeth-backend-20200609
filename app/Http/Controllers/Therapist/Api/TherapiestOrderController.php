@@ -317,17 +317,24 @@ class TherapiestOrderController extends Controller
         $user=$request->user;
 
         $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
+            ->with('diseases')
             ->where('status', '!=', 'completed')
             ->where('status','!=', 'cancelled')
             ->find($id);
 
+        $selected_diseases = $home_booking_slot->diseases->map(function($element){
+            return $element->id;
+        });
+
         $main_diseases=MainDisease::active()
             //->with('reasons')
             ->select('name', 'id')->orderBY('name', 'asc')->get();
-        $reason_diseases=ReasonDisease::active()->select('name', 'id')->orderBY('name', 'asc')->get();
+//        $reason_diseases=ReasonDisease::active()->select('name', 'id')->orderBY('name', 'asc')->get();
 
         foreach($main_diseases as $m){
             //$m->reason_disease=$reason_diseases;
+            if(in_array($m->id, $selected_diseases))
+                $m->is_selected=1;
             $m->reason_disease=[];
         }
 
@@ -345,7 +352,7 @@ class TherapiestOrderController extends Controller
 
         return [
             'status'=>'success',
-            'data'=>compact('main_diseases', 'reason_diseases')
+            'data'=>compact('main_diseases')
         ];
     }
 
