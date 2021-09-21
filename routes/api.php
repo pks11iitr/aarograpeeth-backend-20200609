@@ -171,9 +171,9 @@ $api->group(['prefix' => 'therapist'], function ($api) {
         $api->get('open-booking-details/{id}', 'Therapist\Api\TherapiestOrderController@openbookingdetails');
         $api->get('completed-booking-details/{id}', 'Therapist\Api\TherapiestOrderController@completedbookingdetails2');
         $api->get('journey-started/{id}', 'Therapist\Api\TherapiestOrderController@journey_started');
-        $api->get('disease-point', 'Therapist\Api\TherapiestOrderController@diseasepoint');
+        //$api->get('disease-point', 'Therapist\Api\TherapiestOrderController@diseasepoint');
         $api->get('treatment-list', 'Therapist\Api\TherapiestOrderController@treatmentlist');
-        $api->post('send-disease-point/{id}', 'Therapist\Api\TherapiestOrderController@send_diesase_point');
+        //$api->post('send-disease-point/{id}', 'Therapist\Api\TherapiestOrderController@send_diesase_point');
         $api->post('treatment-suggestation/{id}', 'Therapist\Api\TherapiestOrderController@treatmentsuggestation');
         $api->get('painpoint-relif/{id}', 'Therapist\Api\TherapiestOrderController@pain_point_relif');
         $api->post('pain-relief-rating/{id}', 'Therapist\Api\TherapiestOrderController@pain_relief_update_rating');

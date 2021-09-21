@@ -599,90 +599,92 @@ class TherapiestOrderController extends Controller
 
 
 
-    public function diseasepoint(Request $request){
+//    public function diseasepoint(Request $request){
+//
+//        $disease=Disease::active()->get();
+//        $painpoint=PainPoint::active()->get();
+//        if($disease->count()>0 or $painpoint->count()>0){
+//
+//            return [
+//                'status'=>'success',
+//                'data' => compact('painpoint', 'disease')
+//            ];
+//        }else {
+//            return [
+//                'status' => 'failed',
+//                'message' => 'No update Found'
+//            ];
+//
+//        }
+//    }
+//
+//    public function send_diesase_point(Request $request,$id){
+//
+//        $request->validate([
+//            'painpoint_id'=>'required',
+//            //'disease_id'=>'required',
+//        ]);
+//
+//        $user=$request->user;
+//
+//        $updatejourney=HomeBookingSlots::where('status', '!=', 'completed')
+//            ->where('status','!=', 'cancelled')
+//            ->where('assigned_therapist', $user->id)
+//            ->find($id);
+//
+//        if(!$updatejourney)
+//            return [
+//                'status' => 'failed',
+//                'message' => 'No update Found'
+//            ];
+//
+//        $arrpainpoint_id = explode(",", $request->painpoint_id);
+//
+//        CustomerPainpoint::where('therapiest_work_id', $id)->where('type', 'therapy')->delete();
+//
+//       foreach($arrpainpoint_id as $key=>$painpoint_id) {
+//           CustomerPainpoint::create([
+//               'therapiest_work_id' => $id,
+//               'pain_point_id' => $painpoint_id,
+//               'type'=>'therapy'
+//           ]);
+//
+//       }
+//
+//        CustomerDisease::where('therapiest_work_id', $id)->where('type', 'therapy')->delete();
+//
+//       if(!empty($request->disease_id)){
+//           $arrdisease_id= explode(",", $request->disease_id);
+//
+//
+//
+//           if(!empty($arrdisease_id)){
+//               foreach($arrdisease_id as $disease_id) {
+//                   if(is_numeric($disease_id)){
+//                       CustomerDisease::create([
+//                           'therapiest_work_id' => $id,
+//                           'disease_id' => trim($disease_id),
+//                           'type'=>'therapy'
+//                       ]);
+//                   }
+//               }
+//           }
+//       }
+//
+//
+//
+//        //if($updatejourney->therapist_status=='Started'){
+//        $updatejourney->therapist_status='Diagnosed';
+//        $updatejourney->save();
+//        //}
+//
+//         return [
+//             'status' => 'success'
+//         ];
+//
+//    }
 
-        $disease=Disease::active()->get();
-        $painpoint=PainPoint::active()->get();
-        if($disease->count()>0 or $painpoint->count()>0){
 
-            return [
-                'status'=>'success',
-                'data' => compact('painpoint', 'disease')
-            ];
-        }else {
-            return [
-                'status' => 'failed',
-                'message' => 'No update Found'
-            ];
-
-        }
-    }
-
-    public function send_diesase_point(Request $request,$id){
-
-        $request->validate([
-            'painpoint_id'=>'required',
-            //'disease_id'=>'required',
-        ]);
-
-        $user=$request->user;
-
-        $updatejourney=HomeBookingSlots::where('status', '!=', 'completed')
-            ->where('status','!=', 'cancelled')
-            ->where('assigned_therapist', $user->id)
-            ->find($id);
-
-        if(!$updatejourney)
-            return [
-                'status' => 'failed',
-                'message' => 'No update Found'
-            ];
-
-        $arrpainpoint_id = explode(",", $request->painpoint_id);
-
-        CustomerPainpoint::where('therapiest_work_id', $id)->where('type', 'therapy')->delete();
-
-       foreach($arrpainpoint_id as $key=>$painpoint_id) {
-           CustomerPainpoint::create([
-               'therapiest_work_id' => $id,
-               'pain_point_id' => $painpoint_id,
-               'type'=>'therapy'
-           ]);
-
-       }
-
-        CustomerDisease::where('therapiest_work_id', $id)->where('type', 'therapy')->delete();
-
-       if(!empty($request->disease_id)){
-           $arrdisease_id= explode(",", $request->disease_id);
-
-
-
-           if(!empty($arrdisease_id)){
-               foreach($arrdisease_id as $disease_id) {
-                   if(is_numeric($disease_id)){
-                       CustomerDisease::create([
-                           'therapiest_work_id' => $id,
-                           'disease_id' => trim($disease_id),
-                           'type'=>'therapy'
-                       ]);
-                   }
-               }
-           }
-       }
-
-
-
-        //if($updatejourney->therapist_status=='Started'){
-        $updatejourney->therapist_status='Diagnosed';
-        $updatejourney->save();
-        //}
-
-         return [
-             'status' => 'success'
-         ];
-
-    }
     public function treatmentlist(Request $request){
 
         $treatment=Treatment::active()->get();
@@ -1042,6 +1044,36 @@ class TherapiestOrderController extends Controller
 
     public function updatePainPointList(Request $request, $id){
 
+        $user=$request->user;
+        if(is_array($request->pain_points)){
+
+            $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
+                ->where('status', '!=', 'completed')
+                ->where('status','!=', 'cancelled')
+                ->find($id);
+
+            //remove old data
+            $home_booking_slot->painPoints()->detach();
+            //$home_booking_slot->reasonDiseases()->detach();
+
+            //add new data
+            foreach($request->pain_points as $disease){
+                $home_booking_slot->painPoints()->attach($disease);
+//            if(!empty($reason_diseases)){
+//                $reason_diseases=array_unique(explode(',',$reason_diseases));
+//                if(!empty($reason_diseases))
+//                    foreach($reason_diseases as $rid)
+//                        $home_booking_slot->reasonDiseases()->attach([$rid=>['disease_id'=>$disease]]);
+//            }
+            }
+
+        }
+
+
+        return [
+            'status'=>'success',
+            'message'=>'Pain Points have been added'
+        ];
     }
 
 }
