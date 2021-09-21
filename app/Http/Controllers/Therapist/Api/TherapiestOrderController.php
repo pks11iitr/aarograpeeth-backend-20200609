@@ -333,7 +333,7 @@ class TherapiestOrderController extends Controller
 
         foreach($main_diseases as $m){
             //$m->reason_disease=$reason_diseases;
-            if(in_array($m->id, $selected_diseases))
+            if(in_array($m->id, $selected_diseases->toArray()))
                 $m->is_selected=1;
             $m->reason_disease=[];
         }
