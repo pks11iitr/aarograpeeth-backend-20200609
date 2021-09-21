@@ -317,12 +317,12 @@ class TherapiestOrderController extends Controller
         $user=$request->user;
 
         $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
-            ->with('diseases')
+            ->with('mainDisease')
             ->where('status', '!=', 'completed')
             ->where('status','!=', 'cancelled')
             ->find($id);
 
-        $selected_diseases = $home_booking_slot->diseases->map(function($element){
+        $selected_diseases = $home_booking_slot->mainDisease->map(function($element){
             return $element->id;
         });
 
