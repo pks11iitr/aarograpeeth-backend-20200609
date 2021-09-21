@@ -365,17 +365,17 @@ class TherapiestOrderController extends Controller
 
         //remove old data
         $home_booking_slot->mainDiseases()->detach();
-        $home_booking_slot->reasonDiseases()->detach();
+        //$home_booking_slot->reasonDiseases()->detach();
 
         //add new data
         foreach($request->diseases as $disease=>$reason_diseases){
             $home_booking_slot->mainDiseases()->attach($disease);
-            if(!empty($reason_diseases)){
-                $reason_diseases=array_unique(explode(',',$reason_diseases));
-                if(!empty($reason_diseases))
-                    foreach($reason_diseases as $rid)
-                        $home_booking_slot->reasonDiseases()->attach([$rid=>['disease_id'=>$disease]]);
-            }
+//            if(!empty($reason_diseases)){
+//                $reason_diseases=array_unique(explode(',',$reason_diseases));
+//                if(!empty($reason_diseases))
+//                    foreach($reason_diseases as $rid)
+//                        $home_booking_slot->reasonDiseases()->attach([$rid=>['disease_id'=>$disease]]);
+//            }
         }
 
         return [
