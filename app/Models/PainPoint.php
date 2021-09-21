@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 
 class PainPoint extends Model
 {
+    use Active;
+
     protected $table = 'pain_point';
 
     protected $fillable = ['name', 'isactive'];

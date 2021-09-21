@@ -185,6 +185,9 @@ $api->group(['prefix' => 'therapist'], function ($api) {
         $api->get('diseases-list/{id}', 'Therapist\Api\TherapiestOrderController@mainDiseaseList');
         $api->post('add-main-diseases/{id}', 'Therapist\Api\TherapiestOrderController@addMainDiseases');
 
+        $api->get('pain-points/{id}', 'Therapist\Api\TherapiestOrderController@painPointList');
+        $api->post('update-pain-points/{id}', 'Therapist\Api\TherapiestOrderController@updatePainPointList');
+
         $api->get('diagnose-list-before-treatment/{id}', 'Therapist\Api\TherapiestOrderController@diagnoseListBeforeTreatment');
         $api->post('add-diagnose-before-treatment/{id}', 'Therapist\Api\TherapiestOrderController@addDiagnoseBeforeTreatment');
 

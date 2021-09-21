@@ -78,11 +78,11 @@ class HomeBookingSlots extends Model
             ->where('type', 'therapy');
     }
 
-    public function painpoints(){
-        return $this->belongsToMany('App\Models\PainPoint', 'customer_point_pain','therapiest_work_id', 'pain_point_id')
-            ->withPivot(['related_rating', 'type'])
-            ->where('type', 'therapy');
-    }
+//    public function painpoints(){
+//        return $this->belongsToMany('App\Models\PainPoint', 'customer_point_pain','therapiest_work_id', 'pain_point_id')
+//            ->withPivot(['related_rating', 'type'])
+//            ->where('type', 'therapy');
+//    }
 
     public function treatment(){
         return $this->belongsTo('App\Models\Treatment', 'treatment_id');
@@ -90,6 +90,10 @@ class HomeBookingSlots extends Model
 
     public function mainDiseases(){
         return $this->morphToMany('App\Models\MainDisease', 'entity', 'customer_main_diseases', 'entity_id', 'disease_id');
+    }
+
+    public function painPoints(){
+        return $this->morphToMany('App\Models\PainPoint', 'entity', 'customer_point_pain', 'entity_id', 'pain_point_id');
     }
 
     public function reasonDiseases(){
