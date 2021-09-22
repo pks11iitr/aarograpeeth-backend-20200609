@@ -452,7 +452,7 @@ class TherapiestOrderController extends Controller
     public function suggestedTreatments(Request $request, $id){
         $user=$request->user;
         $treatment_list=[];
-        $home_booking_slot=HomeBookingSlots::with(['mainDiseases','reasonDiseases', 'painpoints', 'diseases'])
+        $home_booking_slot=HomeBookingSlots::with(['mainDiseases', 'painpoints'])
             ->where('assigned_therapist', $user->id)
             ->where('status', '!=', 'completed')
             ->where('status','!=', 'cancelled')
@@ -464,29 +464,15 @@ class TherapiestOrderController extends Controller
             $mdids[]=$md->id;
         }
 
-        //reason_disease_ids, indexed by main disease
-        $rdids=[];
-        foreach($home_booking_slot->reasonDiseases as $rd){
-            if(!isset($rdids[$rd->pivot->disease_id]))
-                $rdids[$rd->pivot->disease_id]=[];
-            $rdids[$rd->pivot->disease_id][]=$rd->id;
-        }
-
         //pain points
         $ppids=[];
         foreach($home_booking_slot->painPoints as $pp){
             $ppids[]=$pp->id;
         }
 
-        //diseases to ignore treatments
-        $igids=[];
-        foreach($home_booking_slot->diseases as $igd){
-            $igids[]=$igd->id;
-        }
-
         // all treatments for main diseases
         $disease_treatments=DiseasewiseTreatment::active()
-            ->with(['mainDisease', 'reasonDiseases', 'painPoints', 'ignoreWhenDiseases'])
+            ->with(['mainDisease', 'painPoints'])
             ->whereIn('main_disease_id', $mdids)
             ->get();
 
@@ -495,41 +481,14 @@ class TherapiestOrderController extends Controller
         $disease_treatment_list=[];
         foreach($disease_treatments as $dt){
 
-            //skip treatment if ignore disease found
-            $flag=false;
-            foreach($dt->ignoreWhenDiseases as $iwd){
-                if(in_array($iwd->id, $igids))
-                    $flag=true;
-            }
-            if($flag)
-                continue;
-            //skip treatment ends
-
             // set main disease
             if(!isset($disease_treatment_list[$dt->main_disease_id]))
                 $disease_treatment_list[$dt->main_disease_id]=[
                     'main_disease'=>$dt->mainDisease->name??'',
+                    'recommended_days'=>$dt->mainDisease->recommended_days??'',
                     'treatments'=>[]
                 ];
 
-            // set treatment after filtering by reason disease & painpoints
-            $reasondiseases='';
-            if(!$dt->reasonDiseases->toArray()){
-                $treatment_for_reason_selected=true;
-            }else{
-                $treatment_for_reason_selected=false;
-                if(!$rdids[$dt->main_disease_id])
-                    $treatment_for_reason_selected=true;
-                else {
-                    foreach ($dt->reasonDiseases as $rd) {
-                        if (in_array($rd->id, $rdids[$dt->main_disease_id])) {
-                            $reasondiseases = $reasondiseases . $rd->name . ',';
-                            $treatment_for_reason_selected = true;
-                        }
-
-                    }
-                }
-            }
 
             $painpoints='';
             if(!$dt->painPoints->toArray()){
@@ -548,16 +507,12 @@ class TherapiestOrderController extends Controller
                 }
             }
             //var_dump($treatment_for_painpoint_selected);die;
-            if($treatment_for_painpoint_selected && $treatment_for_reason_selected)
-            $disease_treatment_list[$dt->main_disease_id]['treatments'][]=[
-                'reason_disease'=>$reasondiseases,
-                'painpoint'=>$painpoints,
-                'treatment'=>$dt->only('id','description','exercise', 'dont_exercise', 'diet', 'recommended_days', 'action_when_pain_increase')
-            ];
-
-
-
-
+            if($treatment_for_painpoint_selected)
+                $disease_treatment_list[$dt->main_disease_id]['treatments'][]=[
+                    'reason_disease'=>[],
+                    'painpoint'=>$painpoints,
+                    'treatment'=>$dt->only('id','title', 'description','precautions', 'exercise', 'diet')
+                ];
         }
 
         foreach($disease_treatment_list as $key=>$val)
@@ -685,23 +640,23 @@ class TherapiestOrderController extends Controller
 //    }
 
 
-    public function treatmentlist(Request $request){
-
-        $treatment=Treatment::active()->get();
-        if($treatment->count()>0 ){
-
-            return [
-                'status'=>'success',
-                'data' => $treatment
-            ];
-        }else {
-            return [
-                'status' => 'failed',
-                'message' => 'No update Found'
-            ];
-
-        }
-    }
+//    public function treatmentlist(Request $request){
+//
+//        $treatment=Treatment::active()->get();
+//        if($treatment->count()>0 ){
+//
+//            return [
+//                'status'=>'success',
+//                'data' => $treatment
+//            ];
+//        }else {
+//            return [
+//                'status' => 'failed',
+//                'message' => 'No update Found'
+//            ];
+//
+//        }
+//    }
 
     public function treatmentsuggestation(Request $request,$id){
 
