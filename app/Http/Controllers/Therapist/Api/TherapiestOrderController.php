@@ -843,7 +843,7 @@ class TherapiestOrderController extends Controller
 
         $user=$request->user;
 
-        $openbookingdetails=HomeBookingSlots::with(['therapy','timeslot', 'order', 'diseases', 'painpoints', 'mainDiseases', 'reasonDiseases','diagnose', 'treatmentsGiven'])
+        $openbookingdetails=HomeBookingSlots::with(['therapy','timeslot', 'order', 'diseases', 'painpoints', 'mainDiseases', 'treatmentsGiven'])
             ->where('status',  'completed')
             ->where('status','!=', 'cancelled')
             ->where('assigned_therapist', $user->id)
