@@ -850,7 +850,7 @@ class TherapiestOrderController extends Controller
             ->find($id);
 
         $painpoints = $openbookingdetails->painPoints->map(function($elem){
-            return $elem->id;
+            return $elem->name;
         })->toarray();
 
         if(!$openbookingdetails)
