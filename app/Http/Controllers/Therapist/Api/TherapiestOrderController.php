@@ -849,6 +849,10 @@ class TherapiestOrderController extends Controller
             ->where('assigned_therapist', $user->id)
             ->find($id);
 
+        $painpoints = $openbookingdetails->painPoints->map(function($elem){
+            return $elem->id;
+        })->toarray();
+
         if(!$openbookingdetails)
             return [
                 'status'=>'failed',
@@ -911,7 +915,7 @@ class TherapiestOrderController extends Controller
             'id'=>$id,
             'comments'=>$openbookingdetails->message??'',
             'diseases'=>$openbookingdetails->diseases,
-            'painpoints'=>$openbookingdetails->painpoints,
+            'painpoints'=>implode(', ', $painpoints),
             'treatment'=>$treatments,
             'show_feedback_button'=>empty($openbookingdetails->feedback_from_therapist)?1:0,
             'feedback_from_therapist'=>$openbookingdetails->feedback_from_therapist??'',
