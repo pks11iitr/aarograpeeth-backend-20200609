@@ -67,6 +67,7 @@ class TherapiestOrderController extends Controller
             ->where('status','!=', 'cancelled')
             ->get();
         if($openbooking) {
+            $i=0;
             foreach ($openbooking as $item) {
                 if(in_array($item->therapist_status, ['Pending', 'Confirmed'])){
                     $open_screen='details';
@@ -77,22 +78,27 @@ class TherapiestOrderController extends Controller
                 }else if($item->therapist_status=='TreatmentSelected'){
                     $open_screen='customer-feedback';
                 }else{
+
+                    $i++;
                     continue;
+                    //$i++;
                 }
                 $order[]=array(
-                    'status'=>$item->therapist_status,
-                    'display_time'=>$item->timeslot->display_time??date('h:iA', strtotime($item->time)),
-                    'time'=>date('h:iA', strtotime($item->time)),
-                    'created_at'=>date('d/m/Y h:iA', strtotime($item->created_at)),
-                    'date'=>$item->date,
-                    'refid'=>$item->order->refid??'',
-                    'therapy_name'=>$item->therapy->name??'',
-                    'image'=>$item->therapy->image??'',
-                    'id'=>$item->id,
+                    'status'=>$openbooking[$i]->therapist_status,
+                    'display_time'=>$openbooking[$i]->timeslot->display_time??date('h:iA', strtotime($openbooking[$i]->time)),
+                    'time'=>date('h:iA', strtotime($openbooking[$i]->time)),
+                    'created_at'=>date('d/m/Y h:iA', strtotime($openbooking[$i]->created_at)),
+                    'date'=>$openbooking[$i]->date,
+                    'refid'=>$openbooking[$i]->order->refid??'',
+                    'therapy_name'=>$openbooking[$i]->therapy->name??'',
+                    'image'=>$openbooking[$i]->therapy->image??'',
+                    'id'=>$openbooking[$i]->id,
                     'open_screen'=>$open_screen,
-                    'lat'=>$item->order->lat??'',
-                    'lang'=>$item->order->lang??''
+                    'lat'=>$openbooking[$i]->order->lat??'',
+                    'lang'=>$openbooking[$i]->order->lang??''
                 );
+
+                $i++;
             }
             $user=$user->only('name', 'image');
             return [
