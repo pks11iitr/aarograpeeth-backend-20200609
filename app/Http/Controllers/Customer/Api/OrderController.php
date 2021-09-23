@@ -784,7 +784,7 @@ class OrderController extends Controller
                 ->where('status',  'completed')
                 ->find($booking_id);
         }else{
-            $openbookingdetails=HomeBookingSlots::with(['therapy','timeslot', 'diseases', 'painpoints', 'mainDiseases', 'reasonDiseases','diagnose', 'treatmentsGiven', 'assignedTo'])
+            $openbookingdetails=HomeBookingSlots::with(['therapy','timeslot', 'diseases', 'painpoints', 'mainDiseases', 'treatmentsGiven', 'assignedTo'])
                 ->where('status',  'completed')
                 ->find($booking_id);
         }
@@ -810,11 +810,11 @@ class OrderController extends Controller
             ];
         }
 
-        foreach($openbookingdetails->reasonDiseases as $rd){
-            if(isset($main_diseases[$rd->pivot->disease_id])) {
-                $main_diseases[$rd->pivot->disease_id]['reason_diseases']=$main_diseases[$rd->pivot->disease_id]['reason_diseases'].$rd->name.', ';
-            }
-        }
+//        foreach($openbookingdetails->reasonDiseases as $rd){
+//            if(isset($main_diseases[$rd->pivot->disease_id])) {
+//                $main_diseases[$rd->pivot->disease_id]['reason_diseases']=$main_diseases[$rd->pivot->disease_id]['reason_diseases'].$rd->name.', ';
+//            }
+//        }
 
         $main_diseases1=[];
         foreach($main_diseases as $d){
@@ -827,14 +827,14 @@ class OrderController extends Controller
             $treatments[]=['name'=>$t->description];
         }
 
-        $diagnose=[];
-        foreach($openbookingdetails->diagnose as $dg){
-            $diagnose[]=[
-                'name'=>$dg->name,
-                'before'=>$dg->pivot->before_value??'',
-                'after'=>$dg->pivot->after_value??''
-            ];
-        }
+//        $diagnose=[];
+//        foreach($openbookingdetails->diagnose as $dg){
+//            $diagnose[]=[
+//                'name'=>$dg->name,
+//                'before'=>$dg->pivot->before_value??'',
+//                'after'=>$dg->pivot->after_value??''
+//            ];
+//        }
 
         return [
             'status' => 'success',
@@ -857,7 +857,7 @@ class OrderController extends Controller
             'show_feedback_button'=>empty($openbookingdetails->feedback_from_therapist)?1:0,
             'feedback_from_therapist'=>$openbookingdetails->feedback_from_therapist??'',
             'main_diseases'=>$main_diseases1,
-            'diagnose'=>$diagnose,
+            //'diagnose'=>$diagnose,
             'therapy_result'=>$openbookingdetails->customerResults()
             /*'data' =>$openbookingdetails,*/
         ];
