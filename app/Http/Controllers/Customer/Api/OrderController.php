@@ -795,6 +795,10 @@ class OrderController extends Controller
                 'message'=>'No Therapy Found'
             ];
 
+        $painpoints = $openbookingdetails->painPoints->map(function($elem){
+            return $elem->name;
+        })->toarray();
+
         //instant timing
         if($openbookingdetails->is_instant==0){
             $timing=  ($openbookingdetails->timeslot->date??$openbookingdetails->date)." ".($openbookingdetails->timeslot->start_time??$openbookingdetails->time);
@@ -852,7 +856,8 @@ class OrderController extends Controller
             'order_id'=>$order_id,
             'comments'=>$openbookingdetails->message??'',
             'diseases'=>$openbookingdetails->diseases,
-            'painpoints'=>$openbookingdetails->painpoints,
+            //'painpoints'=>$openbookingdetails->painpoints,
+            'painpoints'=>implode(', ', $painpoints),
             'treatment'=>$treatments,
             'show_feedback_button'=>empty($openbookingdetails->feedback_from_therapist)?1:0,
             'feedback_from_therapist'=>$openbookingdetails->feedback_from_therapist??'',
