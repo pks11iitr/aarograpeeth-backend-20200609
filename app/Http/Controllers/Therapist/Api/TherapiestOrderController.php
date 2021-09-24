@@ -1041,4 +1041,54 @@ class TherapiestOrderController extends Controller
         ];
     }
 
+
+    public function otherDiseasesList(Request $request, $id){
+        $user=$request->user;
+
+        $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
+            ->with('diseases')
+            ->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
+            ->find($id);
+
+        $selected_points = $home_booking_slot->diseases->map(function($element){
+            return $element->id;
+        });
+
+        $diseases=Disease::active()
+            //->with('reasons')
+            ->select('name', 'id')->orderBY('name', 'asc')->get();
+//        $reason_diseases=ReasonDisease::active()->select('name', 'id')->orderBY('name', 'asc')->get();
+
+        foreach($diseases as $m){
+            //$m->reason_disease=$reason_diseases;
+            $m->is_selected=0;
+            if(in_array($m->id, $selected_points->toArray()))
+                $m->is_selected=1;
+            //$m->reason_disease=[];
+        }
+
+
+        //$customer_diseases=$home_booking_slot->reasonDiseases;
+        $customer_diseases=[];
+
+        $selected_diseases=[];
+
+//        foreach($customer_diseases as $sds){
+//            if(!isset($selected_diseases[$sds->pivot->disease_id]))
+//                $selected_diseases[$sds->pivot->disease_id]=[];
+//            $selected_diseases[$sds->pivot->disease_id][]=$sds->id;
+//        }
+
+        return [
+            'status'=>'success',
+            'data'=>compact('diseases')
+        ];
+    }
+
+
+    public function updateOtherDiseases(Request $request, $id){
+
+    }
+
 }
