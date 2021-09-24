@@ -1088,7 +1088,35 @@ class TherapiestOrderController extends Controller
 
 
     public function updateOtherDiseases(Request $request, $id){
+        $user=$request->user;
+        if(is_array($request->diseases)){
 
+            $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
+                ->where('status', '!=', 'completed')
+                ->where('status','!=', 'cancelled')
+                ->find($id);
+
+            //remove old data
+            $home_booking_slot->diseases()->detach();
+            //$home_booking_slot->reasonDiseases()->detach();
+
+            //add new data
+            foreach($request->diseases as $disease){
+                $home_booking_slot->diseases()->attach($disease);
+//            if(!empty($reason_diseases)){
+//                $reason_diseases=array_unique(explode(',',$reason_diseases));
+//                if(!empty($reason_diseases))
+//                    foreach($reason_diseases as $rid)
+//                        $home_booking_slot->reasonDiseases()->attach([$rid=>['disease_id'=>$disease]]);
+//            }
+            }
+
+        }
+
+        return [
+            'status'=>'success',
+            'message'=>'Diseases have been added'
+        ];
     }
 
 }
