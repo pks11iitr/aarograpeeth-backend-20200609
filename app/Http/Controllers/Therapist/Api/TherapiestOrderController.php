@@ -927,7 +927,17 @@ class TherapiestOrderController extends Controller
             'feedback_from_therapist'=>$openbookingdetails->feedback_from_therapist??'',
             'main_diseases'=>$main_diseases1,
             //'diagnose'=>$diagnose,
-            'therapy_result'=>$openbookingdetails->results()
+            'therapy_result'=>$openbookingdetails->results(),
+            'age'=>$home_booking_slot->age??'',
+            'gender'=>$home_booking_slot->gender??'',
+            'occupation'=>$home_booking_slot->occupation??'',
+            'height'=>$home_booking_slot->height??'',
+            'weight'=>$home_booking_slot->weight??'',
+            'pulse'=>$home_booking_slot->pulse??'',
+            'temperature'=>$home_booking_slot->temperature??'',
+            'sugar'=>$home_booking_slot->sugar??'',
+            'blood_pressure'=>$home_booking_slot->blood_pressure??'',
+            'blood_group'=>$home_booking_slot->blood_group??'',
             /*'data' =>$openbookingdetails,*/
         ];
 
