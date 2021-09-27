@@ -664,39 +664,39 @@ class TherapiestOrderController extends Controller
 //        }
 //    }
 
-    public function treatmentsuggestation(Request $request,$id){
-
-        $request->validate([
-            'treatment_id'=>'required',
-        ]);
-
-        $user=$request->user;
-
-        $updatejourney=HomeBookingSlots::where('assigned_therapist', $user->id)
-            ->where('status', '!=', 'completed')
-            ->where('status','!=', 'cancelled')
-            ->find($id);
-
-        if(!$updatejourney)
-            return [
-                'status' => 'failed',
-                'message' => 'No record Found'
-            ];
-
-
-        //if($updatejourney->therapist_status=='Diagnosed'){
-        $updatejourney->therapist_status='TreatmentSelected';
-        $updatejourney->treatment_id=$request->treatment_id;
-        $updatejourney->save();
-        //}
-
-
-        return [
-            'status' => 'success',
-            'message'=>'Treatment has been selected'
-        ];
-
-    }
+//    public function treatmentsuggestation(Request $request,$id){
+//
+//        $request->validate([
+//            'treatment_id'=>'required',
+//        ]);
+//
+//        $user=$request->user;
+//
+//        $updatejourney=HomeBookingSlots::where('assigned_therapist', $user->id)
+//            ->where('status', '!=', 'completed')
+//            ->where('status','!=', 'cancelled')
+//            ->find($id);
+//
+//        if(!$updatejourney)
+//            return [
+//                'status' => 'failed',
+//                'message' => 'No record Found'
+//            ];
+//
+//
+//        //if($updatejourney->therapist_status=='Diagnosed'){
+//        $updatejourney->therapist_status='TreatmentSelected';
+//        $updatejourney->treatment_id=$request->treatment_id;
+//        $updatejourney->save();
+//        //}
+//
+//
+//        return [
+//            'status' => 'success',
+//            'message'=>'Treatment has been selected'
+//        ];
+//
+//    }
 
     public function pain_point_relif(Request $request, $id){
 
@@ -1116,6 +1116,82 @@ class TherapiestOrderController extends Controller
         return [
             'status'=>'success',
             'message'=>'Diseases have been added'
+        ];
+    }
+
+
+    public function getPatientDetails(Request $request, $id){
+        $user=$request->user;
+
+        $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
+            ->with('diseases')
+            ->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
+            ->find($id);
+
+        if(!$home_booking_slot)
+            return [
+                'status'=>'failed',
+                'message'=>'No Therapy Found'
+            ];
+
+        $completed_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
+            ->with('diseases')
+            ->where('status', 'completed')
+            ->where('order_id', $home_booking_slot->order_id)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $data = [
+            'age'=>$home_booking_slot->age??($completed_slot->age??''),
+            'gender'=>$home_booking_slot->gender??($completed_slot->gender??''),
+            'occupation'=>$home_booking_slot->occupation??($completed_slot->occupation??''),
+            'height'=>$home_booking_slot->height??($completed_slot->height??''),
+            'weight'=>$home_booking_slot->weight??($completed_slot->weight??''),
+            'pulse'=>$home_booking_slot->pulse??($completed_slot->pulse??''),
+            'temperature'=>$home_booking_slot->temperature??($completed_slot->temperature??''),
+            'sugar'=>$home_booking_slot->sugar??($completed_slot->sugar??''),
+            'blood_pressure'=>$home_booking_slot->blood_pressure??($completed_slot->blood_pressure??''),
+            'blood_group'=>$home_booking_slot->blood_group??($completed_slot->blood_group??''),
+        ];
+
+        return [
+            'status'=>'success',
+            'data'=>$data
+        ];
+
+    }
+
+
+    public function updatePatientDetails(Request $request, $id){
+        $user=$request->user;
+
+        $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
+            ->with('diseases')
+            ->where('status', '!=', 'completed')
+            ->where('status','!=', 'cancelled')
+            ->find($id);
+
+        if(!$home_booking_slot)
+            return [
+                'status'=>'failed',
+                'message'=>'No Therapy Found'
+            ];
+
+        $home_booking_slot->update($request->only('age',
+            'gender',
+            'occupation',
+            'height',
+            'weight',
+            'pulse',
+            'temperature',
+            'sugar',
+            'blood_pressure',
+            'blood_group'));
+
+        return [
+            'status'=>'success',
+            'message'=>'Details have been submitted'
         ];
     }
 

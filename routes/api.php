@@ -197,7 +197,8 @@ $api->group(['prefix' => 'therapist'], function ($api) {
         $api->get('other-diseases/{id}', 'Therapist\Api\TherapiestOrderController@otherDiseasesList');
         $api->post('update-other-diseases/{id}', 'Therapist\Api\TherapiestOrderController@updateOtherDiseases');
 
-
+        $api->get('get-patient-details/{id}', 'Therapist\Api\TherapiestOrderController@getPatientDetails');
+        $api->post('update-patient-details/{id}', 'Therapist\Api\TherapiestOrderController@updatePatientDetails');
 
 
 
