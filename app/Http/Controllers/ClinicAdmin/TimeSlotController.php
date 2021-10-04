@@ -28,7 +28,7 @@ class TimeSlotController extends Controller
             ->firstOrFail();
         $timeslot = TimeSlot::where('clinic_id', $clinic->id)->findOrFail($id);
 
-        $timeslot->isactive=$request->status??0;
+        $timeslot->isactive=$request->status==1?0:1;
         $timeslot->save();
 
         return redirect()->back()->with('success','Status has been updated');
