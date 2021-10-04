@@ -65,8 +65,8 @@
                                             <td>{{$slot->grade_2}}</td>
                                             <td>{{$slot->grade_3}}</td>
                                             <td>{{$slot->grade_4}}</td>
-                                            <td>{{$slot->status==1?'Active':'Disabled'}}</td>
-                                            <td><a href="{{route('clinic.timeslots.deactivate',['id'=>$slot->id])}}" class="btn btn-primary">{{$slot->status==1?'Disable':'Activate'}}</a></td>
+                                            <td>{{$slot->isactive==1?'Active':'Disabled'}}</td>
+                                            <td><a href="{{route('clinic.timeslots.deactivate',['id'=>$slot->id, 'status'=>$slot->isactive??0])}}" class="btn btn-primary">{{$slot->isactive==1?'Disable':'Activate'}}</a></td>
                                         </tr>
                                     @endforeach
                                     </tbody>

@@ -22,8 +22,16 @@ class TimeSlotController extends Controller
         return view('clinicadmin.timeslots.index', compact('timeslots'));
     }
 
-    public function deactivate(Request $request){
+    public function deactivate(Request $request, $id){
+        $user=auth()->user();
+        $clinic =Clinic::where('user_id',$user->id)
+            ->firstOrFail();
+        $timeslot = TimeSlot::where('clinic_id', $clinic->id)->findOrFail($id);
 
+        $timeslot->isactive=$request->status??0;
+        $timeslot->save();
+
+        return redirect()->back()->with('success','Status has been updated');
     }
 
     public function add(Request $request){
