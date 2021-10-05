@@ -79,7 +79,29 @@ class TimeSlotController extends Controller
     }
 
 
-    public function repeat(){
+    public function repeat(Request $request){
+        $user=auth()->user();
+        $clinic =Clinic::where('user_id',$user->id)
+            ->firstOrFail();
+
+        $max = TimeSlot::where('clinic_id', $clinic->id)->max('date');
+
+        if(!empty($max)){
+            $timeslots = TimeSlot::where('clinic_id', $clinic->id)
+                ->where('date', $max)
+                ->orderBy('id', 'asc')
+                ->get();
+
+            //echo
+
+            foreach($timeslots as $ts){
+                TimeSlot::create(array_merge(['date'=>date('Y-m-d', strtotime('+1 days', strtotime($max)))], $ts->only( 'start_time', 'duration', 'grade_1','grade_2','grade_3','grade_4','isactive','clinic_id', 'internal_start_time')));
+            }
+        }
+
+
+        return redirect()->back()->with('success', 'Timeslots have been added');
+
 
     }
 }
