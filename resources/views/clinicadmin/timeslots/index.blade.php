@@ -29,6 +29,8 @@
                                 <div class="row">
                                     <div class="col-3">
                                         <a href="{{route('clinic.timeslots.add')}}" class="btn btn-primary">Add Timeslots</a> </div>
+                                    <div class="col-3">
+                                        <a href="{{route('clinic.timeslots.repeat')}}" class="btn btn-primary">Repeat Previous Day Slots</a> </div>
                                 </div>
                             </div>
                             <!-- /.card-header -->

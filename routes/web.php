@@ -282,6 +282,7 @@ Route::group(['prefix'=>'partners', 'middleware'=>['auth', 'acl'], 'is'=>'clinic
 
         Route::get('list','ClinicAdmin\TimeSlotController@index')->name('clinic.timeslots.list');
         Route::get('deactivate/{id}','ClinicAdmin\TimeSlotController@deactivate')->name('clinic.timeslots.deactivate');
+        Route::get('repeat','ClinicAdmin\TimeSlotController@repeat')->name('clinic.timeslots.repeat');
         Route::get('add','ClinicAdmin\TimeSlotController@addForm')->name('clinic.timeslots.add');
         Route::post('add','ClinicAdmin\TimeSlotController@store');
     });
