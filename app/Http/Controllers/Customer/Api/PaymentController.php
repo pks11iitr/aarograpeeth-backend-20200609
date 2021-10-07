@@ -73,23 +73,23 @@ class PaymentController extends Controller
 
 
 
-        if($request->use_points==1) {
-            $result=$this->payUsingPoints($order);
-            if($result['status']=='success'){
-
-                event(new OrderConfirmed($order));
-
-                return [
-                    'status'=>'success',
-                    'message'=>'Congratulations! Your order at Arogyapeeth is successful',
-                    'data'=>[
-                        'payment_done'=>'yes',
-                        'ref_id'=>$order->refid,
-                        'order_id'=>$order->id
-                    ]
-                ];
-            }
-        }
+//        if($request->use_points==1) {
+//            $result=$this->payUsingPoints($order);
+//            if($result['status']=='success'){
+//
+//                event(new OrderConfirmed($order));
+//
+//                return [
+//                    'status'=>'success',
+//                    'message'=>'Congratulations! Your order at Arogyapeeth is successful',
+//                    'data'=>[
+//                        'payment_done'=>'yes',
+//                        'ref_id'=>$order->refid,
+//                        'order_id'=>$order->id
+//                    ]
+//                ];
+//            }
+//        }
 
         if($request->use_balance==1) {
             $result=$this->payUsingBalance($order);
@@ -324,217 +324,217 @@ class PaymentController extends Controller
         }
     }
 
-    public function initiateReschedulePayment(Request $request, $order_id, $booking_id){
-
-        $user=$request->user;
-
-        $order=Order::with(['details'])->where('user_id', $user->id)
-            ->find($order_id);
-
-        if($order->details[0]->entity_type!='App\Models\Therapy')
-            return [
-                'status'=>'failed',
-                'message'=>'Unreognized Request'
-            ];
-        if($order->details[0]->clinic_id)
-            $booking=BookingSlot::where('order_id', $order_id)
-                ->where('status', 'pending')
-                ->find($booking_id);
-        else
-            $booking=HomeBookingSlots::where('order_id', $order_id)
-                ->where('status', 'pending')
-                ->find($booking_id);
-
-        if(!$booking)
-            return [
-                'status'=>'failed',
-                'message'=>'Unreognized Request'
-            ];
-
-        /*
-         * Calculate Amount Here
-         */
-        $amount=200;
-
-        $reschedule_request=RescheduleRequest::where('order_id', $order->id)
-            ->where('booking_id', $booking->id)
-            ->where('is_paid', false)
-            ->first();
-
-
-        if($request->use_balance==1) {
-            $result=$this->scheduleUsingWallet($order, $reschedule_request, $booking);
-            if($result['status']=='success'){
-
-                event(new RescheduleConfirmed($order, $user));
-
-                return [
-                    'status'=>'success',
-                    'message'=>'Congratulations! Your order at Arogyapeeth is successful',
-                    'data'=>[
-                        'payment_done'=>'yes',
-                        'ref_id'=>$reschedule_request->refid,
-                        'order_id'=>$order->id
-                    ]
-                ];
-            }
-        }
-
-        $result=$this->initiateRescheduleGatewayPayment($order, $reschedule_request, $booking);
-
-        return $result;
-
-    }
-
-    private function scheduleUsingWallet($order, $reschedule_request, $booking){
-
-        $walletbalance=Wallet::balance($order->user_id);
-        if($walletbalance<=0)
-            return [
-                'status'=>'failed',
-                'remaining_amount'=>$order->total_cost
-            ];
-
-        if($reschedule_request->total_cost <= $walletbalance) {
-            $reschedule_request->is_paid=true;
-            $reschedule_request->use_balance=true;
-            $reschedule_request->balance_used=$order->total_cost;
-            $reschedule_request->save();
-
-            Wallet::updatewallet($order->user_id, 'Paid For Booking Reschedule  with Order ID: '.$order->refid, 'DEBIT',$reschedule_request->balance_used, 'CASH', $order->id);
-
-            return [
-                'status'=>'success',
-            ];
-        }else {
-
-            $reschedule_request->use_balance=true;
-            $reschedule_request->balance_used=$walletbalance;
-            $reschedule_request->save();
-
-            return [
-                'status'=>'failed',
-            ];
-        }
-    }
-
-    public function initiateRescheduleGatewayPayment($order, $reschedule_request, $booking){
-        $response=$this->pay->generateorderid([
-            "amount"=>($reschedule_request->total_cost-$reschedule_request->balance_used)*100,
-            "currency"=>"INR",
-            "receipt"=>$reschedule_request->refid,
-        ]);
-        $responsearr=json_decode($response);
-        //var_dump($responsearr);die;
-        if(isset($responsearr->id)){
-            $reschedule_request->razorpay_order_id=$responsearr->id;
-            $reschedule_request->razorpay_order_id_response=$response;
-            $reschedule_request->save();
-            return [
-                'status'=>'success',
-                'message'=>'success',
-                'data'=>[
-                    'payment_done'=>'no',
-                    'razorpay_order_id'=> $reschedule_request->razorpay_order_id,
-                    'total'=>($reschedule_request->total_cost-$reschedule_request->balance_used)*100,
-                    'email'=>$order->email,
-                    'mobile'=>$order->mobile,
-                    'description'=>'Reschedule Booking at Aarogyapeeth',
-                    'name'=>$order->name,
-                    'currency'=>'INR',
-                    'merchantid'=>$this->pay->merchantkey,
-                ],
-            ];
-        }else{
-            return [
-                'status'=>'failed',
-                'message'=>'Payment cannot be initiated',
-                'data'=>[
-                ],
-            ];
-        }
-    }
-
-    public function verifyReschedulePayment(Request $request){
-
-        $user=$request->user;
-
-//        $request->validate([
-//            'razorpay_order_id'=>'required',
-//            'razorpay_signature'=>'required',
-//            'razorpay_payment_id'=>'required'
+//    public function initiateReschedulePayment(Request $request, $order_id, $booking_id){
+//
+//        $user=$request->user;
+//
+//        $order=Order::with(['details'])->where('user_id', $user->id)
+//            ->find($order_id);
+//
+//        if($order->details[0]->entity_type!='App\Models\Therapy')
+//            return [
+//                'status'=>'failed',
+//                'message'=>'Unreognized Request'
+//            ];
+//        if($order->details[0]->clinic_id)
+//            $booking=BookingSlot::where('order_id', $order_id)
+//                ->where('status', 'pending')
+//                ->find($booking_id);
+//        else
+//            $booking=HomeBookingSlots::where('order_id', $order_id)
+//                ->where('status', 'pending')
+//                ->find($booking_id);
+//
+//        if(!$booking)
+//            return [
+//                'status'=>'failed',
+//                'message'=>'Unreognized Request'
+//            ];
+//
+//        /*
+//         * Calculate Amount Here
+//         */
+//        $amount=200;
+//
+//        $reschedule_request=RescheduleRequest::where('order_id', $order->id)
+//            ->where('booking_id', $booking->id)
+//            ->where('is_paid', false)
+//            ->first();
+//
+//
+//        if($request->use_balance==1) {
+//            $result=$this->scheduleUsingWallet($order, $reschedule_request, $booking);
+//            if($result['status']=='success'){
+//
+//                event(new RescheduleConfirmed($order, $user));
+//
+//                return [
+//                    'status'=>'success',
+//                    'message'=>'Congratulations! Your order at Arogyapeeth is successful',
+//                    'data'=>[
+//                        'payment_done'=>'yes',
+//                        'ref_id'=>$reschedule_request->refid,
+//                        'order_id'=>$order->id
+//                    ]
+//                ];
+//            }
+//        }
+//
+//        $result=$this->initiateRescheduleGatewayPayment($order, $reschedule_request, $booking);
+//
+//        return $result;
+//
+//    }
+//
+//    private function scheduleUsingWallet($order, $reschedule_request, $booking){
+//
+//        $walletbalance=Wallet::balance($order->user_id);
+//        if($walletbalance<=0)
+//            return [
+//                'status'=>'failed',
+//                'remaining_amount'=>$order->total_cost
+//            ];
+//
+//        if($reschedule_request->total_cost <= $walletbalance) {
+//            $reschedule_request->is_paid=true;
+//            $reschedule_request->use_balance=true;
+//            $reschedule_request->balance_used=$order->total_cost;
+//            $reschedule_request->save();
+//
+//            Wallet::updatewallet($order->user_id, 'Paid For Booking Reschedule  with Order ID: '.$order->refid, 'DEBIT',$reschedule_request->balance_used, 'CASH', $order->id);
+//
+//            return [
+//                'status'=>'success',
+//            ];
+//        }else {
+//
+//            $reschedule_request->use_balance=true;
+//            $reschedule_request->balance_used=$walletbalance;
+//            $reschedule_request->save();
+//
+//            return [
+//                'status'=>'failed',
+//            ];
+//        }
+//    }
+//
+//    public function initiateRescheduleGatewayPayment($order, $reschedule_request, $booking){
+//        $response=$this->pay->generateorderid([
+//            "amount"=>($reschedule_request->total_cost-$reschedule_request->balance_used)*100,
+//            "currency"=>"INR",
+//            "receipt"=>$reschedule_request->refid,
 //        ]);
-
-        $reschedule_request=RescheduleRequest::with('order.details')
-            ->where('razorpay_order_id', $request->razorpay_order_id)->first();
-
-        if(!$reschedule_request || $reschedule_request->is_paid==1)
-            return [
-                'status'=>'failed',
-                'message'=>'Invalid Operation Performed'
-            ];
-
-
-
-        $paymentresult=$this->pay->verifypayment($request->all());
-        if($paymentresult) {
-            if ($reschedule_request->use_balance == true) {
-                $balance = Wallet::balance($reschedule_request->order->user_id);
-                if ($balance < $reschedule_request->balance_used) {
-                    return response()->json([
-                        'status' => 'failed',
-                        'message' => 'We apologize, Your order is not successful',
-                        'errors' => [
-
-                        ],
-                    ], 200);
-                }
-            }
-            $reschedule_request->is_paid=1;
-            $reschedule_request->payment_id = $request->razorpay_payment_id;
-            $reschedule_request->payment_id_response = $request->razorpay_signature;
-            $reschedule_request->save();
-
-            // comfirm slots booking
-            if ($reschedule_request->order->details[0]->entity_type == 'App\Models\Therapy'){
-                if ($reschedule_request->order->details[0]->clinic_id != null) {
-                    $booking=BookingSlot::find($reschedule_request->booking_id);
-                    $booking->slot_id=$reschedule_request->new_slot_id;
-                    $booking->time=$reschedule_request->new_slot_time;
-                    $booking->date=$reschedule_request->new_slot_date;
-                    $booking->save();
-                }else{
-                    $booking=HomeBookingSlots::find($reschedule_request->booking_id);
-                    $booking->slot_id=$reschedule_request->new_slot_id;
-                    $booking->time=$reschedule_request->new_slot_time;
-                    $booking->date=$reschedule_request->new_slot_date;
-                    $booking->is_instant=0;
-                    $booking->save();
-                }
-            }
-
-            if($reschedule_request->balance_used > 0)
-                Wallet::updatewallet($reschedule_request->order->user_id, 'Paid For Reschedule Booking Order ID: '.$reschedule_request->order->refid, 'DEBIT',$reschedule_request->balance_used, 'CASH', $reschedule_request->order->id);
-
-            //event(new OrderSuccessfull($order));
-            event(new RescheduleConfirmed($reschedule_request->order, $user));
-            return [
-                'status'=>'success',
-                'message'=> 'Congratulations! Your payment at Arogyapeeth is successful',
-                'data'=>[
-                    'ref_id'=>$reschedule_request->order->refid,
-                    'order_id'=>$reschedule_request->order->id
-                ]
-            ];
-        }else{
-            return [
-                'status'=>'failed',
-                'message'=>'We apologize, Your payment cannot be verified',
-                'data'=>[
-
-                ],
-            ];
-        }
-    }
+//        $responsearr=json_decode($response);
+//        //var_dump($responsearr);die;
+//        if(isset($responsearr->id)){
+//            $reschedule_request->razorpay_order_id=$responsearr->id;
+//            $reschedule_request->razorpay_order_id_response=$response;
+//            $reschedule_request->save();
+//            return [
+//                'status'=>'success',
+//                'message'=>'success',
+//                'data'=>[
+//                    'payment_done'=>'no',
+//                    'razorpay_order_id'=> $reschedule_request->razorpay_order_id,
+//                    'total'=>($reschedule_request->total_cost-$reschedule_request->balance_used)*100,
+//                    'email'=>$order->email,
+//                    'mobile'=>$order->mobile,
+//                    'description'=>'Reschedule Booking at Aarogyapeeth',
+//                    'name'=>$order->name,
+//                    'currency'=>'INR',
+//                    'merchantid'=>$this->pay->merchantkey,
+//                ],
+//            ];
+//        }else{
+//            return [
+//                'status'=>'failed',
+//                'message'=>'Payment cannot be initiated',
+//                'data'=>[
+//                ],
+//            ];
+//        }
+//    }
+//
+//    public function verifyReschedulePayment(Request $request){
+//
+//        $user=$request->user;
+//
+////        $request->validate([
+////            'razorpay_order_id'=>'required',
+////            'razorpay_signature'=>'required',
+////            'razorpay_payment_id'=>'required'
+////        ]);
+//
+//        $reschedule_request=RescheduleRequest::with('order.details')
+//            ->where('razorpay_order_id', $request->razorpay_order_id)->first();
+//
+//        if(!$reschedule_request || $reschedule_request->is_paid==1)
+//            return [
+//                'status'=>'failed',
+//                'message'=>'Invalid Operation Performed'
+//            ];
+//
+//
+//
+//        $paymentresult=$this->pay->verifypayment($request->all());
+//        if($paymentresult) {
+//            if ($reschedule_request->use_balance == true) {
+//                $balance = Wallet::balance($reschedule_request->order->user_id);
+//                if ($balance < $reschedule_request->balance_used) {
+//                    return response()->json([
+//                        'status' => 'failed',
+//                        'message' => 'We apologize, Your order is not successful',
+//                        'errors' => [
+//
+//                        ],
+//                    ], 200);
+//                }
+//            }
+//            $reschedule_request->is_paid=1;
+//            $reschedule_request->payment_id = $request->razorpay_payment_id;
+//            $reschedule_request->payment_id_response = $request->razorpay_signature;
+//            $reschedule_request->save();
+//
+//            // comfirm slots booking
+//            if ($reschedule_request->order->details[0]->entity_type == 'App\Models\Therapy'){
+//                if ($reschedule_request->order->details[0]->clinic_id != null) {
+//                    $booking=BookingSlot::find($reschedule_request->booking_id);
+//                    $booking->slot_id=$reschedule_request->new_slot_id;
+//                    $booking->time=$reschedule_request->new_slot_time;
+//                    $booking->date=$reschedule_request->new_slot_date;
+//                    $booking->save();
+//                }else{
+//                    $booking=HomeBookingSlots::find($reschedule_request->booking_id);
+//                    $booking->slot_id=$reschedule_request->new_slot_id;
+//                    $booking->time=$reschedule_request->new_slot_time;
+//                    $booking->date=$reschedule_request->new_slot_date;
+//                    $booking->is_instant=0;
+//                    $booking->save();
+//                }
+//            }
+//
+//            if($reschedule_request->balance_used > 0)
+//                Wallet::updatewallet($reschedule_request->order->user_id, 'Paid For Reschedule Booking Order ID: '.$reschedule_request->order->refid, 'DEBIT',$reschedule_request->balance_used, 'CASH', $reschedule_request->order->id);
+//
+//            //event(new OrderSuccessfull($order));
+//            event(new RescheduleConfirmed($reschedule_request->order, $user));
+//            return [
+//                'status'=>'success',
+//                'message'=> 'Congratulations! Your payment at Arogyapeeth is successful',
+//                'data'=>[
+//                    'ref_id'=>$reschedule_request->order->refid,
+//                    'order_id'=>$reschedule_request->order->id
+//                ]
+//            ];
+//        }else{
+//            return [
+//                'status'=>'failed',
+//                'message'=>'We apologize, Your payment cannot be verified',
+//                'data'=>[
+//
+//                ],
+//            ];
+//        }
+//    }
 
 }

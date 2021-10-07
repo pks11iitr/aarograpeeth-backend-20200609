@@ -282,6 +282,13 @@ class TherapiestOrderController extends Controller
             ];
     }
 
+
+    /**
+     * This function is used to accept & start therapy
+     * @param Request $request
+     * @param $id
+     * @return string[]
+     */
     public function journey_started(Request $request, $id){
         $user=$request->user;
         $updatejourney=HomeBookingSlots::where('assigned_therapist', $user->id)
@@ -340,8 +347,12 @@ class TherapiestOrderController extends Controller
         foreach($main_diseases as $m){
             //$m->reason_disease=$reason_diseases;
             $m->is_selected=0;
+            $m->is_freezed =0;
             if(in_array($m->id, $selected_diseases->toArray()))
-                $m->is_selected=1;
+                $m->is_selected = 1;
+            if($home_booking_slot->therapy_id == $m->id)
+                $m->is_freezed = 1;
+
             $m->reason_disease=[];
         }
 
@@ -398,62 +409,62 @@ class TherapiestOrderController extends Controller
         ];
     }
 
-    public function diagnoseListBeforeTreatment(Request $request, $id){
-        $user=$request->user;
-
-        $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
-            ->where('status', '!=', 'completed')
-            ->where('status','!=', 'cancelled')
-            ->findOrFail($id);
-
-        $diagnose_points=DiagnosePoint::active()->select('id','name','type')->get();
-
-        return [
-            'status'=>'success',
-            'data'=>compact('diagnose_points')
-        ];
-
-    }
-
-    public function addDiagnoseBeforeTreatment(Request $request, $id){
-
-        $user=$request->user;
-
-        $request->validate([
-            'before_treatment'=>'required|array',
-            'after_treatment'=>'required|array'
-        ]);
-
-        $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
-            ->where('status', '!=', 'completed')
-            ->where('status','!=', 'cancelled')
-            ->find($id);
-
-        $home_booking_slot->diagnose()->detach();
-
-        $diagnose_points=[];
-
-        foreach($request->before_treatment as $dp=>$value){
-            if(!isset($diagnose_points[$dp]))
-                $diagnose_points[$dp]=[];
-            $diagnose_points[$dp]['before_value']=$value;
-        }
-
-        foreach($request->after_treatment as $dp=>$value){
-            if(!isset($diagnose_points[$dp]))
-                $diagnose_points[$dp]=[];
-            $diagnose_points[$dp]['after_value']=$value;
-        }
-
-        if(!empty($diagnose_points))
-            $home_booking_slot->diagnose()->attach($diagnose_points);
-
-        return [
-            'status'=>'success',
-            'message'=>'Diagnose has been updated'
-        ];
-
-    }
+//    public function diagnoseListBeforeTreatment(Request $request, $id){
+//        $user=$request->user;
+//
+//        $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
+//            ->where('status', '!=', 'completed')
+//            ->where('status','!=', 'cancelled')
+//            ->findOrFail($id);
+//
+//        $diagnose_points=DiagnosePoint::active()->select('id','name','type')->get();
+//
+//        return [
+//            'status'=>'success',
+//            'data'=>compact('diagnose_points')
+//        ];
+//
+//    }
+//
+//    public function addDiagnoseBeforeTreatment(Request $request, $id){
+//
+//        $user=$request->user;
+//
+//        $request->validate([
+//            'before_treatment'=>'required|array',
+//            'after_treatment'=>'required|array'
+//        ]);
+//
+//        $home_booking_slot=HomeBookingSlots::where('assigned_therapist', $user->id)
+//            ->where('status', '!=', 'completed')
+//            ->where('status','!=', 'cancelled')
+//            ->find($id);
+//
+//        $home_booking_slot->diagnose()->detach();
+//
+//        $diagnose_points=[];
+//
+//        foreach($request->before_treatment as $dp=>$value){
+//            if(!isset($diagnose_points[$dp]))
+//                $diagnose_points[$dp]=[];
+//            $diagnose_points[$dp]['before_value']=$value;
+//        }
+//
+//        foreach($request->after_treatment as $dp=>$value){
+//            if(!isset($diagnose_points[$dp]))
+//                $diagnose_points[$dp]=[];
+//            $diagnose_points[$dp]['after_value']=$value;
+//        }
+//
+//        if(!empty($diagnose_points))
+//            $home_booking_slot->diagnose()->attach($diagnose_points);
+//
+//        return [
+//            'status'=>'success',
+//            'message'=>'Diagnose has been updated'
+//        ];
+//
+//    }
 
     public function suggestedTreatments(Request $request, $id){
         $user=$request->user;

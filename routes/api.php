@@ -188,8 +188,8 @@ $api->group(['prefix' => 'therapist'], function ($api) {
         $api->get('pain-points/{id}', 'Therapist\Api\TherapiestOrderController@painPointList');
         $api->post('update-pain-points/{id}', 'Therapist\Api\TherapiestOrderController@updatePainPointList');
 
-        $api->get('diagnose-list-before-treatment/{id}', 'Therapist\Api\TherapiestOrderController@diagnoseListBeforeTreatment');
-        $api->post('add-diagnose-before-treatment/{id}', 'Therapist\Api\TherapiestOrderController@addDiagnoseBeforeTreatment');
+//        $api->get('diagnose-list-before-treatment/{id}', 'Therapist\Api\TherapiestOrderController@diagnoseListBeforeTreatment');
+//        $api->post('add-diagnose-before-treatment/{id}', 'Therapist\Api\TherapiestOrderController@addDiagnoseBeforeTreatment');
 
         $api->get('treatments-suggested/{id}', 'Therapist\Api\TherapiestOrderController@suggestedTreatments');
         $api->post('treatments-given/{id}', 'Therapist\Api\TherapiestOrderController@chooseTreatments');
