@@ -208,3 +208,8 @@ $api->group(['prefix' => 'therapist'], function ($api) {
 
 $api->get('therapist-instructions', 'Therapist\Api\InstructionController@instructions');
 $api->get('customer-instructions', 'Customer\Api\InstructionController@instructions');
+
+
+$api->get('about','CommonController@about');
+$api->get('privacy','SuperAdmin\AppUrlController@privacypolicy');
+$api->get('term','SuperAdmin\AppUrlController@termscondition');
