@@ -210,6 +210,6 @@ $api->get('therapist-instructions', 'Therapist\Api\InstructionController@instruc
 $api->get('customer-instructions', 'Customer\Api\InstructionController@instructions');
 
 
-$api->get('about','CommonController@about');
-$api->get('privacy','SuperAdmin\AppUrlController@privacypolicy');
-$api->get('term','SuperAdmin\AppUrlController@termscondition');
+$api->get('about-us','CommonController@about');
+$api->get('terms-n-conditions','CommonController@term');
+$api->get('privacy-policy','CommonController@privacy');
