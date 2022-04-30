@@ -121,29 +121,21 @@
                                 <table id="example2" class="table table-bordered table-hover">
                                     <thead>
                                     <tr>
-                                        <th>Main Diseases</th>
-                                        <th>Pain Points</th>
+                                        <th>Therapy Name</th>
                                         <th>Disease</th>
+                                        <th>Pain Points</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
                                         <td>
-                                            @foreach($session->mainDiseases as $md)
-        {{$loop->iteration}}. {{$md->name??''}}--
-                                                @foreach($session->reasonDiseases as $rd)
-                                                    @if($rd->pivot->disease_id==$md->id)
-                                                        {{$rd->name}},
-                                                    @endif
-                                                @endforeach
-                                                <br>
-                                            @endforeach
+                                            {{$session->therapy->name}}
                                         </td>
+                                        <td>@foreach($session->mainDiseases as $d){{$d->name??''}}<br>@endforeach</td>
                                         <td>
                                             @foreach($session->painpoints as $p){{$p->name??''}}:&nbsp<br>
                                             @endforeach
                                         </td>
-                                        <td>@foreach($session->diseases as $d){{$d->name??''}}<br>@endforeach</td>
                                     </tr>
 
 
