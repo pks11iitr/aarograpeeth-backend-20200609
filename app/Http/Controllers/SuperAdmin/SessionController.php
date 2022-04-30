@@ -77,7 +77,7 @@ class SessionController extends Controller
 
     public function getTherapySessionList(Request $request, $therapist_id){
 
-        $sessions=HomeBookingSlots::with(['assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order'])
+        $sessions=HomeBookingSlots::with(['assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatmentsGiven', 'timeslot', 'order'])
         ->where('is_confirmed', true)
         ->where('is_paid', true);
 
