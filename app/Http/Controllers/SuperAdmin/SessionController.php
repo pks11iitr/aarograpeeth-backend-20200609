@@ -26,7 +26,7 @@ class SessionController extends Controller
 
     public function getClinicSessionList(Request $request, $therapist_id){
 
-        $sessions=BookingSlot::with(['clinic','assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order'])
+        $sessions=BookingSlot::with(['clinic','assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatmentsGiven', 'timeslot', 'order'])
             ->where('is_confirmed', true)
             ->where('is_paid', true);
 
