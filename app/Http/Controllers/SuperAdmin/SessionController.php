@@ -139,14 +139,14 @@ class SessionController extends Controller
 
     private function getClinicSessionDetails($request, $id){
 
-        $session=BookingSlot::with(['clinic','assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order'])->findOrFail($id);
+        $session=BookingSlot::with(['clinic','assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatmentGiven', 'timeslot', 'order'])->findOrFail($id);
 
         return view('admin.sessions.details', compact('session'));
 
     }
 
     private function getTherapySessionDetails($request, $id){
-        $session=HomeBookingSlots::with(['assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatment', 'timeslot', 'order'])->findOrFail($id);
+        $session=HomeBookingSlots::with(['assignedTo', 'review', 'therapy', 'diseases', 'painpoints','treatmentGiven', 'timeslot', 'order'])->findOrFail($id);
         //dd($session->painpoints);
         return view('admin.sessions.details', compact('session'));
     }
